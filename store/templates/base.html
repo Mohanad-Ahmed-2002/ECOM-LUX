@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Store{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Alpine JS -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            AOS.init();
+        });
+    </script>
+
+
+
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="text-gray-800 flex flex-col min-h-screen bg-white">
+
+    <!-- HEADER -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="{% url 'home' %}" class="text-3xl font-bold text-blue-700 animate-pulse">
+                LUXEFLEX
+            </a>
+
+            <!-- Icons + Mobile Button -->
+            <div class="flex items-center space-x-4 md:order-2">
+                <a href="#" class="text-gray-700 hover:text-blue-500 relative transition">
+                    <i class="fas fa-shopping-bag text-lg"></i>
+                    <span class="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1">0</span>
+                </a>
+                <a href="#" class="text-gray-700 hover:text-blue-500 transition">
+                    <i class="far fa-heart text-lg"></i>
+                </a>
+                <button id="mobile-menu-btn" class="text-gray-700 md:hidden focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Navigation (Desktop) -->
+            <nav class="hidden md:flex space-x-6 text-gray-700 font-medium items-center md:order-1">
+                <a href="{% url 'home' %}" class="hover:text-blue-500 transition">HOME</a>
+                <div class="relative group">
+                    <button id="shop-toggle"
+                        class="hover:text-blue-500 flex items-center gap-1 font-medium focus:outline-none">
+                        SHOP <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="shop-menu"
+                        class="absolute left-0 mt-2 w-40 bg-white border shadow-lg rounded-md opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transform transition-all duration-300 ease-out pointer-events-none group-hover:pointer-events-auto">
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">MAN</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">WOMAN</a>
+                    </div>
+                </div>
+                <a href="{% url 'about' %}" class="hover:text-blue-500 transition">ABOUT</a>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 animate-fade-in-down">
+            <a href="#" class="block py-2 text-gray-700 hover:text-blue-500">HOME</a>
+            <div class="mt-2">
+                <button id="mobile-shop-toggle"
+                    class="w-full text-left flex justify-between items-center py-2 text-gray-700 hover:text-blue-500">
+                    SHOP <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-shop-menu" class="ml-4 mt-1 hidden">
+                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-blue-500">SUNGLASSES</a>
+                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-blue-500">OPTICAL</a>
+                </div>
+            </div>
+            <a href="#" class="block py-2 text-gray-700 hover:text-blue-500">ABOUT</a>
+        </div>
+    </header>
+
+    <!-- Script -->
+    <script>
+        const shopToggle = document.getElementById('shop-toggle');
+        const shopMenu = document.getElementById('shop-menu');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileShopToggle = document.getElementById('mobile-shop-toggle');
+        const mobileShopMenu = document.getElementById('mobile-shop-menu');
+
+        shopToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            shopMenu.classList.toggle('opacity-0');
+            shopMenu.classList.toggle('scale-95');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!shopToggle.contains(e.target) && !shopMenu.contains(e.target)) {
+                shopMenu.classList.add('opacity-0', 'scale-95');
+            }
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileShopToggle.addEventListener('click', () => {
+            mobileShopMenu.classList.toggle('hidden');
+        });
+    </script>
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-blue-100 mt-auto">
+        <div class="container mx-auto px-4 py-4 text-center space-y-4" >
+            <!-- Social -->
+            <div class="flex justify-center space-x-6 text-black-500">
+                <a href="https://www.instagram.com/luxeflex2020?igsh=bm5tcGVwMTVwd2lh" target="_blank"
+                    class="hover:text-pink-500">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="https://www.facebook.com/luxeflexstore/" target="_blank" class="hover:text-blue-600">
+                    <i class="fab fa-facebook-f text-xl"></i>
+                </a>
+            </div>
+            <hr class="border-blue-100">
+            <p class="text-xs text-black-500 font-semibold">
+                &copy; 2025 LUXEFLEX. Designed by
+                <a href="https://my-portfolio-59ne.onrender.com/" target="_blank"
+                    class="text-blue-500 hover:underline font-bold">MA</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
