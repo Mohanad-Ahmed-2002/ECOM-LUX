@@ -52,56 +52,62 @@
             <a href="{% url 'home' %}" class="text-3xl font-bold text-blue-700 animate-pulse">
                 LUXEFLEX
             </a>
-
+    
             <!-- Icons + Mobile Button -->
             <div class="flex items-center space-x-4 md:order-2">
-                <a href="#" class="text-gray-700 hover:text-blue-500 relative transition">
+                <a href="{% url 'cart_detail' %}" class="text-gray-700 hover:text-blue-500 relative transition">
                     <i class="fas fa-shopping-bag text-lg"></i>
-                    <span class="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1">0</span>
+                    {% if cart_item_count > 0 %}
+                    <span class="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1">
+                        {{ cart_item_count }}
+                    </span>
+                    {% endif %}
+
                 </a>
-                <a href="#" class="text-gray-700 hover:text-blue-500 transition">
+                <a href="{% url 'favorite' %}" class="text-gray-700 hover:text-blue-500 transition">
                     <i class="far fa-heart text-lg"></i>
                 </a>
                 <button id="mobile-menu-btn" class="text-gray-700 md:hidden focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
-
+    
             <!-- Navigation (Desktop) -->
             <nav class="hidden md:flex space-x-6 text-gray-700 font-medium items-center md:order-1">
                 <a href="{% url 'home' %}" class="hover:text-blue-500 transition">HOME</a>
-                <div class="relative group">
+                <div class="relative">
                     <button id="shop-toggle"
                         class="hover:text-blue-500 flex items-center gap-1 font-medium focus:outline-none">
                         SHOP <i class="fas fa-chevron-down text-xs"></i>
                     </button>
                     <div id="shop-menu"
-                        class="absolute left-0 mt-2 w-40 bg-white border shadow-lg rounded-md opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transform transition-all duration-300 ease-out pointer-events-none group-hover:pointer-events-auto">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">MAN</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">WOMAN</a>
+                        class="absolute left-0 mt-2 w-40 bg-white border shadow-lg rounded-md opacity-0 scale-95 invisible transition-all duration-300 ease-out">
+                        <a href="{% url 'men_products' %}" class="block px-4 py-2 hover:bg-gray-100">MAN</a>
+                        <a href="{% url 'women_products' %}" class="block px-4 py-2 hover:bg-gray-100">WOMAN</a>
                     </div>
                 </div>
                 <a href="{% url 'about' %}" class="hover:text-blue-500 transition">ABOUT</a>
             </nav>
         </div>
-
+    
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 animate-fade-in-down">
-            <a href="#" class="block py-2 text-gray-700 hover:text-blue-500">HOME</a>
+            <a href="{% url 'home' %}" class="block py-2 text-gray-700 hover:text-blue-500">HOME</a>
             <div class="mt-2">
                 <button id="mobile-shop-toggle"
                     class="w-full text-left flex justify-between items-center py-2 text-gray-700 hover:text-blue-500">
                     SHOP <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div id="mobile-shop-menu" class="ml-4 mt-1 hidden">
-                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-blue-500">SUNGLASSES</a>
-                    <a href="#" class="block py-1 text-sm text-gray-600 hover:text-blue-500">OPTICAL</a>
+                    <a href="{% url 'men_products' %}" class="block py-1 text-sm text-gray-600 hover:text-blue-500">MAN</a>
+                    <a href="{% url 'women_products' %}"
+                        class="block py-1 text-sm text-gray-600 hover:text-blue-500">WOMAN</a>
                 </div>
             </div>
-            <a href="#" class="block py-2 text-gray-700 hover:text-blue-500">ABOUT</a>
+            <a href="{% url 'about' %}" class="block py-2 text-gray-700 hover:text-blue-500">ABOUT</a>
         </div>
     </header>
-
+    
     <!-- Script -->
     <script>
         const shopToggle = document.getElementById('shop-toggle');
@@ -111,26 +117,33 @@
         const mobileShopToggle = document.getElementById('mobile-shop-toggle');
         const mobileShopMenu = document.getElementById('mobile-shop-menu');
 
+        // Toggle desktop shop dropdown
         shopToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             shopMenu.classList.toggle('opacity-0');
             shopMenu.classList.toggle('scale-95');
+            shopMenu.classList.toggle('invisible');
         });
 
+        // Close shop menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!shopToggle.contains(e.target) && !shopMenu.contains(e.target)) {
-                shopMenu.classList.add('opacity-0', 'scale-95');
+                shopMenu.classList.add('opacity-0', 'scale-95', 'invisible');
             }
         });
 
+        // Toggle mobile menu
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
 
+        // Toggle mobile shop submenu
         mobileShopToggle.addEventListener('click', () => {
             mobileShopMenu.classList.toggle('hidden');
         });
     </script>
+
+
 
     {% block content %}{% endblock %}
 

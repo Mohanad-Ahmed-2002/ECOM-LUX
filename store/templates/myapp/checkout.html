@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}Checkout - LUXEFLEX{% endblock %}
+
+{% block content %}
+
+<section class="container mx-auto px-4 py-12">
+    <h1 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-10 animate__animated animate__fadeInDown">
+        Checkout
+    </h1>
+
+    <div class="bg-white shadow-xl rounded-2xl p-6 md:p-10 max-w-4xl mx-auto">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">Your Order</h2>
+
+        <!-- Cart Items Summary -->
+        <div class="space-y-4 mb-8">
+            {% for item in cart_items %}
+            <div class="flex justify-between items-center bg-gray-100 p-4 rounded-xl shadow-sm">
+                <div>
+                    <p class="font-medium">{{ item.product.name }}</p>
+                    <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+                </div>
+                <p class="font-bold text-blue-700">EGP {{ item.total_price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Form -->
+        <form method="POST" class="grid gap-6 md:grid-cols-2">
+            {% csrf_token %}
+            <div class="col-span-full">
+                <label class="font-semibold">Name</label>
+                {{ form.name|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+            </div>
+
+            <div>
+                <label class="font-semibold">Email</label>
+                {{ form.email|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+            </div>
+
+            <div>
+                <label class="font-semibold">Phone</label>
+                {{ form.phone|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+            </div>
+
+            <div class="col-span-full">
+                <label class="font-semibold">Address</label>
+                {{ form.address|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+            </div>
+
+            <div class="col-span-full">
+                <label class="font-semibold">Governorate</label>
+                <select name="government" id="government" onchange="updateTotals()"
+                    class="w-full border border-gray-300 px-4 py-2 rounded-lg">
+                    <option value="">Select Governorate</option>
+                    {% for gov in governments %}
+                    <option value="{{ gov.id }}" data-shipping-fee="{{ gov.shipping_fee }}">{{ gov.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-span-full">
+                <label class="font-semibold">Promo Code</label>
+                <input type="text" name="promo_code" id="promo_code"
+                    class="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring focus:ring-blue-300">
+            </div>
+
+            <!-- Totals -->
+            <div class="col-span-full bg-blue-50 p-4 rounded-lg space-y-2 text-sm text-gray-800 font-medium">
+                <p>Subtotal: <span id="subtotal" class="float-right">EGP {{ subtotal }}</span></p>
+                <p>Shipping: <span id="shipping" class="float-right">EGP {{ shipping_fee }}</span></p>
+                <p id="discount" class="text-green-700 hidden">Discount: <span class="float-right font-bold">EGP
+                        0.00</span></p>
+                <hr>
+                <p class="text-lg font-bold">Total: <span id="total" class="float-right text-blue-700">EGP {{
+                        grand_total }}</span></p>
+            </div>
+
+            <div class="col-span-full flex justify-end">
+                <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition">
+                    Confirm Order
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Scripts -->
+<script>
+    function updateTotals() {
+        const govSelect = document.getElementById('government');
+        const selected = govSelect.options[govSelect.selectedIndex];
+        const shippingFee = parseFloat(selected?.getAttribute('data-shipping-fee') || 0);
+        const subtotal = parseFloat("{{ subtotal }}") || 0;
+        const discount = parseFloat(document.getElementById('discount')?.dataset.amount || 0);
+        const total = subtotal - discount + shippingFee;
+
+        document.getElementById('shipping').innerText = 'EGP ' + shippingFee.toFixed(2);
+        document.getElementById('total').innerText = 'EGP ' + total.toFixed(2);
+    }
+
+    document.getElementById('promo_code').addEventListener('input', function () {
+        const promoCode = this.value;
+        const subtotal = parseFloat("{{ subtotal }}");
+
+        if (promoCode.length > 1) {
+            fetch(`/validate-promo-code/?code=${promoCode}&subtotal=${subtotal}`)
+                .then(res => res.json())
+                .then(data => {
+                    const discountElem = document.getElementById('discount');
+                    document.getElementById('promo-msg')?.remove();
+
+                    if (data.valid) {
+                        discountElem.innerHTML = `Discount: <span class="float-right font-bold text-green-700">- EGP ${data.discount.toFixed(2)}</span>`;
+                        discountElem.dataset.amount = data.discount;
+                        discountElem.classList.remove('hidden');
+                        updateTotals();
+                    } else {
+                        discountElem.classList.add('hidden');
+                        const msg = document.createElement('p');
+                        msg.id = 'promo-msg';
+                        msg.className = 'text-sm text-red-600 font-semibold mt-1';
+                        msg.innerText = data.message || 'Invalid promo code';
+                        document.getElementById('promo_code').after(msg);
+                        updateTotals();
+                    }
+                });
+        } else {
+            document.getElementById('discount').classList.add('hidden');
+            document.getElementById('promo-msg')?.remove();
+            updateTotals();
+        }
+    });
+
+    window.onload = updateTotals;
+</script>
+
+{% endblock %}

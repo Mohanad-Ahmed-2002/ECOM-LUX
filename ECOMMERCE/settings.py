@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'store',
     'cloudinary',
     'cloudinary_storage',
+    'widget_tweaks',
+    
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'store.services.context_processors.cart_item_count',
             ],
         },
     },
