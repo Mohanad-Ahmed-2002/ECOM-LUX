@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}My Favorites - LUXEFLEX{% endblock %}
+{% block content %}
+
+<!-- Success Messages -->
+{% if messages %}
+
+<div id="success-message" class="max-w-xl mx-auto mt-6 px-4">
+    {% for message in messages %}
+    <div
+        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl shadow-lg text-center animate__animated animate__fadeInDown font-medium">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    setTimeout(() => {
+        const box = document.getElementById('success-message');
+        if (box) {
+            box.style.transition = "opacity 0.5s ease";
+            box.style.opacity = "0";
+            setTimeout(() => box.remove(), 500);
+        }
+    }, 4000);
+</script>
+
+{% endif %}
+
+<section class="container mx-auto px-4 py-10">
+    
+    <h2 class="text-4xl font-extrabold text-blue-900 text-center mb-10">
+        <i class="fas fa-heart text-blue-600 mr-2"></i> My Favorite Products
+    </h2>
+
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8" data-aos="fade-up">
+        {% for item in favorites %}
+        <div
+            class="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-md group hover:shadow-xl transition-all duration-300 flex flex-col hover:scale-[1.02] sm:min-h-[420px]">
+
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" title="{{ item.product.name }}"
+                class="rounded-lg w-full h-60 object-cover aspect-square bg-white p-2 hover:shadow-lg transition duration-300">
+
+            <div class="p-4 flex flex-col justify-between flex-grow space-y-2">
+
+                <h3 class="text-lg font-semibold text-gray-800">{{ item.product.name }}</h3>
+                <p class="text-blue-700 font-bold">EGP {{ item.product.price }}</p>
+
+                <!-- Buttons -->
+                <div class="flex justify-between items-center gap-2 pt-2">
+
+                    <!-- Add to Cart -->
+                    <form method="post" action="{% url 'add_to_cart' item.product.id %}" class="flex-grow">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl text-sm font-semibold transition shadow">
+                            <i class="fas fa-cart-plus mr-1"></i> Add to Cart
+                        </button>
+                    </form>
+
+                    <!-- Remove from Wishlist -->
+                    <form method="post" action="{% url 'remove_from_wishlist' item.product.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-xl shadow text-sm">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-gray-500 col-span-full text-lg italic">No favorite products yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

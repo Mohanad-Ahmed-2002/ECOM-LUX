@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Men Collection - LUXEFLEX{% endblock %}
+{% block title %}Men's Collection - LUXEFLEX{% endblock %}
 
 {% block content %}
 
@@ -31,7 +31,7 @@
     <!-- Page Title -->
     <h2
         class="text-4xl sm:text-6xl font-extrabold text-blue-900 text-center mb-16 animate__animated animate__fadeInDown drop-shadow-lg">
-        👓 Men's Collection
+        👓 Explore Our Men's Collection
     </h2>
 
     <!-- Filter Section -->
@@ -43,27 +43,27 @@
             <!-- Price Filter -->
             <div>
                 <label class="block text-blue-900 font-semibold mb-2">
-                    <i class="fas fa-tags mr-1"></i> Price
+                    <i class="fas fa-tags mr-1"></i> Filter by Price
                 </label>
                 <select name="price"
                     class="w-full border border-blue-200 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-blue-500 transition bg-white shadow-sm hover:shadow-md">
-                    <option value="">All Prices</option>
-                    <option value="low">Under LE 500</option>
-                    <option value="mid">LE 500 - LE 1000</option>
-                    <option value="high">Above LE 1000</option>
+                    <option value="">All Price Ranges</option>
+                    <option value="low">Under EGP 500</option>
+                    <option value="mid">EGP 500 - EGP 1000</option>
+                    <option value="high">Above EGP 1000</option>
                 </select>
             </div>
 
             <!-- Category Filter -->
             <div>
                 <label class="block text-blue-900 font-semibold mb-2">
-                    <i class="fas fa-glasses mr-1"></i> Category
+                    <i class="fas fa-glasses mr-1"></i> Filter by Category
                 </label>
                 <select name="category"
                     class="w-full border border-blue-200 rounded-xl py-2.5 px-4 focus:ring-2 focus:ring-blue-500 transition bg-white shadow-sm hover:shadow-md">
-                    <option value="">All Categories</option>
-                    <option value="Sunglasses">Sunglasses</option>
-                    <option value="Eyeglasses">Eyeglasses</option>
+                    <option value="">All Types</option>
+                    <option value="SUNGLASSES">Sunglasses</option>
+                    <option value="EYEGLASSES">Eyeglasses</option>
                 </select>
             </div>
 
@@ -71,7 +71,7 @@
             <div class="flex items-end">
                 <button type="submit"
                     class="bg-blue-700 text-white w-full py-3 px-4 rounded-xl hover:scale-105 transition duration-300 shadow-lg hover:bg-blue-800 font-semibold tracking-wide">
-                    <i class="fas fa-filter mr-2"></i> Filter
+                    <i class="fas fa-filter mr-2"></i> Apply Filters
                 </button>
             </div>
         </form>
@@ -90,17 +90,32 @@
                 <h3 class="text-base sm:text-lg font-semibold text-gray-800 line-clamp-2">{{ product.name }}</h3>
                 <p class="text-blue-700 font-bold mt-2 text-sm sm:text-base">EGP {{ product.price }}</p>
 
-                <form method="post" action="{% url 'add_to_cart' product.id %}" class="mt-4">
-                    {% csrf_token %}
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-2 px-4 rounded-xl transition transform hover:scale-105 duration-300 text-sm sm:text-base shadow">
-                        <i class="fas fa-cart-plus mr-2"></i> Add to Cart
-                    </button>
-                </form>
+                <div class="flex items-center justify-between mt-4 gap-2">
+                
+                    <!-- Favorite Button -->
+                    <form method="post" action="{% url 'add_to_wishlist' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="bg-gradient-to-r from-blue-600 to-via-blue-50 hover:from-blue-700 hover:to-blue-800 text-white px-3 py-2 rounded-xl shadow-sm hover:shadow-md transition">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </form>
+                
+                    <!-- Add to Cart -->
+                    <form method="post" action="{% url 'add_to_cart' product.id %}" class="flex-grow">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-2 px-4 rounded-xl transition transform hover:scale-105 duration-300 text-sm sm:text-base shadow">
+                            <i class="fas fa-cart-plus mr-2"></i> Add to Cart
+                        </button>
+                    </form>
+                
+                </div>
+
             </div>
         </div>
         {% empty %}
-        <p class="text-center text-gray-500 col-span-full text-lg">No products found in this category.</p>
+        <p class="text-center text-gray-500 col-span-full text-lg italic">No items match your filters at the moment.</p>
         {% endfor %}
     </div>
 

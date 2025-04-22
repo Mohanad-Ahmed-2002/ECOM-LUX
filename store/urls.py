@@ -13,5 +13,11 @@ urlpatterns = [
     path('cart/decrease/<int:item_id>/', views.decrease_quantity, name='decrease_quantity'),
     path('checkout/',views.checkout,name='checkout'),
     path('order_success/<int:order_id>/', views.order_success, name='order_success'),
+    path('add-to-wishlist/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('add-to-wishlist/<int:product_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('remove-from-wishlist/<int:product_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),
+    path('cart/remove/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
+
+
 ]
 

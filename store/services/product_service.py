@@ -13,8 +13,8 @@ def filter_products(price_filter=None, category_filter=None):
 
     # فلترة الفئة
     category_mapping = {
-        'Sunglasses': 'Sunglasses',
-        'Eyeglasses': 'Eyeglasses',
+        'SUNGLASSES': 'SUNGLASSES',
+        'EYEGLASSES': 'EYEGLASSES',
         
     }
     if category_filter:

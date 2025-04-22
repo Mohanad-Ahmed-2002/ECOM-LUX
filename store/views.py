@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Product,CartItem,CustomerOrder,OrderForm,Government,OrderItem,PromoCode
+from .models import Product,CartItem,CustomerOrder,OrderForm,Government,OrderItem,PromoCode,WishlistItem
 from decimal import Decimal
 from django.http import JsonResponse
 from .services import order_service,cart_service,product_service
@@ -13,9 +13,6 @@ def home(request):
 
 def about(request):
     return render(request,'myapp/about.html')
-
-def favoritelist(request):
-    return render(request,'myapp/favorite.html')
 
 def men_products(request):
     price_filter = request.GET.get('price')
@@ -124,3 +121,29 @@ def validate_promo_code(request):
         return JsonResponse({'valid': True, 'discount': float(discount)})
     else:
         return JsonResponse({'valid': False, 'message': 'Promo code is not valid or expired'})
+    
+def add_to_wishlist(request, product_id):
+    session_key = cart_service.get_or_create_session_key(request)
+    product = get_object_or_404(Product, id=product_id)
+    WishlistItem.objects.get_or_create(session_key=session_key, product=product)
+    messages.success(request, f'"{product.name}" has been added to your favorites!')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def favoritelist(request):
+    session_key = cart_service.get_or_create_session_key(request)
+    favorites = WishlistItem.objects.filter(session_key=session_key)
+    return render(request, 'myapp/favorite.html', {'favorites': favorites})
+
+def remove_from_wishlist(request, product_id):
+    session_key = cart_service.get_or_create_session_key(request)
+    item = WishlistItem.objects.filter(session_key=session_key, product_id=product_id).first()
+    if item:
+        item.delete()
+        messages.success(request, "Product removed from your favorites.")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def remove_from_cart(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, session_key=cart_service.get_or_create_session_key(request))
+    item.delete()
+    messages.success(request, f'"{item.product.name}" removed from cart.')
+    return redirect('cart_detail')

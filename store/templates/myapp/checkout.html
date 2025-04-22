@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 
-
 {% block title %}Checkout - LUXEFLEX{% endblock %}
 
 {% block content %}
@@ -71,8 +70,7 @@
             <div class="col-span-full bg-blue-50 p-4 rounded-lg space-y-2 text-sm text-gray-800 font-medium">
                 <p>Subtotal: <span id="subtotal" class="float-right">EGP {{ subtotal }}</span></p>
                 <p>Shipping: <span id="shipping" class="float-right">EGP {{ shipping_fee }}</span></p>
-                <p id="discount" class="text-green-700 hidden">Discount: <span class="float-right font-bold">EGP
-                        0.00</span></p>
+                <p id="discount" class="text-lg font-semibold text-green-700 hidden"></p>
                 <hr>
                 <p class="text-lg font-bold">Total: <span id="total" class="float-right text-blue-700">EGP {{
                         grand_total }}</span></p>
@@ -93,13 +91,13 @@
     function updateTotals() {
         const govSelect = document.getElementById('government');
         const selected = govSelect.options[govSelect.selectedIndex];
-        const shippingFee = parseFloat(selected?.getAttribute('data-shipping-fee') || 0);
-        const subtotal = parseFloat("{{ subtotal }}") || 0;
-        const discount = parseFloat(document.getElementById('discount')?.dataset.amount || 0);
-        const total = subtotal - discount + shippingFee;
+        let shippingFee = parseFloat(selected.getAttribute('data-shipping-fee')) || 0;
+        let subtotal = parseFloat("{{ subtotal }}") || 0;
+        let discount = parseFloat(document.getElementById('discount')?.dataset.amount || 0);
+        let total = subtotal - discount + shippingFee;
 
-        document.getElementById('shipping').innerText = 'EGP ' + shippingFee.toFixed(2);
-        document.getElementById('total').innerText = 'EGP ' + total.toFixed(2);
+        document.getElementById('shipping').innerText = 'LE ' + shippingFee.toFixed(2);
+        document.getElementById('total').innerText = 'LE ' + total.toFixed(2);
     }
 
     document.getElementById('promo_code').addEventListener('input', function () {
@@ -107,14 +105,14 @@
         const subtotal = parseFloat("{{ subtotal }}");
 
         if (promoCode.length > 1) {
-            fetch(`/validate-promo-code/?code=${promoCode}&subtotal=${subtotal}`)
+            fetch(`/validate-promo/?code=${promoCode}&subtotal=${subtotal}`)
                 .then(res => res.json())
                 .then(data => {
-                    const discountElem = document.getElementById('discount');
                     document.getElementById('promo-msg')?.remove();
+                    const discountElem = document.getElementById('discount');
 
                     if (data.valid) {
-                        discountElem.innerHTML = `Discount: <span class="float-right font-bold text-green-700">- EGP ${data.discount.toFixed(2)}</span>`;
+                        discountElem.innerHTML = `Discount: <span class="font-bold">- LE ${data.discount.toFixed(2)}</span>`;
                         discountElem.dataset.amount = data.discount;
                         discountElem.classList.remove('hidden');
                         updateTotals();
@@ -125,7 +123,6 @@
                         msg.className = 'text-sm text-red-600 font-semibold mt-1';
                         msg.innerText = data.message || 'Invalid promo code';
                         document.getElementById('promo_code').after(msg);
-                        updateTotals();
                     }
                 });
         } else {

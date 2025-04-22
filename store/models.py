@@ -7,8 +7,8 @@ from django.utils import timezone
 
 class Category(models.Model):
     CATEGORY_CHOICES = [
-        ('Sunglasses', 'Sunglasses'),
-        ('Eyeglasses', 'Eyeglasses'),
+        ('SUNGLASSES', 'SUNGLASSES'),
+        ('EYEGLASSES', 'EYEGLASSES'),
     ]
     name = models.CharField(max_length=100)
 
@@ -85,10 +85,13 @@ class OrderForm(forms.ModelForm):
 class OrderItem(models.Model):
     order = models.ForeignKey(CustomerOrder, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField(default=1)
-    product_code = models.CharField(max_length=50)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.get_product().name} - {self.quantity}"
+        return f"{self.product.name} - {self.quantity}"
+
+    def get_total_price(self):
+        return self.product.price * self.quantity
 
 class PromoCode(models.Model):
     code = models.CharField(max_length=50, unique=True)
@@ -103,3 +106,10 @@ class PromoCode(models.Model):
 
     def __str__(self):
         return self.code
+    
+class WishlistItem(models.Model):
+    session_key = models.CharField(max_length=40, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Wishlist - {self.product.name}"
