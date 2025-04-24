@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'widget_tweaks',
     
+    
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,7 @@ TEMPLATES = [
                 'store.services.context_processors.cart_item_count',
             ],
         },
+        
     },
 ]
 

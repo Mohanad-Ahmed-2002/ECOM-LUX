@@ -1,10 +1,12 @@
 from django.shortcuts import render,get_object_or_404,redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib import messages
 from .models import Product,CartItem,CustomerOrder,OrderForm,Government,OrderItem,PromoCode,WishlistItem
 from decimal import Decimal
 from django.http import JsonResponse
 from .services import order_service,cart_service,product_service
+from django.views.decorators.http import require_POST
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 # Create your views here.
@@ -96,7 +98,8 @@ def checkout(request):
         'shipping_fee': shipping_fee,
         'grand_total': grand_total,
         'governments': governments,
-        'discount_amount': discount_amount if discount_amount > 0 else None
+        'discount_amount': discount_amount if discount_amount > 0 else None,
+        'promo_code_str': promo_code_str,
     })
 
 def order_success(request,order_id):
@@ -147,3 +150,48 @@ def remove_from_cart(request, item_id):
     item.delete()
     messages.success(request, f'"{item.product.name}" removed from cart.')
     return redirect('cart_detail')
+
+@staff_member_required
+def dashboard_orders(request):
+    status_filter = request.GET.get('status')
+    if status_filter:
+        orders = CustomerOrder.objects.filter(status=status_filter).order_by('-order_date')
+    else:
+        orders = CustomerOrder.objects.all().order_by('-order_date')
+
+    return render(request, 'dashboard/orders_list.html', {'orders': orders})
+
+@staff_member_required
+def order_detail(request, order_id):
+    order = get_object_or_404(CustomerOrder, id=order_id)
+
+    status_choices = []
+    for value, label in CustomerOrder.STATUS_CHOICES:
+        status_choices.append({
+            'value': value,
+            'label': label,
+            'selected': value == order.status  
+        })
+
+    return render(request, 'dashboard/order_detail.html', {
+        'order': order,
+        'status_choices': status_choices
+    })
+
+@require_POST
+def update_order_status(request, order_id):
+    order = get_object_or_404(CustomerOrder, id=order_id)
+    new_status = request.POST.get('status')
+    if new_status in dict(CustomerOrder.STATUS_CHOICES).keys():
+        order.status = new_status
+        order.save()
+    return redirect('order_detail', order_id=order.id)
+
+
+@require_POST
+@staff_member_required
+def delete_order(request, order_id):
+    order = get_object_or_404(CustomerOrder, id=order_id)
+    order.delete()
+    messages.success(request, "تم حذف الطلب بنجاح.")
+    return redirect('dashboard_orders')

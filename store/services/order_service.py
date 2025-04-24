@@ -47,14 +47,18 @@ def apply_promo_code(promo_code_str,subtotal,request=None):
     return discount_amount
 
 def create_order(order, session_key):
-
     order.save()
     cart_items = CartItem.objects.filter(session_key=session_key)
-    
+
+    # تأكد إن مفيش عناصر OrderItem متسجلة قبل كده
+    if OrderItem.objects.filter(order=order).exists():
+        return  # وقف التنفيذ لو الأوردر متسجل
+
     for item in cart_items:
         OrderItem.objects.create(
             order=order,
-            quantity=item.quantity
+            quantity=item.quantity,
+            product=item.product 
         )
-        
+
     cart_items.delete()

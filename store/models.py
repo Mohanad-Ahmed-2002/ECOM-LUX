@@ -50,6 +50,15 @@ class Government(models.Model):
         return f"{self.name}"
     
 class CustomerOrder(models.Model):
+
+    STATUS_CHOICES = [
+        ('PENDING', 'قيد الانتظار'),
+        ('PROCESSING', 'تم التحضير'),
+        ('SHIPPED', 'تم الشحن'),
+        ('DELIVERED', 'تم التوصيل'),
+        ('CANCELLED', 'تم الإلغاء'),
+    ]
+
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     address = models.CharField(max_length=255)
@@ -58,6 +67,8 @@ class CustomerOrder(models.Model):
     shipping_fee = models.DecimalField(max_digits=6, decimal_places=2, default=70)
     order_date = models.DateTimeField(auto_now_add=True)
     government = models.ForeignKey(Government, on_delete=models.SET_NULL, null=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')  # 👈 الحقل الجديد
+
 
     def get_order_items(self):
         return self.order_items.all()  # جلب كل العناصر الخاصة بالطلب
