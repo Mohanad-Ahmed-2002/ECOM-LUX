@@ -14,7 +14,8 @@
                 class="text-base sm:text-lg text-gray-700 leading-relaxed mb-4 animate__animated animate__fadeInLeft animate__delay-1s">
                 LUXEFLEX is a proudly Egyptian brand committed to offering stylish, high-quality eyewear for everyone.
                 We believe that vision and fashion go hand in hand — and each of our pieces is a reflection of that
-                harmony. Our eyewear embodies elegance, affordability, and trust.
+                harmony.
+                Our eyewear embodies elegance, affordability, and trust.
             </p>
             <blockquote
                 class="text-gray-600 italic font-medium border-l-4 border-blue-400 pl-4 animate__animated animate__fadeInLeft animate__delay-2s">
@@ -89,10 +90,13 @@
                 </div>
             </div>
         </div>
-        <div class="rounded-xl overflow-hidden shadow-lg border border-blue-100 animate__animated animate__zoomIn">
+
+        <!-- Fixed map container for iOS -->
+        <div class="rounded-xl overflow-visible shadow-lg border border-blue-100 animate__animated animate__zoomIn">
             <iframe src="https://www.google.com/maps?q=17+Ali+Zou+Al+Fekar,+Abdeen,+Cairo+Governorate&output=embed"
-                width="100%" height="100%" style="min-height: 350px;" loading="lazy" allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade" class="w-full h-full"></iframe>
+                width="100%" height="350" style="border:0;" loading="lazy" allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade" allow="geolocation" class="w-full h-full">
+            </iframe>
         </div>
     </div>
 </section>
