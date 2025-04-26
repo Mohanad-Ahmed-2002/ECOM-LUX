@@ -8,36 +8,34 @@
     class="relative w-full overflow-hidden min-h-screen">
 
     <!-- Slides Container -->
-    <div class="flex transition-transform duration-1000 ease-in-out"
+    <div class="flex transition-transform duration-700 ease-in-out"
         :style="`transform: translateX(-${activeSlide * 100}%);`">
 
         <!-- Slide 1 -->
-        <div class="min-w-full min-h-screen bg-cover bg-center flex items-center justify-center px-4 sm:px-6 md:px-10"
+        <div class="min-w-full min-h-screen bg-cover bg-center flex items-center justify-center px-6 md:px-10"
             style="background-image: url('/static/man-home.jpg');">
             <div
-                class="bg-black/40 p-4 sm:p-6 rounded text-white max-w-md md:max-w-lg backdrop-blur-sm animate__animated animate__fadeInLeft">
-                <h2
-                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 tracking-wide leading-snug">
+                class="bg-black/50 p-6 rounded-lg text-white max-w-md md:max-w-xl backdrop-blur-md animate__animated animate__fadeInUp">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-wide leading-tight">
                     Own the Look <span class="text-blue-400">MEN</span>
                 </h2>
                 <a href="{% url 'men_products' %}"
-                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition-all duration-300">
+                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg font-semibold transition duration-300">
                     Shop Now
                 </a>
             </div>
         </div>
 
         <!-- Slide 2 -->
-        <div class="min-w-full min-h-screen bg-cover bg-center flex items-center justify-center px-4 sm:px-6 md:px-10"
+        <div class="min-w-full min-h-screen bg-cover bg-center flex items-center justify-center px-6 md:px-10"
             style="background-image: url('/static/model4.jpg');">
             <div
-                class="bg-black/40 p-4 sm:p-6 rounded text-white max-w-md md:max-w-lg backdrop-blur-sm animate__animated animate__fadeInLeft">
-                <h2
-                    class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 tracking-wide leading-snug">
+                class="bg-black/50 p-6 rounded-lg text-white max-w-md md:max-w-xl backdrop-blur-md animate__animated animate__fadeInUp">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-wide leading-tight">
                     Bold. Beautiful. <span class="text-blue-400">WOMEN</span>
                 </h2>
                 <a href="{% url 'women_products' %}"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition-all duration-300">
+                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg font-semibold transition duration-300">
                     Discover More
                 </a>
             </div>
@@ -46,21 +44,21 @@
 
     <!-- Controls -->
     <button @click="activeSlide = (activeSlide - 1 + slides) % slides"
-        class="absolute top-1/2 left-3 sm:left-4 transform -translate-y-1/2 bg-white/70 hover:bg-blue-500 hover:text-white p-2 sm:p-3 rounded-full shadow-lg transition duration-300">
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/70 hover:bg-blue-500 hover:text-white p-3 rounded-full shadow-lg transition duration-300">
         <i class="fas fa-chevron-left text-gray-700"></i>
     </button>
     <button @click="activeSlide = (activeSlide + 1) % slides"
-        class="absolute top-1/2 right-3 sm:right-4 transform -translate-y-1/2 bg-white/70 hover:bg-blue-500 hover:text-white p-2 sm:p-3 rounded-full shadow-lg transition duration-300">
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/70 hover:bg-blue-500 hover:text-white p-3 rounded-full shadow-lg transition duration-300">
         <i class="fas fa-chevron-right text-gray-700"></i>
     </button>
 
     <!-- Indicators -->
-    <div class="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
         <template x-for="i in slides">
             <div :class="{
-                'bg-blue-600 w-4': activeSlide === i - 1,
-                'bg-white w-2': activeSlide !== i - 1
-            }" class="h-2 rounded-full transition-all duration-300"></div>
+                'bg-blue-600 w-4 h-2': activeSlide === i - 1,
+                'bg-white w-2 h-2': activeSlide !== i - 1
+            }" class="rounded-full transition-all duration-300"></div>
         </template>
     </div>
 </div>

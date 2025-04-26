@@ -5,63 +5,61 @@
 {% block content %}
 <section class="container mx-auto px-4 py-20">
     <div data-aos="fade-up"
-        class="max-w-xl mx-auto bg-white border border-blue-100 rounded-2xl shadow-xl p-8 sm:p-12 text-center">
+        class="max-w-2xl mx-auto bg-white border border-blue-100 rounded-3xl shadow-2xl p-8 sm:p-12 text-center">
 
-        <!-- Icon -->
-        <div class="flex justify-center mb-6">
-            <div class="bg-green-100 text-green-600 rounded-full p-4 shadow-inner">
-                <i class="fas fa-check text-3xl"></i>
+        <!-- Success Icon -->
+        <div class="flex justify-center mb-8">
+            <div class="bg-green-100 text-green-600 rounded-full p-5 shadow-inner">
+                <i class="fas fa-check text-4xl"></i>
             </div>
         </div>
 
-        <!-- Message -->
-        <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-2">
+        <!-- Thank You Message -->
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
             Thank you <span class="text-blue-700">{{ order.name }}</span>
         </h2>
-        <p class="text-gray-600 mb-6 text-sm sm:text-base">
-            Your order <span class="font-medium text-black">#{{ order.id }}</span> has been placed successfully.
+        <p class="text-gray-600 mb-8 text-base sm:text-lg">
+            Your order <span class="font-bold text-black">#{{ order.id }}</span> has been placed successfully.
         </p>
 
         <!-- Order Summary -->
-        <div class="text-left bg-gray-50 rounded-xl p-5 space-y-4 shadow-sm">
-            <h3 class="text-lg font-semibold text-blue-800">Order Details:</h3>
-            <ul class="divide-y divide-gray-200 text-sm sm:text-base">
+        <div class="bg-gray-50 rounded-2xl p-6 text-left shadow-md mb-10 space-y-4">
+            <h3 class="text-xl font-semibold text-blue-800 mb-2">Order Details:</h3>
+            <ul class="divide-y divide-gray-300 text-sm sm:text-base">
                 {% for item in order_items %}
-                <li class="py-2 flex justify-between">
+                <li class="py-2 flex justify-between items-center">
                     <span>{{ item.product.name }} (x{{ item.quantity }})</span>
-                    <span class="font-semibold text-gray-700">EGP {{ item.get_total_price|floatformat:2 }}</span>
+                    <span class="font-bold text-gray-800">EGP {{ item.get_total_price|floatformat:2 }}</span>
                 </li>
                 {% endfor %}
             </ul>
-            <div class="flex justify-between font-semibold text-base sm:text-lg pt-4 border-t">
+            <div class="flex justify-between font-bold text-lg pt-4 border-t">
                 <span>Total:</span>
-                <span class="text-blue-800">EGP {{ order.total_price|floatformat:2 }}</span>
+                <span class="text-blue-700">EGP {{ order.total_price|floatformat:2 }}</span>
             </div>
         </div>
 
-        <!-- Payment Note (RTL) -->
-        <div class="mt-10 bg-blue-50 p-6 rounded-xl text-center" dir="rtl">
-            <p class="text-base text-black-700 font-bold leading-relaxed mb-4">
-                في حال قمت بالدفع عبر Instapay، يرجى إرسال صورة التحويل على
-                <span class="text-black-700 font-semibold">واتساب</span>
-                لتأكيد الدفع.
+        <!-- Payment Note -->
+        <div class="bg-blue-50 p-6 rounded-2xl text-center mb-10" dir="rtl">
+            <p class="text-base text-black font-semibold leading-relaxed mb-6">
+                في حال قمت بالدفع عبر Instapay، يرجى إرسال صورة التحويل على <span class="font-bold">واتساب</span> لتأكيد
+                الدفع.
             </p>
-
-            <a href="https://wa.me/201060961669?text=مرحباً، اسمي {{ order.name }} ورقم طلبي هو {{ order.id }} . لقد أكملت عملية الدفع عبر Instapay."
+            <a href="https://wa.me/2021818169?text=مرحباً، اسمي {{ order.name }} ورقم طلبي هو {{ order.id }} . لقد أكملت عملية الدفع عبر Instapay."
                 target="_blank"
-                class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-bold px-6 py-3 rounded-xl shadow-md transition duration-300 ease-in-out">
-                <i class="fab fa-whatsapp text-xl"></i>
-                Whatsapp
+                class="inline-flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-bold px-6 py-3 rounded-2xl shadow-md transition duration-300">
+                <i class="fab fa-whatsapp text-xl"></i> Whatsapp
             </a>
         </div>
 
-        <!-- Back Home -->
-        <div class="mt-10">
+        <!-- Back to Home -->
+        <div>
             <a href="{% url 'home' %}"
-                class="inline-block text-sm sm:text-base bg-blue-700 hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-xl transition duration-300">
+                class="inline-block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-900 text-white font-bold px-6 py-3 rounded-2xl transition duration-300">
                 Back to Home
             </a>
         </div>
+
     </div>
 </section>
 {% endblock %}

@@ -17,98 +17,124 @@
 
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- Alpine JS -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            AOS.init();
-        });
-    </script>
-
-
-
 
     <style>
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        .glow-hover:hover {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+        }
     </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            AOS.init({ once: true });
+        });
+    </script>
 </head>
 
-<body class="text-gray-800 flex flex-col min-h-screen bg-white">
+<body class="text-gray-800 flex flex-col min-h-screen bg-gradient-to-b from-white via-blue-50 to-white">
 
     <!-- HEADER -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <!-- Logo -->
-            <a href="{% url 'home' %}" class="text-3xl font-bold text-blue-700 animate-pulse">
+            <a href="{% url 'home' %}" class="text-3xl font-bold text-blue-700 glow-hover transition duration-300">
                 LUXEFLEX
             </a>
-    
+
             <!-- Icons + Mobile Button -->
             <div class="flex items-center space-x-4 md:order-2">
-                <a href="{% url 'cart_detail' %}" class="text-gray-700 hover:text-blue-500 relative transition">
+                <a href="{% url 'cart_detail' %}"
+                    class="relative text-gray-700 hover:text-blue-500 transition duration-300">
                     <i class="fas fa-shopping-bag text-lg"></i>
                     {% if cart_item_count > 0 %}
-                    <span class="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1">
+                    <span class="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1 animate-bounce">
                         {{ cart_item_count }}
                     </span>
                     {% endif %}
-
                 </a>
-                <a href="{% url 'favorite' %}" class="text-gray-700 hover:text-blue-500 transition">
+                <a href="{% url 'favorite' %}" class="text-gray-700 hover:text-pink-500 transition duration-300">
                     <i class="far fa-heart text-lg"></i>
                 </a>
                 <button id="mobile-menu-btn" class="text-gray-700 md:hidden focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
+                    <i class="fas fa-bars text-2xl"></i>
                 </button>
             </div>
-    
+
             <!-- Navigation (Desktop) -->
-            <nav class="hidden md:flex space-x-6 text-gray-700 font-medium items-center md:order-1">
-                <a href="{% url 'home' %}" class="hover:text-blue-500 transition">HOME</a>
+            <nav class="hidden md:flex space-x-8 text-gray-700 font-semibold items-center md:order-1">
+                <a href="{% url 'home' %}" class="hover:text-blue-500 transition duration-300">HOME</a>
                 <div class="relative">
                     <button id="shop-toggle"
-                        class="hover:text-blue-500 flex items-center gap-1 font-medium focus:outline-none">
+                        class="hover:text-blue-500 flex items-center gap-1 font-semibold focus:outline-none">
                         SHOP <i class="fas fa-chevron-down text-xs"></i>
                     </button>
                     <div id="shop-menu"
                         class="absolute left-0 mt-2 w-40 bg-white border shadow-lg rounded-md opacity-0 scale-95 invisible transition-all duration-300 ease-out">
-                        <a href="{% url 'men_products' %}" class="block px-4 py-2 hover:bg-gray-100">MAN</a>
-                        <a href="{% url 'women_products' %}" class="block px-4 py-2 hover:bg-gray-100">WOMAN</a>
+                        <a href="{% url 'men_products' %}" class="block px-4 py-2 hover:bg-blue-50">MAN</a>
+                        <a href="{% url 'women_products' %}" class="block px-4 py-2 hover:bg-blue-50">WOMAN</a>
                     </div>
                 </div>
-                <a href="{% url 'about' %}" class="hover:text-blue-500 transition">ABOUT</a>
+                <a href="{% url 'about' %}" class="hover:text-blue-500 transition duration-300">ABOUT</a>
             </nav>
         </div>
-    
+
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 animate-fade-in-down">
-            <a href="{% url 'home' %}" class="block py-2 text-gray-700 hover:text-blue-500">HOME</a>
+            <a href="{% url 'home' %}" class="block py-2 hover:text-blue-500">HOME</a>
             <div class="mt-2">
                 <button id="mobile-shop-toggle"
-                    class="w-full text-left flex justify-between items-center py-2 text-gray-700 hover:text-blue-500">
+                    class="w-full flex justify-between items-center py-2 hover:text-blue-500">
                     SHOP <i class="fas fa-chevron-down text-xs"></i>
                 </button>
                 <div id="mobile-shop-menu" class="ml-4 mt-1 hidden">
-                    <a href="{% url 'men_products' %}" class="block py-1 text-sm text-gray-600 hover:text-blue-500">MAN</a>
+                    <a href="{% url 'men_products' %}"
+                        class="block py-1 text-sm text-gray-600 hover:text-blue-500">MAN</a>
                     <a href="{% url 'women_products' %}"
                         class="block py-1 text-sm text-gray-600 hover:text-blue-500">WOMAN</a>
                 </div>
             </div>
-            <a href="{% url 'about' %}" class="block py-2 text-gray-700 hover:text-blue-500">ABOUT</a>
+            <a href="{% url 'about' %}" class="block py-2 hover:text-blue-500">ABOUT</a>
         </div>
     </header>
-    
-    <!-- Script -->
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-blue-100 mt-auto">
+        <div class="container mx-auto px-6 py-6 text-center space-y-6">
+            <!-- Social -->
+            <div class="flex justify-center space-x-6 text-gray-600">
+                <a href="https://www.instagram.com/luxeflex2020?igsh=bm5tcGVwMTVwd2lh" target="_blank"
+                    class="hover:text-pink-500">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+                <a href="https://www.facebook.com/luxeflexstore/" target="_blank" class="hover:text-blue-600">
+                    <i class="fab fa-facebook-f text-2xl"></i>
+                </a>
+                <a href="https://www.tiktok.com/@luxeflex2020?_t=ZS-8vquoikIzS4&_r=1/" target="_blank" class="hover:text-red-600">
+                    <i class="fa-brands fa-tiktok text-2xl"></i>
+                </a>
+            </div>
+            <hr class="border-blue-100">
+            <p class="text-xs text-gray-500">
+                &copy; 2025 <span class="font-bold text-blue-600">LUXEFLEX</span>. Designed by
+                <a href="https://my-portfolio-59ne.onrender.com/" target="_blank"
+                    class="text-blue-500 hover:underline">MA</a>
+            </p>
+        </div>
+    </footer>
+
     <script>
         const shopToggle = document.getElementById('shop-toggle');
         const shopMenu = document.getElementById('shop-menu');
@@ -117,7 +143,6 @@
         const mobileShopToggle = document.getElementById('mobile-shop-toggle');
         const mobileShopMenu = document.getElementById('mobile-shop-menu');
 
-        // Toggle desktop shop dropdown
         shopToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             shopMenu.classList.toggle('opacity-0');
@@ -125,48 +150,20 @@
             shopMenu.classList.toggle('invisible');
         });
 
-        // Close shop menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!shopToggle.contains(e.target) && !shopMenu.contains(e.target)) {
                 shopMenu.classList.add('opacity-0', 'scale-95', 'invisible');
             }
         });
 
-        // Toggle mobile menu
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
 
-        // Toggle mobile shop submenu
         mobileShopToggle.addEventListener('click', () => {
             mobileShopMenu.classList.toggle('hidden');
         });
     </script>
-
-    {% block content %}{% endblock %}
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-blue-100 mt-auto">
-        <div class="container mx-auto px-4 py-4 text-center space-y-4" >
-            <!-- Social -->
-            <div class="flex justify-center space-x-6 text-black-500">
-                <a href="https://www.instagram.com/luxeflex2020?igsh=bm5tcGVwMTVwd2lh" target="_blank"
-                    class="hover:text-pink-500">
-                    <i class="fab fa-instagram text-xl"></i>
-                </a>
-                <a href="https://www.facebook.com/luxeflexstore/" target="_blank" class="hover:text-blue-600">
-                    <i class="fab fa-facebook-f text-xl"></i>
-                </a>
-            </div>
-            <hr class="border-blue-100">
-            <p class="text-xs text-black-500 font-semibold">
-                &copy; 2025 LUXEFLEX. Designed by
-                <a href="https://my-portfolio-59ne.onrender.com/" target="_blank"
-                    class="text-blue-500 hover:underline font-bold">MA</a>
-            </p>
-        </div>
-    </footer>
-
 </body>
 
 </html>
