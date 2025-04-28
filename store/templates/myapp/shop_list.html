@@ -8,7 +8,7 @@ Shop
 <div class="container mx-auto px-3 py-8">
 
     <!-- عنوان الصفحة -->
-    <h1 class="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-800 animate__animated animate__fadeInDown">
+    <h1 class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
         {% if main_category %}
         {{ main_category|title }}
         {% if sub_category %} - {{ sub_category|title }}{% endif %}
@@ -31,7 +31,7 @@ Shop
             <div class="p-4 flex flex-col justify-between h-36 sm:h-40">
                 <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
                 <p class="text-gray-500 text-xs sm:text-sm mt-1 line-clamp-2">{{ product.description }}</p>
-                <p class="text-indigo-600 font-bold text-sm sm:text-base mt-2">{{ product.price }} EGP</p>
+                <p class="text-black font-bold text-sm sm:text-base mt-2">{{ product.price }} EGP</p>
 
                 {% if product.images.all %}
                 <div class="flex space-x-1 mt-3">
@@ -54,7 +54,7 @@ Shop
                         {% csrf_token %}
                         <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
                         <button type="submit"
-                            class="border border-indigo-500 text-indigo-600 hover:bg-indigo-100 px-3 py-1 rounded-full text-xs font-semibold transition duration-300">
+                            class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-3 py-1 rounded-full text-xs font-semibold transition duration-300">
                             Add to Cart
                         </button>
                     </form>
