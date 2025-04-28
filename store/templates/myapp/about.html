@@ -6,10 +6,11 @@
 {% block content %}
 
 <!-- Hero About Section -->
-<section class="bg-gradient-to-r from-white to-blue-50 py-20 px-4 sm:px-6" data-aos="fade-up">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<section class="bg-gradient-to-r from-white to-blue-50 py-16 sm:py-20 px-4 sm:px-6" data-aos="fade-up">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
-            <h2 class="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent mb-8 animate__animated animate__fadeInLeft">
+            <h2
+                class="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent mb-6 sm:mb-8 animate__animated animate__fadeInLeft">
                 About LUXEFLEX
             </h2>
             <p
@@ -25,9 +26,10 @@
                 most recognized eyewear brands."
             </blockquote>
         </div>
+
         <!-- Video Section -->
         <div
-            class="relative w-full h-80 md:h-[450px] rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(30,64,175,0.3)] animate__animated animate__fadeInLeft animate__slow">
+            class="relative w-full aspect-video rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(30,64,175,0.3)] animate__animated animate__fadeInLeft animate__slow">
             <video autoplay muted loop playsinline class="w-full h-full object-cover">
                 <source src="{% static 'about .mp4' %}" type="video/mp4">
                 Your browser does not support the video tag.
@@ -37,16 +39,17 @@
 </section>
 
 <!-- Features Section -->
-<section class="bg-white py-20 px-4 sm:px-6" data-aos="fade-up" data-aos-delay="200">
+<section class="bg-white py-16 sm:py-20 px-4 sm:px-6" data-aos="fade-up" data-aos-delay="200">
     <div class="max-w-6xl mx-auto text-center">
-        <h2 class="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent mb-12 animate__animated animate__fadeInUp">
+        <h2
+            class="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent mb-10 sm:mb-12 animate__animated animate__fadeInUp">
             Why Choose LUXEFLEX?
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <div
                 class="p-6 bg-blue-50 rounded-2xl shadow-md hover:shadow-xl transition animate__animated animate__fadeInUp animate__delay-1s">
                 <div
-                    class="w-16 h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                    class="w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
                     <i class="fas fa-headset text-2xl"></i>
                 </div>
                 <h3 class="text-lg font-bold text-gray-800">24/7 Support</h3>
@@ -55,7 +58,7 @@
             <div
                 class="p-6 bg-blue-50 rounded-2xl shadow-md hover:shadow-xl transition animate__animated animate__fadeInUp animate__delay-2s">
                 <div
-                    class="w-16 h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                    class="w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
                     <i class="fas fa-credit-card text-2xl"></i>
                 </div>
                 <h3 class="text-lg font-bold text-gray-800">Flexible Payment</h3>
@@ -64,7 +67,7 @@
             <div
                 class="p-6 bg-blue-50 rounded-2xl shadow-md hover:shadow-xl transition animate__animated animate__fadeInUp animate__delay-3s">
                 <div
-                    class="w-16 h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                    class="w-14 h-14 sm:w-16 sm:h-16 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
                     <i class="fas fa-lock text-2xl"></i>
                 </div>
                 <h3 class="text-lg font-bold text-gray-800">Secure Checkout</h3>
@@ -75,11 +78,15 @@
 </section>
 
 <!-- Contact Section -->
-<section class="bg-gradient-to-br from-blue-50 to-white py-20 px-4 sm:px-6" data-aos="fade-up" data-aos-delay="300">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+<section class="bg-gradient-to-br from-blue-50 to-white py-16 sm:py-20 px-4 sm:px-6" data-aos="fade-up"
+    data-aos-delay="300">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
         <div
             class="bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-blue-100 space-y-6 animate__animated animate__fadeInLeft">
-            <h2 class="text-3xl font-bold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent mb-6">Contact Us</h2>
+            <h2
+                class="text-3xl font-bold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent mb-6">
+                Contact Us
+            </h2>
             <div class="flex items-start text-gray-700 text-base space-x-3 rtl:space-x-reverse">
                 <i class="fas fa-map-marker-alt text-blue-600 text-xl mt-1"></i>
                 <span>17 Ali Zou Al Fekar,<br>Al Balaqsah, Abdeen, Cairo Governorate</span>
@@ -96,7 +103,7 @@
         <!-- Map Section -->
         <div class="rounded-2xl overflow-hidden shadow-lg border border-blue-100 animate__animated animate__zoomIn">
             <iframe src="https://www.google.com/maps?q=17+Ali+Zou+Al+Fekar,+Abdeen,+Cairo+Governorate&output=embed"
-                width="100%" height="350" class="w-full h-full border-0 rounded-2xl" allowfullscreen="" loading="lazy"
+                class="w-full h-80 sm:h-96 border-0 rounded-2xl" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>

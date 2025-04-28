@@ -12,22 +12,23 @@
 </div>
 {% endfor %}
 
-<section class="container mx-auto px-4 py-12">
+<section class="container mx-auto px-4 py-10 sm:py-12">
     <h1
-        class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text text-transparent text-center mb-12 animate__animated animate__fadeInDown">
+        class="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text text-transparent text-center mb-10 animate__animated animate__fadeInDown">
         Checkout
     </h1>
 
-    <div class="bg-white shadow-2xl rounded-3xl p-8 md:p-12 max-w-5xl mx-auto animate__animated animate__fadeInUp">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">Your Order Summary</h2>
+    <div
+        class="bg-white shadow-2xl rounded-3xl p-6 sm:p-8 md:p-12 max-w-5xl mx-auto animate__animated animate__fadeInUp">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Your Order Summary</h2>
 
         <!-- Cart Items Summary -->
         <div class="space-y-4 mb-10">
             {% for item in cart_items %}
-            <div class="flex justify-between items-center bg-blue-50 p-4 rounded-xl shadow-sm">
+            <div class="flex justify-between items-center bg-blue-50 p-4 rounded-xl shadow-sm text-sm sm:text-base">
                 <div>
                     <p class="font-semibold">{{ item.product.name }}</p>
-                    <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+                    <p class="text-gray-500">Quantity: {{ item.quantity }}</p>
                 </div>
                 <p class="font-bold text-blue-700">EGP {{ item.total_price }}</p>
             </div>
@@ -36,49 +37,51 @@
 
         <!-- Instapay Payment Info -->
         <div
-            class="relative bg-gradient-to-br from-blue-100 via-blue-50 to-white border border-blue-200 p-10 rounded-3xl shadow-xl mb-14 overflow-hidden">
+            class="relative bg-gradient-to-br from-blue-100 via-blue-50 to-white border border-blue-200 p-8 sm:p-10 rounded-3xl shadow-xl mb-14 overflow-hidden">
             <div class="absolute -top-16 -left-16 w-48 h-48 bg-blue-300 rounded-full opacity-20 blur-3xl"></div>
 
             <div class="text-center mb-6">
-                <div class="mx-auto w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center">
-                    <img src="/static/instapay.png" alt="Instapay Logo" class="w-10">
+                <div
+                    class="mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full shadow-md flex items-center justify-center">
+                    <img src="/static/instapay.png" alt="Instapay Logo" class="w-8 sm:w-10">
                 </div>
-                <h3 class="mt-4 text-2xl font-extrabold text-blue-800">Instapay 💳</h3>
+                <h3 class="mt-4 text-xl sm:text-2xl font-extrabold text-blue-800">Instapay 💳</h3>
             </div>
 
-            <p class="text-base text-gray-700 text-center">
-                You can transfer the amount to
-                <span class="font-bold text-blue-700">ahmedluxe@instapay</span> using the Instapay app.
+            <p class="text-sm sm:text-base text-gray-700 text-center">
+                You can transfer the amount to <span class="font-bold text-blue-700">ahmedluxe@instapay</span> using the
+                Instapay app.
             </p>
         </div>
 
         <!-- Checkout Form -->
-        <form method="POST" class="grid gap-6 md:grid-cols-2">
+        <form method="POST" class="grid gap-6 grid-cols-1 md:grid-cols-2">
             {% csrf_token %}
+
             <div class="col-span-full">
                 <label class="font-semibold mb-1 block">Name</label>
-                {{ form.name|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+                {{ form.name|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base" }}
             </div>
 
             <div>
                 <label class="font-semibold mb-1 block">Email</label>
-                {{ form.email|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+                {{ form.email|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base" }}
             </div>
 
             <div>
                 <label class="font-semibold mb-1 block">Phone</label>
-                {{ form.phone|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+                {{ form.phone|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base" }}
             </div>
 
             <div class="col-span-full">
                 <label class="font-semibold mb-1 block">Address</label>
-                {{ form.address|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2" }}
+                {{ form.address|add_class:"w-full border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base" }}
             </div>
 
             <div class="col-span-full">
                 <label class="font-semibold mb-1 block">Governorate</label>
                 <select name="government" id="government" onchange="updateTotals()"
-                    class="w-full border border-gray-300 px-4 py-2 rounded-lg">
+                    class="w-full border border-gray-300 px-4 py-2 rounded-lg text-sm sm:text-base">
                     <option value="">Select Governorate</option>
                     {% for gov in governments %}
                     <option value="{{ gov.id }}" data-shipping-fee="{{ gov.shipping_fee }}">{{ gov.name }}</option>
@@ -87,15 +90,15 @@
             </div>
 
             <div class="col-span-full">
-                <label for="promo_code" class="font-semibold mb-1 block">Promo Code:</label>
+                <label for="promo_code" class="font-semibold mb-1 block">Promo Code</label>
                 <input type="text" name="promo_code" id="promo_code"
-                    class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-black">
+                    class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-black text-sm sm:text-base">
             </div>
 
             <!-- Payment Method -->
             <div class="col-span-full">
                 <label class="font-semibold mb-1 block">Payment Method</label>
-                <div class="flex gap-8">
+                <div class="flex flex-col sm:flex-row gap-6 text-sm sm:text-base">
                     <label class="flex items-center gap-2">
                         <input type="radio" name="payment_method" value="instapay" checked class="accent-blue-600">
                         Instapay
@@ -112,7 +115,8 @@
             </div>
 
             <!-- Totals -->
-            <div class="col-span-full bg-blue-50 p-6 rounded-xl space-y-2 text-sm text-gray-800 font-semibold">
+            <div
+                class="col-span-full bg-blue-50 p-6 rounded-xl space-y-2 text-sm sm:text-base text-gray-800 font-semibold">
                 <p>Subtotal: <span id="subtotal" class="float-right">EGP {{ subtotal }}</span></p>
                 <p>Shipping: <span id="shipping" class="float-right">EGP {{ shipping_fee }}</span></p>
                 <p id="discount" class="text-green-700 font-bold hidden"></p>
@@ -124,12 +128,11 @@
             <div class="col-span-full flex justify-end">
                 <button type="submit"
                     onclick="this.disabled = true; this.innerHTML = '<i class=\'fas fa-spinner fa-spin mr-2\'></i> Processing...'; this.form.submit();"
-                    class="w-full bg-gradient-to-r from-black via-blue-900 to-blue-900  hover:scale-105 text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300">
+                    class="w-full bg-gradient-to-r from-black via-blue-900 to-blue-900 hover:scale-105 text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300">
                     Confirm Order
                 </button>
             </div>
         </form>
-
     </div>
 </section>
 
