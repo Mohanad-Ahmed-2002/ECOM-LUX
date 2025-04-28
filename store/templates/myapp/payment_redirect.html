@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment - LUXEFLEX{% endblock %}
+
+{% block content %}
+<section class="container mx-auto px-4 py-20 text-center">
+    <div class="max-w-xl mx-auto bg-white shadow-2xl rounded-3xl p-10 animate__animated animate__fadeInUp">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-700 mb-6">Payment Gateway</h1>
+        <p class="text-gray-700 text-lg mb-10">You are being redirected to complete your payment securely with Visa /
+            MasterCard.</p>
+
+        <div class="flex justify-center">
+            <img src="{% static 'paymob_logo.png' %}" alt="Paymob" class="h-16">
+        </div>
+
+        <div class="mt-10">
+            <a href="#"
+                class="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-3 px-8 rounded-2xl hover:scale-105 shadow-lg transition-all duration-300">
+                Proceed to Payment
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

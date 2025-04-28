@@ -76,6 +76,12 @@ class CustomerOrder(models.Model):
         ('CANCELLED', 'تم الإلغاء'),
     ]
 
+    PAYMENT_METHOD_CHOICES = [
+        ('instapay', 'Instapay'),
+        ('visa', 'Visa / MasterCard'),
+        ('Cash', 'Cash on Delivery'),
+    ]
+
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     address = models.CharField(max_length=255)
@@ -85,6 +91,7 @@ class CustomerOrder(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
     government = models.ForeignKey(Government, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')  # 👈 الحقل الجديد
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, default='Cash')
 
 
     def get_order_items(self):
@@ -114,6 +121,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(CustomerOrder, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField(default=1)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    selected_color = models.URLField(blank=True, null=True)
     
     def __str__(self):
         return f"{self.product.name} - {self.quantity}"

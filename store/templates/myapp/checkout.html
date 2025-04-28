@@ -92,6 +92,25 @@
                     class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring focus:ring-black">
             </div>
 
+            <!-- Payment Method -->
+            <div class="col-span-full">
+                <label class="font-semibold mb-1 block">Payment Method</label>
+                <div class="flex gap-8">
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="payment_method" value="instapay" checked class="accent-blue-600">
+                        Instapay
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="payment_method" value="visa" class="accent-blue-600">
+                        Visa / MasterCard
+                    </label>
+                    <label class="flex items-center gap-2">
+                        <input type="radio" name="payment_method" value="Cash" class="accent-blue-600">
+                        Cash on Delivery
+                    </label>
+                </div>
+            </div>
+
             <!-- Totals -->
             <div class="col-span-full bg-blue-50 p-6 rounded-xl space-y-2 text-sm text-gray-800 font-semibold">
                 <p>Subtotal: <span id="subtotal" class="float-right">EGP {{ subtotal }}</span></p>
@@ -105,7 +124,7 @@
             <div class="col-span-full flex justify-end">
                 <button type="submit"
                     onclick="this.disabled = true; this.innerHTML = '<i class=\'fas fa-spinner fa-spin mr-2\'></i> Processing...'; this.form.submit();"
-                    class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:scale-105 text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300">
+                    class="w-full bg-gradient-to-r from-black via-blue-900 to-blue-900  hover:scale-105 text-white py-4 rounded-2xl font-bold text-lg shadow-lg transition-all duration-300">
                     Confirm Order
                 </button>
             </div>

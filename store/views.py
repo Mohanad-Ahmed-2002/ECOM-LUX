@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from .services import order_service,cart_service,product_service
 from django.views.decorators.http import require_POST
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -18,11 +19,18 @@ def about(request):
 
 def products_by_main_category(request, main_category):
     products = Product.objects.filter(main_category=main_category.upper())
-    return render(request, 'myapp/shop_list.html', {'products': products, 'main_category': main_category})
+    paginator = Paginator(products, 10)  # 10 منتج في الصفحة
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'myapp/shop_list.html', {'page_obj': page_obj, 'main_category': main_category})
 
 def products_by_main_and_sub_category(request, main_category, sub_category):
     products = Product.objects.filter(main_category=main_category.upper(), sub_category=sub_category.upper())
-    return render(request, 'myapp/shop_list.html', {'products': products, 'main_category': main_category, 'sub_category': sub_category})
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'myapp/shop_list.html', {'page_obj': page_obj, 'main_category': main_category, 'sub_category': sub_category})
 
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
     products = Product.objects.filter(
@@ -30,7 +38,16 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         sub_category=sub_category.upper(),
         age_group=age_group.capitalize()
     )
-    return render(request, 'myapp/shop_list.html', {'products': products, 'main_category': main_category, 'sub_category': sub_category, 'age_group': age_group})
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'myapp/shop_list.html', {
+        'page_obj': page_obj,
+        'main_category': main_category,
+        'sub_category': sub_category,
+        'age_group': age_group
+    })
 
 def cart_detail(request):
     session_key = cart_service.get_or_create_session_key(request)
@@ -64,9 +81,7 @@ def decrease_quantity(request, item_id):
     return redirect('cart_detail')
 
 def checkout(request):
-
     form = OrderForm(request.POST or None)
-    
     session_key = request.session.session_key   
     if not session_key:
         request.session.create()
@@ -86,15 +101,22 @@ def checkout(request):
 
     grand_total = subtotal - discount_amount + shipping_fee
 
-
     if request.method == 'POST':
-        if form.is_valid():
-            order = form.save(commit=False)
-            order.shipping_fee = shipping_fee
-            order.total_price = grand_total
-            order_service.create_order(order, session_key)
-            messages.success(request, "Your order has been placed successfully!")
-            return redirect('order_success', order_id=order.id)
+        payment_method = request.POST.get('payment_method', 'Cash')  # افتراضي Cash لو مفيش اختيار
+
+        if payment_method == 'visa':
+            # العميل اختار Visa ➔ نحوله لصفحة الدفع
+            return redirect('payment_redirect')  # لازم يكون عندك URL اسمه payment_redirect
+
+        elif payment_method in ['instapay', 'Cash']:
+            if form.is_valid():
+                order = form.save(commit=False)
+                order.shipping_fee = shipping_fee
+                order.total_price = grand_total
+                order.payment_method = payment_method  # نحفظ طريقة الدفع
+                order_service.create_order(order, session_key)
+                messages.success(request, "Your order has been placed successfully!")
+                return redirect('order_success', order_id=order.id)
 
     governments = Government.objects.all()
 
@@ -107,6 +129,10 @@ def checkout(request):
         'discount_amount': discount_amount if discount_amount > 0 else None,
         'promo_code_str': promo_code_str,
     })
+
+def payment_redirect(request):
+    return render(request, 'myapp/payment_redirect.html')
+
 
 def order_success(request,order_id):
     order = get_object_or_404(CustomerOrder, id=order_id)

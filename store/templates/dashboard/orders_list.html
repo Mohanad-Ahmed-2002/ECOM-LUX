@@ -39,6 +39,7 @@
                     <th class="px-4 py-3">المحافظة</th>
                     <th class="px-4 py-3">الحالة</th>
                     <th class="px-4 py-3">التاريخ</th>
+                    <th class="px-4 py-3">طريقة الدفع </th>
                     <th class="px-4 py-3">الإجمالي</th>
                     <th class="px-4 py-3 text-center">تفاصيل</th>
                     <th class="px-4 py-3 text-center">مسح</th>
@@ -52,6 +53,7 @@
                     <td class="px-4 py-3">{{ order.government.name }}</td>
                     <td class="px-4 py-3">{{ order.get_status_display }}</td>
                     <td class="px-4 py-3 whitespace-nowrap">{{ order.order_date|date:"Y-m-d H:i" }}</td>
+                    <td class="px-4 py-3">{{ order.payment_method }}</td>
                     <td class="px-4 py-3 font-bold text-blue-700">{{ order.total_price }} EGP</td>
                     <td class="px-4 py-3 text-center">
                         <a href="{% url 'order_detail' order.id %}"
