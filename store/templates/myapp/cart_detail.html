@@ -25,10 +25,22 @@
             <tbody>
                 {% for item in cart_items %}
                 <tr class="border-t hover:bg-blue-50 transition duration-300">
-                    <td class="py-4 px-6 flex items-center gap-4">
-                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"
-                            class="w-16 h-16 object-cover rounded-xl shadow-sm">
-                        <span class="font-semibold text-gray-900">{{ item.product.name }}</span>
+                    <td class="py-4 px-6 flex items-start gap-4">
+                        <div class="relative">
+                            <img src="{% if item.selected_color %}{{ item.selected_color }}{% else %}{{ item.product.image.url }}{% endif %}" alt="{{ item.product.name }}"
+                                class="w-16 h-16 object-cover rounded-xl shadow-sm">
+                            {% if item.selected_color %}
+                            <div class="absolute -bottom-2 -right-2 w-5 h-5 rounded-full border-2 border-white shadow-md"
+                                style="background-image: url('{{ item.selected_color }}'); background-size: cover; background-position: center;">
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-semibold text-gray-900">{{ item.product.name }}</span>
+                            {% if item.selected_color %}
+                            <span class="text-xs text-gray-500 mt-1">Selected Color</span>
+                            {% endif %}
+                        </div>
                     </td>
                     <td class="py-4 px-6 text-center">
                         <div class="flex items-center justify-center gap-3">

@@ -2,39 +2,56 @@ from django.db import models
 from django import forms
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from django.utils import timezone
+from django.utils.text import slugify
 
 # Create your models here.
 
-class Category(models.Model):
-    CATEGORY_CHOICES = [
-        ('SUNGLASSES', 'SUNGLASSES'),
-        ('EYEGLASSES', 'EYEGLASSES'),
-    ]
-    name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
-    
 class Product(models.Model):
 
-    GENDER_CHOICES = [
+    MAIN_CATEGORY_CHOICES = [
+        ('SUNGLASSES', 'SUNGLASSES'),
+        ('OPTICAL', 'OPTICAL'),
+        ('JEANSCLUB', 'JEANSCLUB'),
+        ('CLIP-ON', 'CLIP-ON'),
+    ]
+
+    SUB_CATEGORY_CHOICES = [
+        ('SUNGLASSES', 'SUNGLASSES'),
+        ('OPTICAL', 'OPTICAL'),
+        
+    ]
+
+    AGE_GROUP_CHOICES = [
         ('Men', 'Men'),
         ('Women', 'Women'),
+        ('Kids', 'Kids'),
     ]
 
     name = models.CharField(max_length=100)
     price = models.FloatField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)  
+    main_category = models.CharField(max_length=20, choices=MAIN_CATEGORY_CHOICES)  # ✨ الفئة الأساسية
+    sub_category = models.CharField(max_length=20, choices=SUB_CATEGORY_CHOICES ,blank=True, null=True)
     image = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='LUXFLEX/')
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='Men')
+    age_group = models.CharField(max_length=10, choices=AGE_GROUP_CHOICES, default='Men')
+    description = models.TextField(blank=True)  # 👈 شرح المنتج
     
     def __str__(self):
         return self.name
-    
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='LUXFLEX/')
+    color_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.color_name}"
+
 class CartItem(models.Model):
     session_key = models.CharField(max_length=40, null=True, blank=True)  # بدل user    
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    selected_color = models.URLField(blank=True, null=True) 
 
     def get_total_price(self):
         return self.product.price * self.quantity

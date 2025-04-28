@@ -30,8 +30,8 @@
             <li
                 class="flex flex-col md:flex-row md:items-center justify-between border border-gray-200 p-4 rounded-2xl hover:shadow-md transition duration-300">
                 <div class="flex items-center gap-4">
-                    <img src="{{ item.product.image.url }}" class="w-20 h-20 object-cover rounded-xl shadow-sm"
-                        alt="{{ item.product.name }}">
+                    <img src="{% if item.selected_color %}{{ item.selected_color }}{% else %}{{ item.product.image.url }}{% endif %}"
+                        class="w-20 h-20 object-cover rounded-xl shadow-sm" alt="{{ item.product.name }}">
                     <div>
                         <p class="text-lg font-semibold text-gray-800">{{ item.product.name }}</p>
                         <p class="text-sm text-gray-500 mt-1">الكمية: {{ item.quantity }}</p>

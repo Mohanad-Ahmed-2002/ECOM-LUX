@@ -58,7 +58,8 @@ def create_order(order, session_key):
         OrderItem.objects.create(
             order=order,
             quantity=item.quantity,
-            product=item.product 
+            product=item.product,
+            selected_color=item.selected_color
         )
 
     cart_items.delete()

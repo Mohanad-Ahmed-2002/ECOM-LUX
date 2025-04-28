@@ -1,65 +1,45 @@
 {% extends "base.html" %}
-{% block title %}LUXEFLEX - EYEWEAR{% endblock %}
+{% load static %}
+{% block title %}LUXEFLEX - Eyewear Luxury{% endblock %}
 
 {% block content %}
-<!-- Hero Slider -->
-<div x-data="{ activeSlide: 0, slides: 2 }"
-    x-init="setInterval(() => { activeSlide = (activeSlide + 1) % slides }, 5000)"
-    class="relative w-full overflow-hidden min-h-screen">
 
-    <!-- Slides Container -->
-    <div class="flex transition-transform duration-700 ease-in-out"
-        :style="`transform: translateX(-${activeSlide * 100}%);`">
+<section class="relative bg-gradient-to-r from-white via-blue-50 to-blue-100 overflow-hidden py-20 px-6 sm:px-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[80vh]" data-aos="fade-up">
 
-        <!-- Slide 1 -->
-        <div class="min-w-full min-h-screen bg-cover bg-center flex items-center justify-center px-6 md:px-10"
-            style="background-image: url('/static/man-home.jpg');">
-            <div
-                class="bg-black/50 p-6 rounded-lg text-white max-w-md md:max-w-xl backdrop-blur-md animate__animated animate__fadeInUp">
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-wide leading-tight">
-                    Own the Look <span class="text-blue-400">MEN</span>
-                </h2>
-                <a href="{% url 'men_products' %}"
-                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg font-semibold transition duration-300">
-                    Shop Now
-                </a>
-            </div>
+        <!-- Video Section -->
+        <div
+            class="relative w-full h-80 md:h-[450px] rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(30,64,175,0.3)] animate__animated animate__fadeInLeft animate__slow">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                <source src="{% static 'home.mp4' %}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
-        <!-- Slide 2 -->
-        <div class="min-w-full min-h-screen bg-cover bg-center flex items-center justify-center px-6 md:px-10"
-            style="background-image: url('/static/model4.jpg');">
-            <div
-                class="bg-black/50 p-6 rounded-lg text-white max-w-md md:max-w-xl backdrop-blur-md animate__animated animate__fadeInUp">
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-wide leading-tight">
-                    Bold. Beautiful. <span class="text-blue-400">WOMEN</span>
-                </h2>
-                <a href="{% url 'women_products' %}"
-                    class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl text-lg font-semibold transition duration-300">
-                    Discover More
-                </a>
-            </div>
+        <!-- Text Section -->
+        <div class="text-center md:text-left animate__animated animate__fadeInUp animate__slow">
+            <h1
+                class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-gray-900 to via-blue-900  bg-clip-text text-transparent mb-6 leading-tight">
+                See the World <br> with <span>LUXEFLEX</span>
+            </h1>
+            <p class="text-lg text-gray-600 leading-relaxed mb-8">
+                Discover luxury eyewear that redefines elegance.<br>
+                Designed to inspire confidence and sophistication.
+            </p>
+            <a href="#shop-categories"
+                class="inline-block px-8 py-4 bg-white/30 backdrop-blur-md text-black font-semibold rounded-full shadow-xl hover:bg-white/50 hover:scale-105 transition-all duration-300 ease-in-out">
+                Start Shopping
+            </a>
         </div>
-    </div>
 
-    <!-- Controls -->
-    <button @click="activeSlide = (activeSlide - 1 + slides) % slides"
-        class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/70 hover:bg-blue-500 hover:text-white p-3 rounded-full shadow-lg transition duration-300">
-        <i class="fas fa-chevron-left text-gray-700"></i>
-    </button>
-    <button @click="activeSlide = (activeSlide + 1) % slides"
-        class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/70 hover:bg-blue-500 hover:text-white p-3 rounded-full shadow-lg transition duration-300">
-        <i class="fas fa-chevron-right text-gray-700"></i>
-    </button>
-
-    <!-- Indicators -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        <template x-for="i in slides">
-            <div :class="{
-                'bg-blue-600 w-4 h-2': activeSlide === i - 1,
-                'bg-white w-2 h-2': activeSlide !== i - 1
-            }" class="rounded-full transition-all duration-300"></div>
-        </template>
     </div>
-</div>
-{% endblock %}
+</section>
+
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/201021818169" target="_blank"
+    class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all duration-300 ">
+    <i class="fab fa-whatsapp text-2xl"></i>
+</a>
+
+{% endblock %}  

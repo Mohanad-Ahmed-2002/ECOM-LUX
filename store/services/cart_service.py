@@ -11,10 +11,15 @@ def get_or_create_session_key(request):
     return session_key
 
 def add_product_to_cart(product_id, request):
-    product = get_object_or_404(Product, id=product_id)
     session_key = get_or_create_session_key(request)
+    product = Product.objects.get(id=product_id)
+    selected_color = request.POST.get('selected_color')  # خد اللون اللي اختاره الزبون
 
-    cart_item, created = CartItem.objects.get_or_create(product=product, session_key=session_key)
+    cart_item, created = CartItem.objects.get_or_create(
+        session_key=session_key,
+        product=product,
+        defaults={'quantity': 1, 'selected_color': selected_color}
+    )
 
     if not created:
         cart_item.quantity += 1

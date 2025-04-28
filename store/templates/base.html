@@ -8,20 +8,13 @@
 
     <!-- Tailwind -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- AOS Animation -->
+    <!-- AOS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <!-- Alpine JS -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
@@ -42,23 +35,27 @@
     </script>
 </head>
 
-<body class="text-gray-800 flex flex-col min-h-screen bg-gradient-to-b from-white via-blue-50 to-white">
+<body class="text-gray-800 flex flex-col min-h-screen bg-gradient-to-b from-white via-blue-50 to-white scroll-smooth ">
 
     <!-- HEADER -->
-    <header class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+    <header id="header"
+        class="bg-white/70 backdrop-blur-md shadow-lg sticky top-0 z-50 transition-transform duration-500">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+
             <!-- Logo -->
-            <a href="{% url 'home' %}" class="text-3xl font-bold text-blue-700 glow-hover transition duration-300">
-                LUXEFLEX
+            <a href="{% url 'home' %}" class="flex items-center">
+                <img src="/static/Untitled design.png" alt="LUXEFLEX Logo"
+                    class="h-14 sm:h-16 md:h-20 w-auto object-contain rounded-2xl filter drop-shadow-2xl brightness-110 contrast-125 transition-all duration-300 hover:brightness-125 hover:scale-105">
             </a>
 
             <!-- Icons + Mobile Button -->
             <div class="flex items-center space-x-4 md:order-2">
                 <a href="{% url 'cart_detail' %}"
-                    class="relative text-gray-700 hover:text-blue-500 transition duration-300">
+                    class="relative text-gray-700 hover:text-blue-600 transition duration-300">
                     <i class="fas fa-shopping-bag text-lg"></i>
                     {% if cart_item_count > 0 %}
-                    <span class="absolute -top-2 -right-2 text-xs bg-black text-white rounded-full px-1 animate-bounce">
+                    <span
+                        class="absolute -top-2 -right-2 text-[10px] bg-black text-white rounded-full px-1.5 py-0.5 animate-bounce">
                         {{ cart_item_count }}
                     </span>
                     {% endif %}
@@ -72,39 +69,189 @@
             </div>
 
             <!-- Navigation (Desktop) -->
-            <nav class="hidden md:flex space-x-8 text-gray-700 font-semibold items-center md:order-1">
-                <a href="{% url 'home' %}" class="hover:text-blue-500 transition duration-300">HOME</a>
+            <nav class="hidden md:flex space-x-8 text-black-700 font-semibold items-center md:order-1">
+                <a href="{% url 'home' %}" class="hover:text-black-600 transition-all duration-300">HOME</a>
+
+                <!-- SHOP Dropdown -->
                 <div class="relative">
-                    <button id="shop-toggle"
-                        class="hover:text-blue-500 flex items-center gap-1 font-semibold focus:outline-none">
+                    <button id="shop-toggle-btn"
+                        class="flex items-center gap-1 font-bold hover:text-black-500 focus:outline-none transition-all duration-300">
                         SHOP <i class="fas fa-chevron-down text-xs"></i>
                     </button>
-                    <div id="shop-menu"
-                        class="absolute left-0 mt-2 w-40 bg-white border shadow-lg rounded-md opacity-0 scale-95 invisible transition-all duration-300 ease-out">
-                        <a href="{% url 'men_products' %}" class="block px-4 py-2 hover:bg-blue-50">MAN</a>
-                        <a href="{% url 'women_products' %}" class="block px-4 py-2 hover:bg-blue-50">WOMAN</a>
+
+                    <div id="desktop-shop-menu"
+                        class="absolute left-0 mt-3 w-64 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 scale-95 invisible transition-all duration-300 ease-out origin-top p-4 space-y-4 z-50">
+
+                        <!-- JEANSCLUB -->
+                        <div>
+                            <button onclick="toggleMenu('jeansclub-menu')"
+                                class="font-bold flex items-center w-full justify-between">
+                                JEANSCLUB <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="jeansclub-menu" class="hidden mt-2 ml-3 space-y-2">
+                                <div>
+                                    <button onclick="toggleMenu('jeansclub-sunglasses-menu')"
+                                        class="font-semibold flex items-center w-full justify-between">
+                                        Sunglasses <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    <div id="jeansclub-sunglasses-menu" class="hidden ml-3 space-y-2">
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'sunglasses' 'men' %}"
+                                            class="block text-sm hover:bg-blue-50 rounded-md px-2 py-1 capitalize">Men</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'sunglasses' 'women' %}"
+                                            class="block text-sm hover:bg-blue-50 rounded-md px-2 py-1 capitalize">Women</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'sunglasses' 'kids' %}"
+                                            class="block text-sm hover:bg-blue-50 rounded-md px-2 py-1 capitalize">Kids</a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button onclick="toggleMenu('jeansclub-optical-menu')"
+                                        class="font-semibold flex items-center w-full justify-between">
+                                        Optical <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    <div id="jeansclub-optical-menu" class="hidden ml-3 space-y-2">
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'optical' 'men' %}"
+                                            class="block text-sm hover:bg-blue-50 rounded-md px-2 py-1 capitalize">Men</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'optical' 'women' %}"
+                                            class="block text-sm hover:bg-blue-50 rounded-md px-2 py-1 capitalize">Women</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'optical' 'kids' %}"
+                                            class="block text-sm hover:bg-blue-50 rounded-md px-2 py-1 capitalize">Kids</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUNGLASSES -->
+                        <div>
+                            <button onclick="toggleMenu('sunglasses-menu')"
+                                class="font-bold flex items-center w-full justify-between">
+                                SUNGLASSES <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="sunglasses-menu" class="hidden ml-3 space-y-2">
+                                <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'men' %}"
+                                    class="block text-sm hover:bg-blue-50 capitalize">Men</a>
+                                <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'women' %}"
+                                    class="block text-sm hover:bg-blue-50 capitalize">Women</a>
+                                <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'kids' %}"
+                                    class="block text-sm hover:bg-blue-50 capitalize">Kids</a>
+                            </div>
+                        </div>
+
+                        <!-- OPTICAL -->
+                        <div>
+                            <button onclick="toggleMenu('optical-menu')"
+                                class="font-bold flex items-center w-full justify-between">
+                                OPTICAL <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="optical-menu" class="hidden ml-3 space-y-2">
+                                <a href="{% url 'products_by_main_and_sub_category' 'optical' 'men' %}"
+                                    class="block text-sm hover:bg-blue-50 capitalize">Men</a>
+                                <a href="{% url 'products_by_main_and_sub_category' 'optical' 'women' %}"
+                                    class="block text-sm hover:bg-blue-50 capitalize">Women</a>
+                                <a href="{% url 'products_by_main_and_sub_category' 'optical' 'kids' %}"
+                                    class="block text-sm hover:bg-blue-50 capitalize">Kids</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <a href="{% url 'about' %}" class="hover:text-blue-500 transition duration-300">ABOUT</a>
-            </nav>
-        </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 animate-fade-in-down">
-            <a href="{% url 'home' %}" class="block py-2 hover:text-blue-500">HOME</a>
-            <div class="mt-2">
-                <button id="mobile-shop-toggle"
-                    class="w-full flex justify-between items-center py-2 hover:text-blue-500">
-                    SHOP <i class="fas fa-chevron-down text-xs"></i>
-                </button>
-                <div id="mobile-shop-menu" class="ml-4 mt-1 hidden">
-                    <a href="{% url 'men_products' %}"
-                        class="block py-1 text-sm text-gray-600 hover:text-blue-500">MAN</a>
-                    <a href="{% url 'women_products' %}"
-                        class="block py-1 text-sm text-gray-600 hover:text-blue-500">WOMAN</a>
+                <a href="{% url 'about' %}" class="hover:text-black-600 transition-all duration-300">ABOUT</a>
+            </nav>
+
+            <!-- MOBILE MENU -->
+            <div id="mobile-menu"
+                class="fixed inset-x-0 top-0 bg-white z-40 transform -translate-y-full transition-all duration-300 md:hidden shadow-lg rounded-b-lg">
+                <div class="p-6 space-y-4 overflow-y-auto ">
+
+                    <button id="mobile-close-btn" class="text-gray-700 text-2xl absolute top-4 right-6">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                    <a href="{% url 'home' %}" class="block py-2 text-lg font-semibold hover:text-blue-600">HOME</a>
+
+                    <div class="border-t pt-4">
+                        <button id="mobile-shop-toggle"
+                            class="flex justify-between items-center w-full py-2 text-lg font-semibold hover:text-blue-600">
+                            SHOP <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div id="mobile-shop-menu" class="hidden pl-4 space-y-2 text-gray-700">
+
+                            <!-- JEANSCLUB -->
+                            <div>
+                                <button onclick="toggleMenu('mobile-jeansclub')"
+                                    class="flex justify-between items-center w-full py-1 font-semibold">
+                                    JEANSCLUB <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                                <div id="mobile-jeansclub" class="hidden pl-4 space-y-1">
+                                    <button onclick="toggleMenu('mobile-jeansclub-sunglasses')"
+                                        class="flex justify-between items-center w-full text-sm">
+                                        Sunglasses <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    <div id="mobile-jeansclub-sunglasses" class="hidden pl-4 space-y-1">
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'sunglasses' 'men' %}"
+                                            class="block py-1 hover:text-blue-500">Men</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'sunglasses' 'women' %}"
+                                            class="block py-1 hover:text-blue-500">Women</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'sunglasses' 'kids' %}"
+                                            class="block py-1 hover:text-blue-500">Kids</a>
+                                    </div>
+
+                                    <button onclick="toggleMenu('mobile-jeansclub-optical')"
+                                        class="flex justify-between items-center w-full text-sm">
+                                        Optical <i class="fas fa-chevron-down text-xs"></i>
+                                    </button>
+                                    <div id="mobile-jeansclub-optical" class="hidden pl-4 space-y-1">
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'optical' 'men' %}"
+                                            class="block py-1 hover:text-blue-500">Men</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'optical' 'women' %}"
+                                            class="block py-1 hover:text-blue-500">Women</a>
+                                        <a href="{% url 'products_by_main_sub_and_age' 'jeansclub' 'optical' 'kids' %}"
+                                            class="block py-1 hover:text-blue-500">Kids</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SUNGLASSES -->
+                            <div>
+                                <button onclick="toggleMenu('mobile-sunglasses')"
+                                    class="flex justify-between items-center w-full py-1 font-semibold">
+                                    SUNGLASSES <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                                <div id="mobile-sunglasses" class="hidden pl-4 space-y-1">
+                                    <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'men' %}"
+                                        class="block py-1 hover:text-blue-500">Men</a>
+                                    <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'women' %}"
+                                        class="block py-1 hover:text-blue-500">Women</a>
+                                    <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'kids' %}"
+                                        class="block py-1 hover:text-blue-500">Kids</a>
+                                </div>
+                            </div>
+
+                            <!-- OPTICAL -->
+                            <div>
+                                <button onclick="toggleMenu('mobile-optical')"
+                                    class="flex justify-between items-center w-full py-1 font-semibold">
+                                    OPTICAL <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                                <div id="mobile-optical" class="hidden pl-4 space-y-1">
+                                    <a href="{% url 'products_by_main_and_sub_category' 'optical' 'men' %}"
+                                        class="block py-1 hover:text-blue-500">Men</a>
+                                    <a href="{% url 'products_by_main_and_sub_category' 'optical' 'men' %}"
+                                        class="block py-1 hover:text-blue-500">Women</a>
+                                    <a href="{% url 'products_by_main_and_sub_category' 'optical' 'men' %}"
+                                        class="block py-1 hover:text-blue-500">Kids</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <a href="{% url 'about' %}" class="block py-2 text-lg font-semibold hover:text-blue-600">ABOUT</a>
+
                 </div>
             </div>
-            <a href="{% url 'about' %}" class="block py-2 hover:text-blue-500">ABOUT</a>
+
         </div>
     </header>
 
@@ -113,57 +260,76 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-blue-100 mt-auto">
         <div class="container mx-auto px-6 py-6 text-center space-y-6">
-            <!-- Social -->
             <div class="flex justify-center space-x-6 text-gray-600">
-                <a href="https://www.instagram.com/luxeflex2020?igsh=bm5tcGVwMTVwd2lh" target="_blank"
-                    class="hover:text-pink-500">
-                    <i class="fab fa-instagram text-2xl"></i>
-                </a>
-                <a href="https://www.facebook.com/luxeflexstore/" target="_blank" class="hover:text-blue-600">
-                    <i class="fab fa-facebook-f text-2xl"></i>
-                </a>
-                <a href="https://www.tiktok.com/@luxeflex2020?_t=ZS-8vquoikIzS4&_r=1/" target="_blank" class="hover:text-red-600">
-                    <i class="fa-brands fa-tiktok text-2xl"></i>
-                </a>
+                <a href="https://www.instagram.com/luxeflex2020/?hl=en" class="hover:text-pink-500"><i class="fab fa-instagram text-2xl"></i></a>
+                <a href="https://www.facebook.com/luxeflexstore/" class="hover:text-blue-600"><i class="fab fa-facebook-f text-2xl"></i></a>
+                <a href="https://www.tiktok.com/@luxeflex2020" class="hover:text-red-600"><i class="fab fa-tiktok text-2xl"></i></a>
             </div>
             <hr class="border-blue-100">
-            <p class="text-xs text-gray-500">
-                &copy; 2025 <span class="font-bold text-blue-600">LUXEFLEX</span>. Designed by
-                <a href="https://my-portfolio-59ne.onrender.com/" target="_blank"
-                    class="text-blue-500 hover:underline">MA</a>
+            <p class="text-xs text-gray-500">&copy; 2025 <span class="font-bold text-blue-600">LUXEFLEX</span>. All
+                rights reserved.| Designed By <a href="https://my-portfolio-59ne.onrender.com/" target="_blank" class="font-bold text-blue-600">MA</a>
             </p>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script>
-        const shopToggle = document.getElementById('shop-toggle');
-        const shopMenu = document.getElementById('shop-menu');
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileShopToggle = document.getElementById('mobile-shop-toggle');
-        const mobileShopMenu = document.getElementById('mobile-shop-menu');
+        const toggleMenu = (id) => {
+            const menu = document.getElementById(id);
+            menu.classList.toggle('hidden');
+        };
 
-        shopToggle.addEventListener('click', (e) => {
+        // Desktop Shop Menu Toggle
+        const shopToggleBtn = document.getElementById('shop-toggle-btn');
+        const desktopShopMenu = document.getElementById('desktop-shop-menu');
+        shopToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            shopMenu.classList.toggle('opacity-0');
-            shopMenu.classList.toggle('scale-95');
-            shopMenu.classList.toggle('invisible');
+            desktopShopMenu.classList.toggle('opacity-0');
+            desktopShopMenu.classList.toggle('scale-95');
+            desktopShopMenu.classList.toggle('invisible');
         });
-
         document.addEventListener('click', (e) => {
-            if (!shopToggle.contains(e.target) && !shopMenu.contains(e.target)) {
-                shopMenu.classList.add('opacity-0', 'scale-95', 'invisible');
+            if (!shopToggleBtn.contains(e.target) && !desktopShopMenu.contains(e.target)) {
+                desktopShopMenu.classList.add('opacity-0', 'scale-95', 'invisible');
             }
         });
 
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileCloseBtn = document.getElementById('mobile-close-btn');
+        const mobileShopToggle = document.getElementById('mobile-shop-toggle');
+        const mobileShopMenu = document.getElementById('mobile-shop-menu');
+
+        // Open mobile menu
         mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            mobileMenu.style.transform = 'translateX(0)';
         });
 
+        // Close mobile menu
+        mobileCloseBtn.addEventListener('click', () => {
+            mobileMenu.style.transform = 'translateX(100%)';
+        });
+
+        // Open mobile shop menu
         mobileShopToggle.addEventListener('click', () => {
             mobileShopMenu.classList.toggle('hidden');
         });
+
+        window.addEventListener('scroll', function () {
+                const nav = document.getElementById('nav');
+                if (window.scrollY > 100) { // يظهر الـ Nav عندما يتجاوز التمرير 100 بيكسل
+                    nav.classList.remove('-translate-y-full'); // إزالة الحركة للأعلى
+                    nav.classList.add('translate-y-0'); // إضافة الحركة لأسفل
+                } else {
+                    nav.classList.remove('translate-y-0');
+                    nav.classList.add('-translate-y-full'); // إعادة العنصر إلى الأعلى عندما يعود التمرير
+                }
+            });
+
     </script>
+
+
 </body>
 
 </html>

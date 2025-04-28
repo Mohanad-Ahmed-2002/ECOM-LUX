@@ -16,21 +16,21 @@ def home(request):
 def about(request):
     return render(request,'myapp/about.html')
 
-def men_products(request):
-    price_filter = request.GET.get('price')
-    category_filter = request.GET.get('category')
-    all_products = product_service.filter_products(price_filter, category_filter)
-    products = all_products.filter(gender='Men')
-    context = {'products': products}
-    return render(request, 'myapp/man.html', context)
+def products_by_main_category(request, main_category):
+    products = Product.objects.filter(main_category=main_category.upper())
+    return render(request, 'myapp/shop_list.html', {'products': products, 'main_category': main_category})
 
-def women_products(request):
-    price_filter = request.GET.get('price')
-    category_filter = request.GET.get('category')
-    all_products = product_service.filter_products(price_filter, category_filter)
-    products = all_products.filter(gender='Women')
+def products_by_main_and_sub_category(request, main_category, sub_category):
+    products = Product.objects.filter(main_category=main_category.upper(), sub_category=sub_category.upper())
+    return render(request, 'myapp/shop_list.html', {'products': products, 'main_category': main_category, 'sub_category': sub_category})
 
-    return render(request, 'myapp/woman.html', {'products': products})
+def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
+    products = Product.objects.filter(
+        main_category=main_category.upper(),
+        sub_category=sub_category.upper(),
+        age_group=age_group.capitalize()
+    )
+    return render(request, 'myapp/shop_list.html', {'products': products, 'main_category': main_category, 'sub_category': sub_category, 'age_group': age_group})
 
 def cart_detail(request):
     session_key = cart_service.get_or_create_session_key(request)
@@ -45,7 +45,13 @@ def cart_detail(request):
 
 def add_to_cart(request, product_id):
     if request.method == 'POST':
+        selected_color = request.POST.get('selected_color')  # قراءة اللون أو الصورة المختارة
+
         product = cart_service.add_product_to_cart(product_id, request)
+
+        if selected_color:
+            print(f"Selected Color URL: {selected_color}")  #
+
         messages.success(request, f'"{product.name}" has been added to your cart successfully!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
