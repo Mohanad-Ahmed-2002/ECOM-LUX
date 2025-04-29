@@ -57,11 +57,11 @@
                             Add to Cart
                         </button>
                     </form>
-                    <form action="{% url 'remove_from_wishlist' item.id %}" method="post">
+                    <form action="{% url 'remove_from_wishlist' item.product.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit" class="text-red-500 hover:text-red-700 transition duration-300"
                             title="Remove from favorites">
-                            <i class="fas fa-heart-broken text-lg"></i>
+                            <i class="fas fa-trash-alt text-lg"></i>
                         </button>
                     </form>
                 </div>
