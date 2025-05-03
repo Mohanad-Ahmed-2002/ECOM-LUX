@@ -33,7 +33,7 @@ def about(request):
 def products_by_main_category(request, main_category):
     products = Product.objects.filter(
         main_category=main_category.upper()
-    ).only("id", "name", "price", "discount_price", "image").prefetch_related(
+    ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
 
@@ -51,7 +51,7 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
     products = Product.objects.filter(
         main_category=main_category.upper(),
         sub_category=sub_category.upper()
-    ).only("id", "name", "price", "discount_price", "image").prefetch_related(
+    ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
 
@@ -71,11 +71,11 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         main_category=main_category.upper(),
         sub_category=sub_category.upper(),
         age_group=age_group.capitalize()
-    ).only("id", "name", "price", "discount_price", "image").prefetch_related(
+    ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
 
-    paginator = Paginator(products, 12)
+    paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
