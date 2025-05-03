@@ -123,35 +123,35 @@
 
                         <!-- SUNGLASSES -->
                         <div>
-                            <button onclick="toggleMenu('sunglasses-menu')"
-                                class="font-bold flex items-center w-full justify-between">
+                            <button onclick="toggleMenu('mobile-sunglasses')"
+                                class="flex justify-between items-center w-full py-1 font-semibold">
                                 SUNGLASSES <i class="fas fa-chevron-down text-xs"></i>
                             </button>
-                            <div id="sunglasses-menu" class="hidden ml-3 space-y-2">
-                                <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'men' %}"
-                                    class="block text-sm hover:bg-blue-50 capitalize">Men</a>
-                                <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'women' %}"
-                                    class="block text-sm hover:bg-blue-50 capitalize">Women</a>
-                                <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'kids' %}"
-                                    class="block text-sm hover:bg-blue-50 capitalize">Kids</a>
+                            <div id="mobile-sunglasses" class="hidden pl-4 space-y-1">
+                                <a href="{% url 'products_by_main_sub_and_age' 'sunglasses' 'sunglasses' 'men' %}"
+                                    class="block py-1 hover:text-blue-500">Men</a>
+                                <a href="{% url 'products_by_main_sub_and_age' 'sunglasses' 'sunglasses' 'women' %}"
+                                    class="block py-1 hover:text-blue-500">Women</a>
+                                <a href="{% url 'products_by_main_sub_and_age' 'sunglasses' 'sunglasses' 'kids' %}"
+                                    class="block py-1 hover:text-blue-500">Kids</a>
+                            </div>
+                        </div>
+                        
+                        <!-- OPTICAL -->
+                        <div>
+                            <button onclick="toggleMenu('mobile-optical')" class="flex justify-between items-center w-full py-1 font-semibold">
+                                OPTICAL <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                            <div id="mobile-optical" class="hidden pl-4 space-y-1">
+                                <a href="{% url 'products_by_main_sub_and_age' 'optical' 'optical' 'men' %}"
+                                    class="block py-1 hover:text-blue-500">Men</a>
+                                <a href="{% url 'products_by_main_sub_and_age' 'optical' 'optical' 'women' %}"
+                                    class="block py-1 hover:text-blue-500">Women</a>
+                                <a href="{% url 'products_by_main_sub_and_age' 'optical' 'optical' 'kids' %}"
+                                    class="block py-1 hover:text-blue-500">Kids</a>
                             </div>
                         </div>
 
-                        <!-- OPTICAL -->
-                        <div>
-                            <button onclick="toggleMenu('optical-menu')"
-                                class="font-bold flex items-center w-full justify-between">
-                                OPTICAL <i class="fas fa-chevron-down text-xs"></i>
-                            </button>
-                            <div id="optical-menu" class="hidden ml-3 space-y-2">
-                                <a href="{% url 'products_by_main_and_sub_category' 'optical' 'men' %}"
-                                    class="block text-sm hover:bg-blue-50 capitalize">Men</a>
-                                <a href="{% url 'products_by_main_and_sub_category' 'optical' 'women' %}"
-                                    class="block text-sm hover:bg-blue-50 capitalize">Women</a>
-                                <a href="{% url 'products_by_main_and_sub_category' 'optical' 'kids' %}"
-                                    class="block text-sm hover:bg-blue-50 capitalize">Kids</a>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
@@ -222,11 +222,11 @@
                                     SUNGLASSES <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                                 <div id="mobile-sunglasses" class="hidden pl-4 space-y-1">
-                                    <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'men' %}"
+                                    <a href="{% url 'products_by_main_sub_and_age' 'sunglasses' 'sunglasses' 'men' %}"
                                         class="block py-1 hover:text-blue-500">Men</a>
-                                    <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'women' %}"
+                                    <a href="{% url 'products_by_main_sub_and_age' 'sunglasses' 'sunglasses' 'women' %}"
                                         class="block py-1 hover:text-blue-500">Women</a>
-                                    <a href="{% url 'products_by_main_and_sub_category' 'sunglasses' 'kids' %}"
+                                    <a href="{% url 'products_by_main_sub_and_age' 'sunglasses' 'sunglasses' 'kids' %}"
                                         class="block py-1 hover:text-blue-500">Kids</a>
                                 </div>
                             </div>
@@ -237,14 +237,15 @@
                                     OPTICAL <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                                 <div id="mobile-optical" class="hidden pl-4 space-y-1">
-                                    <a href="{% url 'products_by_main_and_sub_category' 'optical' 'men' %}"
+                                    <a href="{% url 'products_by_main_sub_and_age' 'optical' 'optical' 'men' %}"
                                         class="block py-1 hover:text-blue-500">Men</a>
-                                    <a href="{% url 'products_by_main_and_sub_category' 'optical' 'women' %}"
+                                    <a href="{% url 'products_by_main_sub_and_age' 'optical' 'optical' 'women' %}"
                                         class="block py-1 hover:text-blue-500">Women</a>
-                                    <a href="{% url 'products_by_main_and_sub_category' 'optical' 'kids' %}"
+                                    <a href="{% url 'products_by_main_sub_and_age' 'optical' 'optical' 'kids' %}"
                                         class="block py-1 hover:text-blue-500">Kids</a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
             

@@ -1,0 +1,79 @@
+{% extends 'dashboard/dashboard_base.html' %}
+{% block title %}Promo Codes - Dashboard | LUXEFLEX{% endblock %}
+
+{% block content %}
+<div class="space-y-10">
+
+    <!-- Title -->
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-center text-purple-700">
+        🎟️ Promo Codes Management
+    </h1>
+
+    <!-- Add/Edit Form -->
+    <div class="bg-white shadow-xl rounded-2xl p-6 max-w-3xl mx-auto">
+        <h2 class="text-xl font-bold mb-4 text-purple-800">
+            {% if editing %}✏️ Edit Promo Code{% else %}➕ Add Promo Code{% endif %}
+        </h2>
+        <form method="post" class="grid sm:grid-cols-2 gap-4">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                <label class="block font-semibold text-sm mb-1">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ field.errors|striptags }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="sm:col-span-2 text-right pt-4">
+                <button type="submit"
+                    class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-2 px-6 rounded-lg">
+                    {% if editing %}Update{% else %}Save{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white shadow-xl rounded-2xl overflow-x-auto">
+        <table class="w-full min-w-[700px] text-sm text-left">
+            <thead class="bg-purple-50 text-purple-900 font-bold">
+                <tr>
+                    <th class="px-4 py-3">Code</th>
+                    <th class="px-4 py-3">Discount</th>
+                    <th class="px-4 py-3">Active</th>
+                    <th class="px-4 py-3">Expires</th>
+                    <th class="px-4 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for code in codes %}
+                <tr class="hover:bg-purple-50">
+                    <td class="px-4 py-3">{{ code.code }}</td>
+                    <td class="px-4 py-3">{{ code.discount_percentage }}%</td>
+                    <td class="px-4 py-3">
+                        {% if code.is_active %}
+                        <span class="text-green-600 font-semibold">Yes</span>
+                        {% else %}
+                        <span class="text-red-600 font-semibold">No</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-3">{{ code.expiration_date }}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <a href="?edit={{ code.id }}"
+                            class="text-blue-600 hover:underline text-sm font-semibold">Edit</a> |
+                        <a href="{% url 'delete_promo_code' code.id %}" onclick="return confirm('Are you sure?')"
+                            class="text-red-600 hover:underline text-sm font-semibold">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-6 text-gray-400">No promo codes found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

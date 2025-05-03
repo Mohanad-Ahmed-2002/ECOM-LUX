@@ -1,30 +1,28 @@
-{% extends 'base.html' %}
-{% block title %}تفاصيل الطلب - LUXEFLEX{% endblock %}
+{% extends 'dashboard/dashboard_base.html' %}
+{% block title %}Order #{{ order.id }} - Dashboard | LUXEFLEX{% endblock %}
 
 {% block content %}
-<div class="container mx-auto p-6 max-w-5xl" dir="rtl">
+<div class="space-y-10 max-w-5xl mx-auto">
 
-    <!-- عنوان الصفحة -->
-    <h1
-        class="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text text-transparent mb-10 animate__animated animate__fadeInDown text-center">
-        📄 تفاصيل الطلب #{{ order.id }}
+    <!-- Page Title -->
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-blue-800">
+        📄 Order #{{ order.id }} Details
     </h1>
 
-    <!-- بيانات الطلب -->
-    <div
-        class="bg-gradient-to-br from-white to-gray-50 p-6 rounded-3xl shadow-2xl border border-blue-100 space-y-4 animate__animated animate__fadeInUp">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-800">
-            <p><span class="font-semibold text-blue-700">الاسم:</span> {{ order.name }}</p>
-            <p><span class="font-semibold text-blue-700">الهاتف:</span> {{ order.phone }}</p>
-            <p><span class="font-semibold text-blue-700">العنوان:</span> {{ order.address }}</p>
-            <p><span class="font-semibold text-blue-700">المحافظة:</span> {{ order.government.name }}</p>
-            <p><span class="font-semibold text-blue-700">الحالة :</span> {{ order.get_status_display }}</p>
+    <!-- Order Info -->
+    <div class="bg-white border border-blue-100 p-6 rounded-3xl shadow-xl space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-800">
+            <p><span class="font-semibold text-blue-700">Name:</span> {{ order.name }}</p>
+            <p><span class="font-semibold text-blue-700">Phone:</span> {{ order.phone }}</p>
+            <p><span class="font-semibold text-blue-700">Address:</span> {{ order.address }}</p>
+            <p><span class="font-semibold text-blue-700">Governorate:</span> {{ order.government.name }}</p>
+            <p><span class="font-semibold text-blue-700">Status:</span> {{ order.get_status_display }}</p>
         </div>
     </div>
 
-    <!-- المنتجات في الطلب -->
-    <div class="mt-10 bg-white p-8 rounded-3xl shadow-2xl animate__animated animate__fadeInUp">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">🛒 المنتجات</h2>
+    <!-- Ordered Products -->
+    <div class="bg-white p-6 rounded-3xl shadow-xl">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">🛒 Ordered Products</h2>
         <ul class="space-y-6">
             {% for item in order.order_items.all %}
             <li
@@ -34,23 +32,23 @@
                         class="w-20 h-20 object-cover rounded-xl shadow-sm" alt="{{ item.product.name }}">
                     <div>
                         <p class="text-lg font-semibold text-gray-800">{{ item.product.name }}</p>
-                        <p class="text-sm text-gray-500 mt-1">الكمية: {{ item.quantity }}</p>
+                        <p class="text-sm text-gray-500 mt-1">Quantity: {{ item.quantity }}</p>
                     </div>
                 </div>
                 <p class="text-lg font-bold text-blue-700 mt-4 md:mt-0">{{ item.get_total_price }} EGP</p>
             </li>
             {% endfor %}
         </ul>
-        <div class="text-right text-xl font-extrabold text-blue-800 mt-10">
-            إجمالي السعر: {{ order.total_price }} EGP
+        <div class="text-right text-lg sm:text-xl font-extrabold text-blue-800 mt-8">
+            Total: {{ order.total_price }} EGP
         </div>
     </div>
 
-    <!-- تغيير الحالة -->
+    <!-- Status Update -->
     <form method="post" action="{% url 'update_order_status' order.id %}"
-        class="mt-10 bg-white p-6 rounded-2xl shadow-md w-full sm:w-fit animate__animated animate__fadeInUp">
+        class="bg-white p-6 rounded-2xl shadow-md w-full sm:w-fit">
         {% csrf_token %}
-        <label for="status" class="block mb-3 text-gray-800 font-bold text-lg">تغيير حالة الطلب:</label>
+        <label for="status" class="block mb-3 text-gray-800 font-bold">Update Order Status:</label>
         <div class="flex flex-wrap gap-4">
             <select name="status" id="status"
                 class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -61,15 +59,15 @@
             </select>
             <button type="submit"
                 class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-900 text-white font-bold px-6 py-2 rounded-lg transition-all">
-                تحديث
+                Save
             </button>
         </div>
     </form>
 
-    <!-- رجوع للطلبات -->
-    <div class="mt-8 text-center">
+    <!-- Back -->
+    <div class="text-center">
         <a href="{% url 'dashboard_orders' %}" class="text-blue-600 hover:underline font-semibold text-sm">
-            ← الرجوع لقائمة الطلبات
+            ← Back to Orders
         </a>
     </div>
 

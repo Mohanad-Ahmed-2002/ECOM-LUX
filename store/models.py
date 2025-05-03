@@ -3,6 +3,8 @@ from django import forms
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from django.utils import timezone
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
+
 
 # Create your models here.
 
@@ -30,9 +32,10 @@ class Product(models.Model):
 
     name = models.CharField(max_length=100)
     price = models.FloatField()
+    discount_price = models.FloatField(null=True, blank=True)  # ✅ السعر بعد الخصم
     main_category = models.CharField(max_length=20, choices=MAIN_CATEGORY_CHOICES)  # ✨ الفئة الأساسية
     sub_category = models.CharField(max_length=20, choices=SUB_CATEGORY_CHOICES ,blank=True, null=True)
-    image = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='LUXFLEX/')
+    image = CloudinaryField('image', folder='LUXFLEX/')
     age_group = models.CharField(max_length=10, choices=AGE_GROUP_CHOICES, default='Men')
     description = models.TextField(blank=True)  # 👈 شرح المنتج
     
@@ -41,7 +44,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(storage=MediaCloudinaryStorage(), upload_to='LUXFLEX/')
+    image = CloudinaryField('image', folder='LUXFLEX/')
     color_name = models.CharField(max_length=50)
 
     def __str__(self):

@@ -35,7 +35,6 @@ Shop
         class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
         {% if main_category %}
         {{ main_category|title }}
-        {% if sub_category %} - {{ sub_category|title }}{% endif %}
         {% if age_group %} - {{ age_group|title }}{% endif %}
         {% else %}
         Shop
@@ -54,8 +53,14 @@ Shop
             </a>
             <div class="p-4 flex flex-col justify-between h-36 sm:h-40">
                 <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
-                <p class="text-gray-500 text-xs sm:text-sm mt-1 line-clamp-2">{{ product.description }}</p>
+                {% if product.discount_price %}
+                <div class="mt-2">
+                    <p class="text-gray-400 text-sm line-through">{{ product.price }} EGP</p>
+                    <p class="text-black font-bold text-sm">{{ product.discount_price }} EGP</p>
+                </div>
+                {% else %}
                 <p class="text-black font-bold text-sm sm:text-base mt-2">{{ product.price }} EGP</p>
+                {% endif %}
 
                 {% if product.images.all %}
                 <div class="flex space-x-1 mt-3">
