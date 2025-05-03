@@ -29,7 +29,7 @@ def about(request):
 
 
 # ============================== المنتجات ==============================
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def products_by_main_category(request, main_category):
     products = Product.objects.filter(
         main_category=main_category.upper()
@@ -46,7 +46,7 @@ def products_by_main_category(request, main_category):
         'main_category': main_category,
     })
 
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def products_by_main_and_sub_category(request, main_category, sub_category):
     products = Product.objects.filter(
         main_category=main_category.upper(),
@@ -65,7 +65,7 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
         'sub_category': sub_category,
     })
 
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
     products = Product.objects.filter(
         main_category=main_category.upper(),
@@ -86,7 +86,7 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         'age_group': age_group.capitalize()
     })
 
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     extra_images = product.extra_images.all()
