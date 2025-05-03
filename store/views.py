@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponseRedirect,HttpResponse
 from django.contrib import messages
-from .models import Product,CartItem,CustomerOrder,OrderForm,Government,OrderItem,PromoCode,WishlistItem,ProductImage
+from .models import Product,CartItem,CustomerOrder,Government,OrderItem,PromoCode,WishlistItem,ProductImage
 from decimal import Decimal
 from django.http import JsonResponse
 from .services import order_service,cart_service,product_service
@@ -10,8 +10,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.paginator import Paginator
 from django import forms
 from django.forms import modelformset_factory
-from .forms import ProductForm, ProductImageFormSet,GovernmentForm
-
+from .forms import OrderForm
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 # Create your views here.
 def home(request):
@@ -20,27 +21,55 @@ def home(request):
 def about(request):
     return render(request,'myapp/about.html')
 
+from django.core.paginator import Paginator
+from django.views.decorators.cache import cache_page
+from django.db.models import Prefetch
+from .models import Product, ProductImage
+
+@cache_page(60 * 5)  # كاش 5 دقايق
 def products_by_main_category(request, main_category):
-    products = Product.objects.filter(main_category=main_category.upper())
-    paginator = Paginator(products, 10)  # 10 منتج في الصفحة
-    page_number = request.GET.get('page')
+    products = Product.objects.filter(
+        main_category=main_category.upper()
+    ).only("id", "name", "price", "discount_price", "image").prefetch_related(
+        Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
+    )
+
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'myapp/shop_list.html', {'page_obj': page_obj, 'main_category': main_category})
+    return render(request, 'myapp/shop_list.html', {
+        'page_obj': page_obj,
+        'main_category': main_category,
+    })
 
 def products_by_main_and_sub_category(request, main_category, sub_category):
-    products = Product.objects.filter(main_category=main_category.upper(), sub_category=sub_category.upper())
+    products = Product.objects.filter(
+        main_category=main_category.upper(),
+        sub_category=sub_category.upper()
+    ).only("id", "name", "price", "discount_price", "image").prefetch_related(
+        Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
+    )
+
     paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'myapp/shop_list.html', {'page_obj': page_obj, 'main_category': main_category, 'sub_category': sub_category})
+
+    return render(request, 'myapp/shop_list.html', {
+        'page_obj': page_obj,
+        'main_category': main_category,
+        'sub_category': sub_category,
+    })
 
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
     products = Product.objects.filter(
         main_category=main_category.upper(),
         sub_category=sub_category.upper(),
         age_group=age_group.capitalize()
+    ).only("id", "name", "price", "discount_price", "image").prefetch_related(
+        Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
+
     paginator = Paginator(products, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -50,6 +79,23 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         'main_category': main_category.upper(),
         'sub_category': sub_category.upper(),
         'age_group': age_group.capitalize()
+    })
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    # الصور الإضافية
+    extra_images = product.extra_images.all()
+
+    # المنتجات المشابهة (حسب نفس الفئة الفرعية)
+    related_products = Product.objects.filter(
+        sub_category=product.sub_category,
+    ).exclude(id=product.id)[:4]  # عرض 4 منتجات فقط
+
+    return render(request, 'myapp/product_detail.html', {
+        'product': product,
+        'extra_images': extra_images,
+        'related_products': related_products,
     })
 
 def cart_detail(request):
@@ -85,18 +131,14 @@ def decrease_quantity(request, item_id):
 
 def checkout(request):
     form = OrderForm(request.POST or None)
-    session_key = request.session.session_key   
-    if not session_key:
-        request.session.create()
-        session_key = request.session.session_key
+    session_key = request.session.session_key or request.session.create() or request.session.session_key
 
     price_data = order_service.calculate_total_prices(session_key)
     subtotal = Decimal(price_data['subtotal'])
 
     shipping_fee = Decimal(0)
     government_id = request.POST.get('government')
-
-    if request.method == 'POST' and government_id:
+    if request.method == 'POST' and government_id and government_id.isdigit():
         shipping_fee = order_service.get_shipping_fee(government_id)
 
     promo_code_str = request.POST.get('promo_code', '').strip()
@@ -105,23 +147,27 @@ def checkout(request):
     grand_total = subtotal - discount_amount + shipping_fee
 
     if request.method == 'POST':
-        payment_method = request.POST.get('payment_method', 'Cash')  # افتراضي Cash لو مفيش اختيار
+        if form.is_valid():
+            payment_method = request.POST.get('payment_method', 'Cash')
 
-        if payment_method == 'visa':
-            # العميل اختار Visa ➔ نحوله لصفحة الدفع
-            return redirect('payment_redirect')  # لازم يكون عندك URL اسمه payment_redirect
+            if payment_method == 'visa':
+                return redirect('payment_redirect')
 
-        elif payment_method in ['instapay', 'Cash']:
-            if form.is_valid():
+            elif payment_method in ['instapay', 'Cash']:
                 order = form.save(commit=False)
                 order.shipping_fee = shipping_fee
                 order.total_price = grand_total
-                order.payment_method = payment_method  # نحفظ طريقة الدفع
+                order.payment_method = payment_method
                 order_service.create_order(order, session_key)
                 messages.success(request, "Your order has been placed successfully!")
                 return redirect('order_success', order_id=order.id)
+        else:
+            messages.error(request, "Please correct the errors below.")
 
-    governments = Government.objects.all()
+    governments = cache.get('governments_list')
+    if not governments:
+        governments = Government.objects.only('id', 'name')
+        cache.set('governments_list', governments, 60 * 60)
 
     return render(request, 'myapp/checkout.html', {
         'form': form,
@@ -133,9 +179,16 @@ def checkout(request):
         'promo_code_str': promo_code_str,
     })
 
-def payment_redirect(request):
-    return render(request, 'myapp/payment_redirect.html')
+def validate_promo_code(request):
+    code = request.GET.get('code', '').strip()
+    subtotal = Decimal(request.GET.get('subtotal', '0'))
+    
+    discount = order_service.apply_promo_code(code, subtotal)  # request مش محتاجينها هنا
 
+    if discount > 0:
+        return JsonResponse({'valid': True, 'discount': float(discount)})
+    else:
+        return JsonResponse({'valid': False, 'message': 'Promo code is not valid or expired'})
 
 def order_success(request,order_id):
     order = get_object_or_404(CustomerOrder, id=order_id)
@@ -149,17 +202,6 @@ def order_success(request,order_id):
 
     return render(request,'myapp/order_success.html',context)
 
-def validate_promo_code(request):
-    code = request.GET.get('code', '').strip()
-    subtotal = Decimal(request.GET.get('subtotal', '0'))
-    
-    discount = order_service.apply_promo_code(code, subtotal)  # request مش محتاجينها هنا
-
-    if discount > 0:
-        return JsonResponse({'valid': True, 'discount': float(discount)})
-    else:
-        return JsonResponse({'valid': False, 'message': 'Promo code is not valid or expired'})
-    
 def add_to_wishlist(request, product_id):
     session_key = cart_service.get_or_create_session_key(request)
     product = get_object_or_404(Product, id=product_id)
@@ -182,6 +224,7 @@ def remove_from_wishlist(request, product_id):
 
 def remove_from_cart(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, session_key=cart_service.get_or_create_session_key(request))
+    product_name = item.product.name
     item.delete()
     messages.success(request, f'"{item.product.name}" removed from cart.')
     return redirect('cart_detail')
@@ -254,18 +297,6 @@ def dashboard_products(request):
     return render(request, 'dashboard/products_list.html', {'products': products})
 
 @staff_member_required
-def edit_product(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    form = ProductForm(request.POST or None, request.FILES or None, instance=product)
-    
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, "Product updated successfully.")
-        return redirect('dashboard_products')
-
-    return render(request, 'dashboard/edit_product.html', {'form': form, 'product': product})
-
-@staff_member_required
 @require_POST
 def delete_product(request, product_id):
     try:
@@ -275,99 +306,4 @@ def delete_product(request, product_id):
     except Product.DoesNotExist:
         messages.error(request, "Product not found.")
     return redirect('dashboard_products')
-
-
-@staff_member_required
-def add_product(request):
-    if request.method == 'POST':
-        product_form = ProductForm(request.POST)
-        formset = ProductImageFormSet(request.POST, request.FILES, queryset=ProductImage.objects.none())
-
-        if product_form.is_valid() and formset.is_valid():
-            product = product_form.save()
-
-            for form in formset.cleaned_data:
-                if form and 'image' in form:
-                    ProductImage.objects.create(
-                        product=product,
-                        image=form['image'],
-                        color_name=form.get('color_name', '')
-                    )
-
-            messages.success(request, "Product added successfully.")
-            return redirect('dashboard_products')
-    else:
-        product_form = ProductForm()
-        formset = ProductImageFormSet(queryset=ProductImage.objects.none())
-
-    return render(request, 'dashboard/add_product.html', {
-        'product_form': product_form,
-        'formset': formset,
-    })
-
-class PromoCodeForm(forms.ModelForm):
-    class Meta:
-        model = PromoCode
-        fields = ['code', 'discount_percentage', 'is_active', 'expiration_date']
-
-@staff_member_required
-def dashboard_promo_codes(request):
-    edit_id = request.GET.get('edit')
-    promo_to_edit = None
-
-    if edit_id:
-        promo_to_edit = get_object_or_404(PromoCode, id=edit_id)
-        form = PromoCodeForm(request.POST or None, instance=promo_to_edit)
-    else:
-        form = PromoCodeForm(request.POST or None)
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, "Promo code saved successfully.")
-        return redirect('dashboard_promo_codes')
-
-    codes = PromoCode.objects.all().order_by('-id')
-    return render(request, 'dashboard/promo_codes_list.html', {
-        'codes': codes,
-        'form': form,
-        'editing': promo_to_edit
-    })
-
-@staff_member_required
-def delete_promo_code(request, promo_id):
-    promo = get_object_or_404(PromoCode, id=promo_id)
-    promo.delete()
-    messages.success(request, "Promo code deleted.")
-    return redirect('dashboard_promo_codes')
-
-@staff_member_required
-def dashboard_shipping(request):
-    edit_id = request.GET.get('edit')
-    gov_to_edit = None
-
-    if edit_id:
-        gov_to_edit = get_object_or_404(Government, id=edit_id)
-        form = GovernmentForm(request.POST or None, instance=gov_to_edit)
-    else:
-        form = GovernmentForm(request.POST or None)
-
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        messages.success(request, "Saved successfully.")
-        return redirect('dashboard_shipping')
-
-    governments = Government.objects.all().order_by('name')
-    return render(request, 'dashboard/shipping_list.html', {
-        'form': form,
-        'governments': governments,
-        'editing': gov_to_edit
-    })
-
-@staff_member_required
-def delete_government(request, gov_id):
-
-    gov = get_object_or_404(Government, id=gov_id)
-    gov.delete()
-    messages.success(request, "Deleted successfully.")
-    return redirect('dashboard_shipping')
 

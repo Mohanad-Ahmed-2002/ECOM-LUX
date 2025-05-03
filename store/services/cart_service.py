@@ -23,6 +23,8 @@ def add_product_to_cart(product_id, request):
 
     if not created:
         cart_item.quantity += 1
+        if selected_color:
+            cart_item.selected_color = selected_color
         cart_item.save()
 
     return product

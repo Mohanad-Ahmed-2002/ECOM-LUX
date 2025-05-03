@@ -3,15 +3,19 @@ from .models import Product, Government, PromoCode, ProductImage
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-    extra = 1  # عدد الصور المفتوحة جاهزة
+    extra = 3
     fields = ('image', 'color_name',)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'main_category', 'sub_category', 'age_group')
+    list_display = ('name', 'price', 'main_category', 'sub_category', 'age_group', 'image_count')
     list_filter = ('main_category', 'sub_category', 'age_group')
     search_fields = ('name',)
     inlines = [ProductImageInline]
+
+    def image_count(self, obj):
+        return obj.images.count()
+    image_count.short_description = 'image_count'
 
 @admin.register(Government)
 class GovernmentAdmin(admin.ModelAdmin):
@@ -21,3 +25,4 @@ class GovernmentAdmin(admin.ModelAdmin):
 class PromoCodeAdmin(admin.ModelAdmin):
     list_display = ('code', 'discount_percentage', 'is_active', 'expiration_date')
     search_fields = ('code',)
+    list_filter = ('is_active',)

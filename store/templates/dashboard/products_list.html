@@ -9,15 +9,6 @@
         🛍️ Product Management
     </h1>
 
-    <!-- Add Product Button -->
-    <div class="text-right">
-        <a href="{% url 'add_product' %}"
-            class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md text-sm sm:text-base">
-            ➕ Add New Product
-        </a>
-    </div>
-
-    
 
     <!-- Table -->
     <div class="bg-white shadow-xl rounded-2xl overflow-x-auto border">
@@ -61,8 +52,6 @@
                         {% endif %}
                     </td>
                     <td class="px-4 py-3 whitespace-nowrap text-sm space-x-2">
-                        <a href="{% url 'edit_product' product.id %}"
-                            class="text-blue-600 hover:underline font-semibold">Edit</a>
                         <form method="POST" action="{% url 'delete_product' product.id %}" onsubmit="return confirm('Delete this product?');"
                             style="display:inline;">
                             {% csrf_token %}

@@ -7,7 +7,6 @@ Shop
 {% block content %}
 <div class="container mx-auto px-3 py-8">
 
-    <!-- Success Messages -->
     {% if messages %}
     <div id="success-message" class="max-w-xl mx-auto mt-6 px-4">
         {% for message in messages %}
@@ -17,7 +16,6 @@ Shop
         </div>
         {% endfor %}
     </div>
-    
     <script>
         setTimeout(() => {
             const box = document.getElementById('success-message');
@@ -30,7 +28,6 @@ Shop
     </script>
     {% endif %}
 
-    <!-- عنوان الصفحة -->
     <h1
         class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
         {% if main_category %}
@@ -41,18 +38,20 @@ Shop
         {% endif %}
     </h1>
 
-    <!-- عرض المنتجات -->
     {% if page_obj %}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
         {% for product in page_obj %}
         <div
             class="bg-white rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
-            <a href="#">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                    class="w-full h-52 sm:h-60 object-cover transition duration-300 ease-in-out hover:scale-105">
+            <a href="{% url 'product_detail' product.id %}">
+                <img id="main-image-{{ product.id }}" src="{{ product.optimized_image|default:product.image.url }}"
+                    alt="{{ product.name }}"
+                    class="w-full  h-52 sm:h-60 object-cover transition duration-300 ease-in-out hover:scale-105">
             </a>
-            <div class="p-4 flex flex-col justify-between h-36 sm:h-40">
+
+            <div class="p-4 flex flex-col justify-between  ">
                 <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
+
                 {% if product.discount_price %}
                 <div class="mt-2">
                     <p class="text-gray-400 text-sm line-through">{{ product.price }} EGP</p>
@@ -62,13 +61,13 @@ Shop
                 <p class="text-black font-bold text-sm sm:text-base mt-2">{{ product.price }} EGP</p>
                 {% endif %}
 
-                {% if product.images.all %}
+                {% if product.extra_images.all %}
                 <div class="flex space-x-1 mt-3">
                     <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer" title="Original"
                         data-image-url="{{ product.image.url }}" onclick="changeMainImage('{{ product.id }}', this)"
                         style="background-image: url('{{ product.image.url }}'); background-size: cover; background-position: center;">
                     </div>
-                    {% for image in product.images.all %}
+                    {% for image in product.extra_images.all %}
                     <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer"
                         title="{{ image.color_name }}" data-image-url="{{ image.image.url }}"
                         onclick="changeMainImage('{{ product.id }}', this)"
@@ -86,6 +85,7 @@ Shop
                             class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-3 py-1 rounded-full text-xs font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
                             Add to Cart
                         </button>
+                        
                     </form>
                     <a href="{% url 'add_to_wishlist' product.id %}"
                         class="text-gray-400 hover:text-red-500 transition duration-300">
@@ -97,7 +97,6 @@ Shop
         {% endfor %}
     </div>
 
-    <!-- Pagination تحت المنتجات -->
     <div class="mt-10 flex justify-center">
         <nav class="inline-flex space-x-1">
             {% if page_obj.has_previous %}
@@ -127,7 +126,6 @@ Shop
     {% endif %}
 </div>
 
-<!-- سكريبت تغيير الصورة -->
 <script>
     function changeMainImage(productId, element) {
         const newImageUrl = element.getAttribute('data-image-url');
@@ -141,4 +139,6 @@ Shop
         }
     }
 </script>
+
+
 {% endblock %}
