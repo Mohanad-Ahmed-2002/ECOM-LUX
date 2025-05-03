@@ -32,7 +32,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool, default=False)
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",")
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
