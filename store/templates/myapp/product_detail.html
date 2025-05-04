@@ -14,16 +14,24 @@
                 class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
 
             <!-- الصور الإضافية -->
-            {% if extra_images %}
             <div id="thumbnails" class="flex flex-wrap gap-2 mt-4">
+            
+                <!-- أضف الصورة الافتراضية (الصورة الأساسية) -->
+                <img src="{{ product.image.url }}" alt="Default"
+                    class="w-20 h-20 object-cover border rounded cursor-pointer transition hover:scale-105 ring-2 ring-blue-500"
+                    title="Default Image" data-image-url="{{ product.image.url }}"
+                    onclick="changeMainImage('{{ product.id }}', this)">
+            
+                {% if extra_images %}
                 {% for img in extra_images %}
                 <img src="{{ img.image.url }}" alt="{{ img.color_name }}"
                     class="w-20 h-20 object-cover border rounded cursor-pointer transition hover:scale-105"
                     title="{{ img.color_name }}" data-image-url="{{ img.image.url }}"
                     onclick="changeMainImage('{{ product.id }}', this)">
                 {% endfor %}
+                {% endif %}
             </div>
-            {% endif %}
+
         </div>
 
         <!-- تفاصيل -->
