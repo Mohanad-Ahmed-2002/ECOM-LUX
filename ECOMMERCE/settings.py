@@ -17,7 +17,6 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# Cloudinary Settings
 cloudinary.config(
     cloud_name=config('CLOUD_NAME'),
     api_key=config('API_KEY'),
@@ -160,7 +159,12 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
+# Cloudinary Settings
+CLOUDINARY_STORAGE = {
+    'cloud_name': config('CLOUD_NAME'),
+    'api_key': config('API_KEY'),
+    'api_secret': config('API_SECRET'),
+}
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
