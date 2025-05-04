@@ -14,7 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline]
 
     def image_count(self, obj):
-        return obj.images.count()
+        return obj.extra_images.count()
     image_count.short_description = 'image_count'
 
 @admin.register(Government)
