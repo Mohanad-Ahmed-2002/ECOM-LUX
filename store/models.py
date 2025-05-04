@@ -56,17 +56,6 @@ class Product(models.Model):
     def get_price(self):
         return self.discount_price if self.discount_price else self.price
 
-    @property
-    def image_small(self):
-        return self.image.url.replace('/upload/', '/upload/w_300,f_auto,q_auto/')
-
-    @property
-    def image_medium(self):
-        return self.image.url.replace('/upload/', '/upload/w_600,f_auto,q_auto/')
-
-    @property
-    def image_large(self):
-        return self.image.url.replace('/upload/', '/upload/w_1000,f_auto,q_auto/')
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')
