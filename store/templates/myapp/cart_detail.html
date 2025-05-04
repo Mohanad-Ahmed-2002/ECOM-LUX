@@ -4,7 +4,7 @@
 {% block content %}
 <section class="container mx-auto px-4 sm:px-6 py-10">
 
-    <!-- Success Messages -->
+    <!-- ✅ Success Messages -->
     {% if messages %}
     <div id="success-message" class="max-w-xl mx-auto mt-6 px-4">
         {% for message in messages %}
@@ -14,7 +14,6 @@
         </div>
         {% endfor %}
     </div>
-
     <script>
         setTimeout(() => {
             const box = document.getElementById('success-message');
@@ -27,12 +26,14 @@
     </script>
     {% endif %}
 
+    <!-- ✅ Page Title -->
     <h1
         class="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text text-transparent text-center mb-12 animate__animated animate__fadeInDown">
         🛒 Your Shopping Cart
     </h1>
 
     {% if cart_items %}
+    <!-- ✅ Cart Table -->
     <div
         class="overflow-x-auto rounded-3xl shadow-2xl border border-blue-100 bg-white animate__animated animate__fadeInUp">
         <table class="w-full min-w-[700px] text-sm sm:text-base">
@@ -68,14 +69,10 @@
                     <td class="py-4 px-4 text-center">
                         <div class="flex items-center justify-center gap-1 sm:gap-2">
                             <a href="{% url 'decrease_quantity' item.id %}"
-                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow">
-                                -
-                            </a>
+                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow">-</a>
                             <span class="font-semibold text-gray-900">{{ item.quantity }}</span>
                             <a href="{% url 'increase_quantity' item.id %}"
-                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow">
-                                +
-                            </a>
+                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow">+</a>
                         </div>
                     </td>
                     <td class="py-4 px-4 text-center text-gray-800 font-semibold">EGP {{ item.product.price }}</td>
@@ -95,7 +92,7 @@
         </table>
     </div>
 
-    <!-- Total + Checkout -->
+    <!-- ✅ Total & Checkout -->
     <div class="mt-10 flex flex-col sm:flex-row justify-between items-center gap-6 animate__animated animate__fadeInUp">
         <div class="text-2xl font-bold text-blue-800">
             Total: <span class="text-gray-900">EGP {{ total_price }}</span>
@@ -107,8 +104,8 @@
     </div>
 
     {% else %}
+    <!-- ✅ Empty Cart Message -->
     <p class="text-center text-gray-600 text-lg mt-10">Your cart is currently empty.</p>
-    
     {% endif %}
 </section>
 {% endblock %}

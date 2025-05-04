@@ -11,28 +11,33 @@
     </h1>
 
     <!-- Stats Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-        <div class="bg-white shadow-md rounded-xl p-4 sm:p-6 text-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+        <div class="bg-white shadow-lg rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
             <p class="text-gray-500 text-sm">Orders</p>
-            <p class="text-2xl font-bold text-blue-600">{{ orders_count }}</p>
+            <p class="text-3xl font-bold text-blue-600">{{ orders_count }}</p>
         </div>
-        <div class="bg-white shadow-md rounded-xl p-4 sm:p-6 text-center">
+        <div class="bg-white shadow-lg rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
             <p class="text-gray-500 text-sm">Pending</p>
-            <p class="text-2xl font-bold text-yellow-500">{{ pending_orders }}</p>
+            <p class="text-3xl font-bold text-yellow-500">{{ pending_orders }}</p>
         </div>
-        <div class="bg-white shadow-md rounded-xl p-4 sm:p-6 text-center">
+        <div class="bg-white shadow-lg rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
             <p class="text-gray-500 text-sm">Products</p>
-            <p class="text-2xl font-bold text-green-600">{{ products_count }}</p>
+            <p class="text-3xl font-bold text-green-600">{{ products_count }}</p>
         </div>
-        
+
+    </div>
 
     <!-- Quick Links -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm font-semibold text-center">
         <a href="{% url 'dashboard_orders' %}"
-            class="bg-blue-100 hover:bg-blue-200 text-blue-900 py-4 rounded-xl shadow-md">📦 Orders</a>
+            class="bg-blue-100 hover:bg-blue-200 text-blue-900 py-5 rounded-xl shadow-md hover:scale-105 transition duration-300">
+            📦 Orders
+        </a>
         <a href="{% url 'dashboard_products' %}"
-            class="bg-green-100 hover:bg-green-200 text-green-900 py-4 rounded-xl shadow-md">🛍️ Products</a>
-        
+            class="bg-green-100 hover:bg-green-200 text-green-900 py-5 rounded-xl shadow-md hover:scale-105 transition duration-300">
+            🛍️ Products
+        </a>
+
     </div>
 
 </div>

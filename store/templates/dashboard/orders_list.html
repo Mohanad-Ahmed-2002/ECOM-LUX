@@ -2,19 +2,19 @@
 {% block title %}Orders - Dashboard | LUXEFLEX{% endblock %}
 
 {% block content %}
-<div class="space-y-8">
+<div class="space-y-10">
 
     <!-- Page Title -->
-    <h1 class="text-xl sm:text-2xl font-extrabold text-center text-blue-800">
-        📦 Orders
+    <h1 class="text-2xl sm:text-3xl font-extrabold text-center text-blue-800">
+        📦 Order Management
     </h1>
 
     <!-- Filter -->
-    <form method="get" class="flex flex-wrap gap-4 items-center justify-start text-sm">
+    <form method="get" class="flex flex-wrap items-center gap-4 text-sm">
         <label class="font-semibold text-gray-700">
             Filter by Status:
             <select name="status" onchange="this.form.submit()"
-                class="ml-2 border border-gray-300 rounded-md px-3 py-1 focus:ring-2 focus:ring-blue-500">
+                class="ml-2 border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">All</option>
                 <option value="PENDING">Pending</option>
                 <option value="SHIPPED">Shipped</option>
@@ -25,54 +25,58 @@
     </form>
 
     <!-- Orders Table -->
-    <div class="bg-white shadow-xl rounded-2xl overflow-x-auto border">
-        <table class="w-full min-w-[650px] text-sm sm:text-base text-left">
-            <thead class="bg-blue-50 text-blue-800 font-semibold">
-                <tr>
-                    <th class="px-4 py-3">Name</th>
-                    <th class="px-4 py-3">Phone</th>
-                    <th class="px-4 py-3">Gov</th>
-                    <th class="px-4 py-3">Total</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Date</th>
-                    <th class="px-4 py-3">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200 text-gray-700">
-                {% for order in orders %}
-                <tr class="hover:bg-blue-50 transition duration-150">
-                    <td class="px-4 py-3">{{ order.name }}</td>
-                    <td class="px-4 py-3">{{ order.phone }}</td>
-                    <td class="px-4 py-3">{{ order.government }}</td>
-                    <td class="px-4 py-3 font-semibold text-blue-700">{{ order.total_price }} EGP</td>
-                    <td class="px-4 py-3">
-                        <span class="font-semibold 
-                            {% if order.status == 'PENDING' %}text-yellow-500
-                            {% elif order.status == 'SHIPPED' %}text-blue-500
-                            {% elif order.status == 'DELIVERED' %}text-green-600
-                            {% elif order.status == 'CANCELLED' %}text-red-600
-                            {% endif %}">
-                            {{ order.get_status_display }}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3">{{ order.order_date|date:"Y-m-d" }}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm space-x-2">
-                        <a href="{% url 'order_detail' order.id %}"
-                            class="text-blue-600 hover:underline font-semibold">View</a>
-                        <form action="{% url 'delete_order' order.id %}" method="post" class="inline">
-                            {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Delete this order?')"
-                                class="text-red-600 hover:underline font-semibold">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" class="text-center py-6 text-gray-400">No orders found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="bg-white shadow-xl rounded-2xl border overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[650px] text-sm sm:text-base text-left">
+                <thead class="bg-blue-50 text-blue-800 font-semibold">
+                    <tr>
+                        <th class="px-4 py-3">Name</th>
+                        <th class="px-4 py-3">Phone</th>
+                        <th class="px-4 py-3">Gov</th>
+                        <th class="px-4 py-3">Total</th>
+                        <th class="px-4 py-3">Status</th>
+                        <th class="px-4 py-3">Date</th>
+                        <th class="px-4 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 text-gray-700">
+                    {% for order in orders %}
+                    <tr class="hover:bg-blue-50 transition duration-150">
+                        <td class="px-4 py-3">{{ order.name }}</td>
+                        <td class="px-4 py-3">{{ order.phone }}</td>
+                        <td class="px-4 py-3">{{ order.government }}</td>
+                        <td class="px-4 py-3 font-semibold text-blue-700">{{ order.total_price }} EGP</td>
+                        <td class="px-4 py-3">
+                            <span class="font-semibold 
+                                {% if order.status == 'PENDING' %}text-yellow-500
+                                {% elif order.status == 'SHIPPED' %}text-blue-500
+                                {% elif order.status == 'DELIVERED' %}text-green-600
+                                {% elif order.status == 'CANCELLED' %}text-red-600
+                                {% endif %}">
+                                {{ order.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3">{{ order.order_date|date:"Y-m-d" }}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-sm">
+                            <a href="{% url 'order_detail' order.id %}"
+                                class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">View</a>
+                            <form action="{% url 'delete_order' order.id %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" onclick="return confirm('Delete this order?')"
+                                    class="text-red-600 hover:text-red-800 font-semibold transition duration-200 ml-2">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-6 text-gray-400">No orders found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

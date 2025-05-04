@@ -16,7 +16,14 @@
             <p><span class="font-semibold text-blue-700">Phone:</span> {{ order.phone }}</p>
             <p><span class="font-semibold text-blue-700">Address:</span> {{ order.address }}</p>
             <p><span class="font-semibold text-blue-700">Governorate:</span> {{ order.government.name }}</p>
-            <p><span class="font-semibold text-blue-700">Status:</span> {{ order.get_status_display }}</p>
+            <p><span class="font-semibold text-blue-700">Status:</span>
+                <span class="{% if order.status == 'PENDING' %}text-yellow-500
+                             {% elif order.status == 'SHIPPED' %}text-blue-500
+                             {% elif order.status == 'DELIVERED' %}text-green-600
+                             {% elif order.status == 'CANCELLED' %}text-red-600{% endif %}">
+                    {{ order.get_status_display }}
+                </span>
+            </p>
         </div>
     </div>
 
@@ -51,7 +58,7 @@
         <label for="status" class="block mb-3 text-gray-800 font-bold">Update Order Status:</label>
         <div class="flex flex-wrap gap-4">
             <select name="status" id="status"
-                class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 {% for choice in status_choices %}
                 <option value="{{ choice.value }}" {% if choice.selected %}selected{% endif %}>{{ choice.label }}
                 </option>
