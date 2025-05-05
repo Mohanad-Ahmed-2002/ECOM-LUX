@@ -5,8 +5,8 @@ Shop
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-3 py-8">
 
+    <!-- Success Messages -->
     {% if messages %}
     <div id="success-message" class="max-w-xl mx-auto mt-6 px-4">
         {% for message in messages %}
@@ -16,6 +16,7 @@ Shop
         </div>
         {% endfor %}
     </div>
+    
     <script>
         setTimeout(() => {
             const box = document.getElementById('success-message');
@@ -27,6 +28,8 @@ Shop
         }, 4000);
     </script>
     {% endif %}
+
+<div class="container mx-auto px-3 py-8">
 
     <h1
         class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
@@ -44,8 +47,8 @@ Shop
         <div
             class="bg-white rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
             <a href="{% url 'product_detail' product.id %}">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                    class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
+            <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
+                class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
             </a>
 
             <div class="p-4 flex flex-col justify-between  ">

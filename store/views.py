@@ -120,11 +120,17 @@ def add_to_cart(request, product_id):
         messages.success(request, f'"{product.name}" has been added to your cart successfully!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@require_POST
 def remove_from_cart(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, session_key=cart_service.get_or_create_session_key(request))
+    session_key = cart_service.get_or_create_session_key(request)
+    item = get_object_or_404(CartItem, id=item_id, session_key=session_key)
+
+    product_name = item.product.name  # نحفظ الاسم قبل الحذف
     item.delete()
-    messages.success(request, f'"{item.product.name}" removed from cart.')
+
+    messages.success(request, f'"{product_name}" removed from cart.')
     return redirect('cart_detail')
+
 
 def increase_quantity(request, item_id):
     cart_service.increase_cart_item_quantity(item_id, request)
