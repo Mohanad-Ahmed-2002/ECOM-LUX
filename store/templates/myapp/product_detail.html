@@ -2,102 +2,126 @@
 {% load static %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto px-4 py-10">
 
-    <!-- المنتج -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {% if messages %}
+        <div id="message-container" class="mb-4 transition-opacity duration-500">
+            {% for message in messages %}
+            <div class="p-2 rounded text-sm font-medium
+                            {% if message.tags == 'success' %} bg-green-100 text-green-800
+                            {% elif message.tags == 'error' %} bg-red-100 text-red-800
+                            {% else %} bg-gray-100 text-gray-800 {% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <script>
+            setTimeout(() => {
+                const messageContainer = document.getElementById('message-container');
+                if (messageContainer) {
+                    messageContainer.style.opacity = '0';
+                    setTimeout(() => messageContainer.remove(), 500); // Remove from DOM after fade
+                }
+            }, 3000); // 3 seconds
+        </script>
+        {% endif %}
 
-        <!-- الصور -->
-        <div>
-            <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
+    <div class="max-w-6xl mx-auto px-4 py-10">
 
-            <div id="thumbnails" class="flex flex-wrap gap-2 mt-4">
-                <img src="{{ product.image.url }}" alt="Default"
-                    class="w-20 h-20 object-cover border rounded cursor-pointer transition hover:scale-105 ring-2 ring-blue-500"
-                    title="Default" data-image-url="{{ product.image.url }}"
-                    onclick="changeMainImage('{{ product.id }}', this)">
-                {% for img in extra_images %}
-                <img src="{{ img.image.url }}" alt="{{ img.color_name }}"
-                    class="w-20 h-20 object-cover border rounded cursor-pointer transition hover:scale-105"
-                    title="{{ img.color_name }}" data-image-url="{{ img.image.url }}"
-                    onclick="changeMainImage('{{ product.id }}', this)">
-                {% endfor %}
+        <!-- المنتج -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+            <!-- الصور -->
+            <div>
+                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
+                    class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
+
+                <div id="thumbnails" class="flex flex-wrap gap-2 mt-4">
+                    <img src="{{ product.image.url }}" alt="Default"
+                        class="w-20 h-20 object-cover border rounded cursor-pointer transition hover:scale-105 ring-2 ring-blue-500"
+                        title="Default" data-image-url="{{ product.image.url }}"
+                        onclick="changeMainImage('{{ product.id }}', this)">
+                    {% for img in extra_images %}
+                    <img src="{{ img.image.url }}" alt="{{ img.color_name }}"
+                        class="w-20 h-20 object-cover border rounded cursor-pointer transition hover:scale-105"
+                        title="{{ img.color_name }}" data-image-url="{{ img.image.url }}"
+                        onclick="changeMainImage('{{ product.id }}', this)">
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- تفاصيل المنتج -->
+            <div>
+                <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
+                <div class="mb-4">
+                    {% if product.discount_price %}
+                    <span class="text-gray-400 line-through text-lg">{{ product.price }} EGP</span>
+                    <span class="text-black text-xl font-semibold ml-2">{{ product.discount_price }} EGP</span>
+                    {% else %}
+                    <span class="text-black text-xl font-semibold">{{ product.price }} EGP</span>
+                    {% endif %}
+                </div>
+                <p class="text-gray-700 mb-6 break-words">{{ product.description }}</p>
+
+                <div class="mt-4 flex items-center gap-3">
+                    <form action="{% url 'add_to_cart' product.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
+                        <button type="submit"
+                            class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-4 py-2 rounded-full text-sm font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
+                            Add to Cart
+                        </button>
+                    </form>
+                    <a href="{% url 'add_to_wishlist' product.id %}"
+                        class="text-gray-400 hover:text-red-500 transition duration-300 text-xl">
+                        <i class="far fa-heart"></i>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <!-- تفاصيل المنتج -->
-        <div>
-            <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
-            <div class="mb-4">
-                {% if product.discount_price %}
-                <span class="text-gray-400 line-through text-lg">{{ product.price }} EGP</span>
-                <span class="text-black text-xl font-semibold ml-2">{{ product.discount_price }} EGP</span>
-                {% else %}
-                <span class="text-black text-xl font-semibold">{{ product.price }} EGP</span>
-                {% endif %}
-            </div>
-            <p class="text-gray-700 mb-6 break-words">{{ product.description }}</p>
-
-            <div class="mt-4 flex items-center gap-3">
-                <form action="{% url 'add_to_cart' product.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
-                    <button type="submit"
-                        class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-4 py-2 rounded-full text-sm font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
-                        Add to Cart
-                    </button>
-                </form>
-                <a href="{% url 'add_to_wishlist' product.id %}"
-                    class="text-gray-400 hover:text-red-500 transition duration-300 text-xl">
-                    <i class="far fa-heart"></i>
-                </a>
-            </div>
+        <!-- منتجات مشابهة -->
+        {% if related_products %}
+        <h2 class="text-2xl font-semibold mt-16 mb-6 border-b pb-2">Related products</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for item in related_products %}
+            <a href="{% url 'product_detail' item.id %}"
+                class="group block border rounded-lg overflow-hidden hover:shadow-md transition duration-300">
+                <img src="{{ item.image.url }}" loading="lazy"
+                    class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                <div class="p-3">
+                    <h3 class="text-sm font-semibold truncate">{{ item.name }}</h3>
+                    {% if item.discount_price %}
+                    <p class="text-sm text-red-600">
+                        <del class="text-gray-400">{{ item.price }} EGP</del> {{ item.discount_price }} EGP
+                    </p>
+                    {% else %}
+                    <p class="text-sm text-black">{{ item.price }} EGP</p>
+                    {% endif %}
+                </div>
+            </a>
+            {% endfor %}
         </div>
+        {% endif %}
     </div>
 
-    <!-- منتجات مشابهة -->
-    {% if related_products %}
-    <h2 class="text-2xl font-semibold mt-16 mb-6 border-b pb-2">Related products</h2>
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% for item in related_products %}
-        <a href="{% url 'product_detail' item.id %}"
-            class="group block border rounded-lg overflow-hidden hover:shadow-md transition duration-300">
-            <img src="{{ item.image.url }}" loading="lazy"
-                class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
-            <div class="p-3">
-                <h3 class="text-sm font-semibold truncate">{{ item.name }}</h3>
-                {% if item.discount_price %}
-                <p class="text-sm text-red-600">
-                    <del class="text-gray-400">{{ item.price }} EGP</del> {{ item.discount_price }} EGP
-                </p>
-                {% else %}
-                <p class="text-sm text-black">{{ item.price }} EGP</p>
-                {% endif %}
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-    {% endif %}
-</div>
+    <!-- JavaScript لتغيير الصورة -->
+    <script>
+        function changeMainImage(productId, element) {
+            const newUrl = element.getAttribute("data-image-url");
+            const mainImage = document.getElementById("main-image-" + productId);
+            if (mainImage) mainImage.src = newUrl;
 
-<!-- JavaScript لتغيير الصورة -->
-<script>
-    function changeMainImage(productId, element) {
-        const newUrl = element.getAttribute("data-image-url");
-        const mainImage = document.getElementById("main-image-" + productId);
-        if (mainImage) mainImage.src = newUrl;
+            // حدد الإطار للصورة المحددة
+            document.querySelectorAll('#thumbnails img').forEach(img => {
+                img.classList.remove('ring-2', 'ring-blue-500');
+            });
+            element.classList.add('ring-2', 'ring-blue-500');
 
-        // حدد الإطار للصورة المحددة
-        document.querySelectorAll('#thumbnails img').forEach(img => {
-            img.classList.remove('ring-2', 'ring-blue-500');
-        });
-        element.classList.add('ring-2', 'ring-blue-500');
-
-        // حدث القيمة المخفية للون
-        const selectedColorInput = document.getElementById("selected-color-" + productId);
-        if (selectedColorInput) selectedColorInput.value = newUrl;
-    }
-</script>
+            // حدث القيمة المخفية للون
+            const selectedColorInput = document.getElementById("selected-color-" + productId);
+            if (selectedColorInput) selectedColorInput.value = newUrl;
+        }
+    </script>
 
 {% endblock %}

@@ -29,10 +29,12 @@ def about(request):
 
 
 # ============================== المنتجات ==============================
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def products_by_main_category(request, main_category):
+    main_category = main_category.upper()
+
     products = Product.objects.filter(
-        main_category=main_category.upper()
+        main_category=main_category
     ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
@@ -46,11 +48,14 @@ def products_by_main_category(request, main_category):
         'main_category': main_category,
     })
 
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def products_by_main_and_sub_category(request, main_category, sub_category):
+    main_category = main_category.upper()
+    sub_category = sub_category.upper()
+
     products = Product.objects.filter(
-        main_category=main_category.upper(),
-        sub_category=sub_category.upper()
+        main_category=main_category,
+        sub_category=sub_category
     ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
@@ -65,12 +70,16 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
         'sub_category': sub_category,
     })
 
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
+    main_category = main_category.upper()
+    sub_category = sub_category.upper()
+    age_group = age_group.capitalize()
+
     products = Product.objects.filter(
-        main_category=main_category.upper(),
-        sub_category=sub_category.upper(),
-        age_group=age_group.capitalize()
+        main_category=main_category,
+        sub_category=sub_category,
+        age_group=age_group
     ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
@@ -81,18 +90,18 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
 
     return render(request, 'myapp/shop_list.html', {
         'page_obj': page_obj,
-        'main_category': main_category.upper(),
-        'sub_category': sub_category.upper(),
-        'age_group': age_group.capitalize()
+        'main_category': main_category,
+        'sub_category': sub_category,
+        'age_group': age_group
     })
 
-@cache_page(60 * 10)
+# @cache_page(60 * 10)
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    extra_images = product.extra_images.all()
+    extra_images = product.extra_images.only("image", "color_name")  # تحسين
     related_products = Product.objects.filter(
         sub_category=product.sub_category
-    ).exclude(id=product.id)[:4]
+    ).exclude(id=product.id).only("id", "name", "price", "discount_price", "image")[:4]
 
     return render(request, 'myapp/product_detail.html', {
         'product': product,
@@ -100,6 +109,9 @@ def product_detail(request, product_id):
         'related_products': related_products,
     })
 
+def hot_sale_view(request):
+    hot_products = Product.objects.filter(is_hot_sale=True)
+    return render(request, 'myapp/hot_sale.html', {'hot_products': hot_products})
 
 # ============================== سلة الشراء ==============================
 
@@ -113,12 +125,19 @@ def cart_detail(request):
 
 def add_to_cart(request, product_id):
     if request.method == 'POST':
-        selected_color = request.POST.get('selected_color')
-        product = cart_service.add_product_to_cart(product_id, request)
-        if selected_color:
-            print(f"Selected Color URL: {selected_color}")
-        messages.success(request, f'"{product.name}" has been added to your cart successfully!')
+        try:
+            selected_color = request.POST.get('selected_color')
+            product = cart_service.add_product_to_cart(product_id, request)
+
+            if selected_color:
+                print(f"Selected Color URL: {selected_color}")
+
+            messages.success(request, f'"{product.name}" has been added to your cart successfully!')
+        except Exception as e:
+            print(f"Error adding to cart: {e}")
+            messages.error(request, "There was a problem adding the product to the cart.")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
 @require_POST
 def remove_from_cart(request, item_id):

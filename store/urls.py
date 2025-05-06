@@ -11,6 +11,7 @@ urlpatterns = [
     path('shop/<str:main_category>/<str:sub_category>/', views.products_by_main_and_sub_category, name='products_by_main_and_sub_category'),
     path('shop/<str:main_category>/<str:sub_category>/<str:age_group>/', views.products_by_main_sub_and_age, name='products_by_main_sub_and_age'),
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('hot-sale/', views.hot_sale_view, name='hot_sale'),
 
     # المفضلة
     path('favorite/', views.favoritelist, name='favorite'),
