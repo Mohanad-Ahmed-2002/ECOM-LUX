@@ -3,39 +3,39 @@
 {% block title %}Favorites{% endblock %}
 
 {% block content %}
-
 <div class="container mx-auto px-3 py-8">
 
-        {% if messages %}
-        <div id="message-container" class="mb-4 transition-opacity duration-500">
-            {% for message in messages %}
-            <div class="p-2 rounded text-sm font-medium
-                            {% if message.tags == 'success' %} bg-green-100 text-green-800
-                            {% elif message.tags == 'error' %} bg-red-100 text-red-800
-                            {% else %} bg-gray-100 text-gray-800 {% endif %}">
-                {{ message }}
-            </div>
-            {% endfor %}
+    <!-- رسائل النظام -->
+    {% if messages %}
+    <div id="message-container" class="mb-4 transition-opacity duration-500">
+        {% for message in messages %}
+        <div class="p-2 rounded text-sm font-medium
+            {% if message.tags == 'success' %} bg-green-100 text-green-800
+            {% elif message.tags == 'error' %} bg-red-100 text-red-800
+            {% else %} bg-gray-100 text-gray-800 {% endif %}">
+            {{ message }}
         </div>
-        
-        <script>
-            setTimeout(() => {
-                const messageContainer = document.getElementById('message-container');
-                if (messageContainer) {
-                    messageContainer.style.opacity = '0';
-                    setTimeout(() => messageContainer.remove(), 500); // Remove from DOM after fade
-                }
-            }, 3000); // 3 seconds
-        </script>
-        {% endif %}
+        {% endfor %}
+    </div>
 
-    <!-- عنوان الصفحة -->
+    <script>
+        setTimeout(() => {
+            const messageContainer = document.getElementById('message-container');
+            if (messageContainer) {
+                messageContainer.style.opacity = '0';
+                setTimeout(() => messageContainer.remove(), 500);
+            }
+        }, 3000);
+    </script>
+    {% endif %}
+
+    <!-- العنوان -->
     <h1
         class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
         Favorites
     </h1>
 
-    <!-- عرض المنتجات المفضلة -->
+    <!-- المنتجات المفضلة -->
     {% if favorites %}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
         {% for item in favorites %}
@@ -51,7 +51,7 @@
                 <p class="text-black font-bold text-sm sm:text-base mt-2">{{ item.product.price }} EGP</p>
 
                 <div class="mt-4 flex items-center justify-between">
-                    <form action="{% url 'add_to_cart' item.product.id %}" method="post" class="inline">
+                    <form action="{% url 'add_to_cart' item.product.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit"
                             class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-3 py-1 rounded-full text-xs font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
@@ -76,7 +76,5 @@
         <p>You have no favorite products yet.</p>
     </div>
     {% endif %}
-
 </div>
-
 {% endblock %}

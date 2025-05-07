@@ -6,25 +6,46 @@
 {% endblock %}
 
 {% block content %}
+<div class="relative">
+    <!-- Animated background glow -->
+    <div
+        class="absolute inset-0 bg-gradient-to-br from-red-700 via-yellow-500 to-orange-600 opacity-10 animate-pulse z-0">
+    </div>
 
-<div>
-    <div class="container mx-auto px-3 py-8">
+    <div class="relative container mx-auto px-3 py-8 z-10">
+        <!-- Alert bar -->
+        <div class="bg-red-600 text-white text-center py-2 text-sm font-semibold animate-bounce mb-6 rounded shadow-lg">
+            ⏳ Hurry! Sale ends soon – while stocks last!
+        </div>
+
+        <!-- Heading -->
         <h1
             class="text-3xl sm:text-4xl font-bold text-center mb-10 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent animate-fade-in-down duration-1000">
             🔥 Hot Sale
         </h1>
 
         {% if hot_products %}
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8 animate-fade-in">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
             {% for product in hot_products %}
-            <div
-                class="bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300">
+            <div data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'d' }}00"
+                class="bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 relative">
+
+                <!-- SALE Badge -->
+                {% if product.discount_price %}
+                <div
+                    class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full animate-pulse shadow-lg z-10">
+                    SALE
+                </div>
+                {% endif %}
+
+                <!-- Image -->
                 <a href="{% url 'product_detail' product.id %}">
                     <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
                         loading="lazy"
                         class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105">
                 </a>
 
+                <!-- Product info -->
                 <div class="p-4 flex flex-col justify-between">
                     <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
 
@@ -59,8 +80,10 @@
                             {% csrf_token %}
                             <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
                             <button type="submit"
-                                class="border border-red-500 text-red-600 px-3 py-1 rounded-full text-xs font-semibold transition duration-300 ease-in-out group-hover:bg-red-600 group-hover:text-white active:scale-95">
-                                Add to Cart
+                                class="relative overflow-hidden border border-red-500 text-red-600 px-3 py-1 rounded-full text-xs font-semibold group hover:bg-red-600 hover:text-white transition duration-300 active:scale-95">
+                                <span
+                                    class="absolute inset-0 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 opacity-20 blur-sm"></span>
+                                <span class="relative">Add to Cart</span>
                             </button>
                         </form>
                         <a href="{% url 'add_to_wishlist' product.id %}"
@@ -83,13 +106,13 @@
 
 <style>
     .active-color-ring {
-        box-shadow: 0 0 0 2px #b91c1c;
+        box-shadow: 0 0 0 2px #411be9;
     }
 </style>
 
 <script>
     function changeMainImage(productId, element) {
-        const newImageUrl = element.getAttribute('data-image-url');
+        newImageUrl = element.getAttribute('data-image-url');
         const mainImage = document.getElementById('main-image-' + productId);
         if (mainImage) {
             mainImage.src = newImageUrl;
@@ -107,5 +130,4 @@
         element.classList.add('active-color-ring');
     }
 </script>
-
 {% endblock %}
