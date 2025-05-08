@@ -18,16 +18,6 @@ Shop
         {% endif %}
     </h1>
 
-    <!-- Sorting Dropdown -->
-    <div class="flex justify-end mb-6">
-        <select class="border rounded p-2 text-sm" onchange="location = this.value;">
-            <option value="?sort=default">Sort by</option>
-            <option value="?sort=price_asc">Price: Low to High</option>
-            <option value="?sort=price_desc">Price: High to Low</option>
-            <option value="?sort=newest">Newest</option>
-        </select>
-    </div>
-
     {% if page_obj %}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
         {% for product in page_obj %}
