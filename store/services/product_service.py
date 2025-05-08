@@ -1,24 +1,17 @@
 from store.models import Product
 
-def filter_products(price_filter=None, category_filter=None):
+def filter_products(price_filter=None, category_filter=None, sort_by=None):
     products = Product.objects.all()
 
-    # فلترة السعر
-    if price_filter == 'low':
-        products = products.filter(price__lt=500)
-    elif price_filter == 'mid':
-        products = products.filter(price__gte=500, price__lte=1000)
-    elif price_filter == 'high':
-        products = products.filter(price__gt=1000)
+    # ترتيب المنتجات
+    if sort_by == 'price_asc':
+        products = products.order_by('price')
+    elif sort_by == 'price_desc':
+        products = products.order_by('-price')
+    elif sort_by == 'newest':
+        products = products.order_by('-created_at')  
 
-    # فلترة الفئة
-    category_mapping = {
-        'SUNGLASSES': 'SUNGLASSES',
-        'EYEGLASSES': 'EYEGLASSES',
-        
-    }
-    if category_filter:
-        category = category_mapping.get(category_filter, category_filter)
-        products = products.filter(category__name=category)
+    else:
+        products = products.order_by('-id')  # Default sort
 
     return products

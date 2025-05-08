@@ -51,6 +51,8 @@ class Product(models.Model):
     image = CloudinaryField('image', folder='LUXFLEX/')
     age_group = models.CharField(max_length=10, choices=AGE_GROUP_CHOICES, default='Men')
     description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.name

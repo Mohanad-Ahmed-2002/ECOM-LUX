@@ -8,7 +8,6 @@ Shop
 
 <div class="container mx-auto px-3 py-8">
 
-
     <h1
         class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
         {% if main_category %}
@@ -19,17 +18,28 @@ Shop
         {% endif %}
     </h1>
 
+    <!-- Sorting Dropdown -->
+    <div class="flex justify-end mb-6">
+        <select class="border rounded p-2 text-sm" onchange="location = this.value;">
+            <option value="?sort=default">Sort by</option>
+            <option value="?sort=price_asc">Price: Low to High</option>
+            <option value="?sort=price_desc">Price: High to Low</option>
+            <option value="?sort=newest">Newest</option>
+        </select>
+    </div>
+
     {% if page_obj %}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
         {% for product in page_obj %}
-        <div
-            class="bg-white rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
+        <div data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00"
+            class="bg-white/30 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 hover:rotate-1 hover:scale-105 transition-all duration-300">
+
             <a href="{% url 'product_detail' product.id %}">
                 <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                    class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
+                    class="w-full h-[250px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
             </a>
 
-            <div class="p-4 flex flex-col justify-between  ">
+            <div class="p-4 flex flex-col justify-between">
                 <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
 
                 {% if product.discount_price %}
@@ -62,13 +72,12 @@ Shop
                         {% csrf_token %}
                         <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
                         <button type="submit"
-                            class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-3 py-1 rounded-full text-xs font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
+                            class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-4 py-2 rounded-full text-sm font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
                             Add to Cart
                         </button>
-
                     </form>
                     <a href="{% url 'add_to_wishlist' product.id %}"
-                        class="text-gray-400 hover:text-red-500 transition duration-300">
+                        class="text-gray-400 hover:text-red-500 transition duration-300 relative">
                         <i class="far fa-heart text-lg"></i>
                     </a>
                 </div>
@@ -106,12 +115,21 @@ Shop
     {% endif %}
 </div>
 
+<!-- AOS & Script -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 <script>
+    AOS.init();
+
     function changeMainImage(productId, element) {
         const newImageUrl = element.getAttribute('data-image-url');
         const mainImage = document.getElementById('main-image-' + productId);
         if (mainImage) {
-            mainImage.src = newImageUrl;
+            mainImage.style.opacity = 0;
+            setTimeout(() => {
+                mainImage.src = newImageUrl;
+                mainImage.style.opacity = 1;
+            }, 200);
         }
         const selectedColorInput = document.getElementById('selected-color-' + productId);
         if (selectedColorInput) {
@@ -119,6 +137,5 @@ Shop
         }
     }
 </script>
-
 
 {% endblock %}
