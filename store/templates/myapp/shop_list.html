@@ -5,47 +5,44 @@ Shop
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-3 py-10">
 
-    <!-- 🖼️ عنوان مبهر -->
+<div class="container mx-auto px-3 py-8">
+
     <h1
-        class="text-3xl sm:text-4xl font-extrabold text-center mb-12 bg-gradient-to-r from-black via-blue-800 to-black bg-clip-text text-transparent drop-shadow-lg tracking-wider animate__animated animate__fadeInDown">
+        class="text-2xl sm:text-3xl font-bold text-center mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
         {% if main_category %}
         {{ main_category|title }}
         {% if age_group %} - {{ age_group|title }}{% endif %}
         {% else %}
-        Our Products
+        Shop
         {% endif %}
     </h1>
 
     {% if page_obj %}
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:gap-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
         {% for product in page_obj %}
         <div data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00"
-            class="bg-white/40 backdrop-blur-md rounded-3xl shadow-md hover:shadow-xl overflow-hidden transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
+            class="bg-white/30 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 hover:rotate-1 hover:scale-105 transition-all duration-300">
 
             <a href="{% url 'product_detail' product.id %}">
                 <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                    class="w-full h-[250px] object-contain rounded-t-3xl transition duration-300 ease-in-out group-hover:scale-105"
-                    loading="lazy">
+                    class="w-full h-[250px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105 transform">
             </a>
 
-            <div class="p-4 flex flex-col justify-between min-h-[180px]">
-                <h2 class="text-sm sm:text-base font-bold text-gray-900 truncate mb-1">
-                    {{ product.name }}
-                </h2>
+            <div class="p-4 flex flex-col justify-between">
+                <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
 
                 {% if product.discount_price %}
-                <div class="mb-2">
+                <div class="mt-2">
                     <p class="text-gray-400 text-sm line-through">{{ product.price }} EGP</p>
-                    <p class="text-blue-900 font-bold text-sm">{{ product.discount_price }} EGP</p>
+                    <p class="text-black font-bold text-sm">{{ product.discount_price }} EGP</p>
                 </div>
                 {% else %}
-                <p class="text-blue-900 font-bold text-sm sm:text-base mb-2">{{ product.price }} EGP</p>
+                <p class="text-black font-bold text-sm sm:text-base mt-2">{{ product.price }} EGP</p>
                 {% endif %}
 
                 {% if product.extra_images.all %}
-                <div class="flex space-x-1 mb-3">
+                <div class="flex space-x-1 mt-3">
                     <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer" title="Original"
                         data-image-url="{{ product.image.url }}" onclick="changeMainImage('{{ product.id }}', this)"
                         style="background-image: url('{{ product.image.url }}'); background-size: cover; background-position: center;">
@@ -60,17 +57,17 @@ Shop
                 </div>
                 {% endif %}
 
-                <div class="flex items-center justify-between">
-                    <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                <div class="mt-4 flex items-center justify-between">
+                    <form method="POST" action="{% url 'add_to_cart' product.id %}" class="add-to-cart-form">
                         {% csrf_token %}
                         <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
                         <button type="submit"
-                            class="bg-white text-blue-900 border border-blue-900 px-4 py-2 rounded-full text-sm font-semibold shadow-sm hover:shadow-md transition duration-300 active:scale-95">
+                            class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-4 py-2 rounded-full text-sm font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
                             Add to Cart
                         </button>
                     </form>
                     <a href="{% url 'add_to_wishlist' product.id %}"
-                        class="text-gray-400 hover:text-red-500 transition duration-300">
+                        class="text-gray-400 hover:text-red-500 transition duration-300 relative">
                         <i class="far fa-heart text-lg"></i>
                     </a>
                 </div>
@@ -79,25 +76,24 @@ Shop
         {% endfor %}
     </div>
 
-    <!-- ✨ Pagination بسيط -->
-    <div class="mt-12 flex justify-center">
+    <div class="mt-10 flex justify-center">
         <nav class="inline-flex space-x-1">
             {% if page_obj.has_previous %}
             <a href="?page={{ page_obj.previous_page_number }}"
-                class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm">← Prev</a>
+                class="px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200">Previous</a>
             {% endif %}
 
             {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-            <span class="px-4 py-2 rounded-full bg-blue-900 text-white text-sm font-semibold">{{ num }}</span>
+            <span class="px-3 py-1 rounded-lg border border-blue-600 text-black">{{ num }}</span>
             {% else %}
-            <a href="?page={{ num }}" class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm">{{ num }}</a>
+            <a href="?page={{ num }}" class="px-3 py-1 rounded-lg border border-blue-600 text-black">{{ num }}</a>
             {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}"
-                class="px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm">Next →</a>
+                class="px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200">Next</a>
             {% endif %}
         </nav>
     </div>
@@ -108,4 +104,8 @@ Shop
     </div>
     {% endif %}
 </div>
+
+
 {% endblock %}
+
+
