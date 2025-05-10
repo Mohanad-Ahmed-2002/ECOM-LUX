@@ -29,7 +29,7 @@ def about(request):
 
 
 # ============================== المنتجات ==============================
-# @cache_page(60 * 10)
+@cache_page(60 * 10)
 def products_by_main_category(request, main_category):
     main_category = main_category.upper()
 
@@ -48,7 +48,7 @@ def products_by_main_category(request, main_category):
         'main_category': main_category,
     })
 
-# @cache_page(60 * 10)
+@cache_page(60 * 10)
 def products_by_main_and_sub_category(request, main_category, sub_category):
     main_category = main_category.upper()
     sub_category = sub_category.upper()
@@ -70,7 +70,7 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
         'sub_category': sub_category,
     })
 
-# @cache_page(60 * 10)
+@cache_page(60 * 10)
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
     main_category = main_category.upper()
     sub_category = sub_category.upper()
@@ -95,7 +95,7 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         'age_group': age_group
     })
 
-# @cache_page(60 * 10)
+@cache_page(60 * 10)
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     extra_images = product.extra_images.only("image", "color_name")  # تحسين
@@ -109,6 +109,7 @@ def product_detail(request, product_id):
         'related_products': related_products,
     })
 
+@cache_page(60 * 10)
 def hot_sale_view(request):
     hot_products = Product.objects.filter(is_hot_sale=True)
     return render(request, 'myapp/hot_sale.html', {'hot_products': hot_products})

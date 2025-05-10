@@ -1,0 +1,165 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.glow-hover:hover {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+}
+
+/* Custom styles for mobile menu */
+.mobile-submenu-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.mobile-submenu-toggle.active i {
+    transform: rotate(180deg);
+}
+
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+}
+
+
+
+@keyframes kenburns {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        transform: scale(1.1) translate(2%, 2%);
+    }
+}
+
+.kenburns-effect {
+    animation: kenburns 20s ease-in-out infinite alternate;
+}
+
+
+@keyframes bounce-slow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-bounce-slow {
+    animation: bounce-slow 2s infinite;
+}
+
+@keyframes pulse-slow {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 4s infinite;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.glow-hover:hover {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+}
+
+.mobile-submenu-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.mobile-submenu-toggle.active i {
+    transform: rotate(180deg);
+}
+
+
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+}
+
+@keyframes kenburns {
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        transform: scale(1.1) translate(2%, 2%);
+    }
+}
+
+.kenburns-effect {
+    animation: kenburns 20s ease-in-out infinite alternate;
+}
+
+@keyframes bounce-slow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-bounce-slow {
+    animation: bounce-slow 2s infinite;
+}
+
+@keyframes pulse-slow {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 4s infinite;
+}
+
+
+.active-color-ring {
+    box-shadow: 0 0 0 2px #411be9;
+}

@@ -1,129 +1,64 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-🔥 Hot Sale
-{% endblock %}
+{% block title %}🔥 Hot Sale - LUXEFLEX{% endblock %}
 
 {% block content %}
-<div class="relative">
-    <!-- Animated background glow -->
-    <div
-        class="absolute inset-0 bg-gradient-to-br from-red-700 via-yellow-500 to-orange-600 opacity-10  z-0">
-    </div>
+<div class="container mx-auto px-4 py-10">
 
-    <div class="relative container mx-auto px-3 py-8 z-10">
-        <!-- Alert bar -->
-        <div class="bg-red-500 text-white text-center py-2 text-sm font-semibold animate-pulse mb-6 rounded shadow-lg">
-            ⏳ Hurry! Sale ends soon – while stocks last!
-        </div>
+    <!-- 🖼️ عنوان أنيق -->
+    <h1
+        class="text-3xl sm:text-4xl font-extrabold text-center mb-12 text-red-700 drop-shadow-lg tracking-widest">
+        🔥 Hot Sale Is On!
+    </h1>
 
+    {% if hot_products %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:gap-8">
+        {% for product in hot_products %}
+        <div
+            class="bg-white/40 backdrop-blur-md rounded-3xl shadow-md hover:shadow-xl overflow-hidden transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
 
+            <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}"
+                    class="w-full h-[250px] object-contain rounded-t-3xl transition duration-300 ease-in-out group-hover:scale-105"
+                    loading="lazy">
+            </a>
 
-        {% if hot_products %}
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 sm:gap-8">
-            {% for product in hot_products %}
-            <div data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:1|stringformat:'d' }}00"
-                class="bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 relative">
+            <div class="p-4 flex flex-col justify-between min-h-[180px]">
+                <h2 class="text-sm sm:text-base font-bold text-gray-900 truncate mb-1">
+                    {{ product.name }}
+                </h2>
 
-                <!-- SALE Badge -->
                 {% if product.discount_price %}
-                <div
-                    class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full animate-pulse shadow-lg z-10">
-                    SALE
+                <div class="mb-2">
+                    <p class="text-gray-400 text-sm line-through">{{ product.price }} EGP</p>
+                    <p class="text-red-600 font-bold text-sm">{{ product.discount_price }} EGP</p>
                 </div>
+                {% else %}
+                <p class="text-black font-bold text-sm">{{ product.price }} EGP</p>
                 {% endif %}
 
-                <!-- Image -->
-                <a href="{% url 'product_detail' product.id %}">
-                    <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                        loading="lazy"
-                        class="w-full max-h-[500px] object-contain rounded shadow-md transition duration-300 ease-in-out hover:scale-105">
-                </a>
-
-                <!-- Product info -->
-                <div class="p-4 flex flex-col justify-between">
-                    <h2 class="text-sm sm:text-base font-semibold text-gray-900 truncate">{{ product.name }}</h2>
-
-                    {% if product.discount_price %}
-                    <div class="mt-2">
-                        <p class="text-gray-400 text-sm line-through">{{ product.price }} EGP</p>
-                        <p class="text-black font-bold text-sm">{{ product.discount_price }} EGP</p>
-                    </div>
-                    {% else %}
-                    <p class="text-black font-bold text-sm sm:text-base mt-2">{{ product.price }} EGP</p>
-                    {% endif %}
-
-                    {% if product.extra_images.all %}
-                    <div class="flex space-x-1 mt-3">
-                        <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer" title="Original"
-                            data-image-url="{{ product.image.url }}" onclick="changeMainImage('{{ product.id }}', this)"
-                            style="background-image: url('{{ product.image.url }}'); background-size: cover; background-position: center;">
-                        </div>
-                        {% for image in product.extra_images.all %}
-                        <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer"
-                            title="{{ image.color_name }}" data-image-url="{{ image.image.url }}"
-                            onclick="changeMainImage('{{ product.id }}', this)"
-                            style="background-image: url('{{ image.image.url }}'); background-size: cover; background-position: center;">
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <div class="mt-4 flex items-center justify-between">
-                        <form method="POST" action="{% url 'add_to_cart' product.id %}"
-                            class="add-to-cart-form relative overflow-hidden group">
-                            {% csrf_token %}
-                            <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
-                            <button type="submit"
-                                class="relative overflow-hidden border border-red-500 text-red-600 px-3 py-1 rounded-full text-xs font-semibold group hover:bg-red-600 hover:text-white transition duration-300 active:scale-95">
-                                <span
-                                    class="absolute inset-0 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 opacity-20 blur-sm"></span>
-                                <span class="relative">Add to Cart</span>
-                            </button>
-                        </form>
-                        <a href="{% url 'add_to_wishlist' product.id %}"
-                            class="text-gray-400 hover:text-red-500 transition duration-300">
-                            <i class="far fa-heart text-lg"></i>
-                        </a>
-                    </div>
+                <div class="mt-4 flex items-center justify-between">
+                    <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="bg-white text-blue-900 border border-blue-900 px-4 py-2 rounded-full text-sm font-semibold shadow-sm hover:shadow-md transition duration-300 active:scale-95">
+                            Add to Cart
+                        </button>
+                    </form>
+                    <a href="{% url 'add_to_wishlist' product.id %}"
+                        class="text-gray-400 hover:text-red-500 transition duration-300">
+                        <i class="far fa-heart text-lg"></i>
+                    </a>
                 </div>
             </div>
-            {% endfor %}
         </div>
-        {% else %}
-        <div class="text-center text-gray-400 mt-20 animate-fade-in">
-            <i class="fas fa-fire text-4xl mb-4 text-red-500"></i>
-            <p class="text-lg">No hot sale products found.</p>
-        </div>
-        {% endif %}
+        {% endfor %}
     </div>
+    {% else %}
+    <div class="text-center text-gray-500 mt-10">
+        <p>No hot sale products available at the moment.</p>
+    </div>
+    {% endif %}
 </div>
-
-<style>
-    .active-color-ring {
-        box-shadow: 0 0 0 2px #411be9;
-    }
-</style>
-
-<script>
-    function changeMainImage(productId, element) {
-        newImageUrl = element.getAttribute('data-image-url');
-        const mainImage = document.getElementById('main-image-' + productId);
-        if (mainImage) {
-            mainImage.src = newImageUrl;
-        }
-
-        const selectedColorInput = document.getElementById('selected-color-' + productId);
-        if (selectedColorInput) {
-            selectedColorInput.value = newImageUrl;
-        }
-
-        const siblings = element.parentElement.children;
-        for (let sibling of siblings) {
-            sibling.classList.remove('active-color-ring');
-        }
-        element.classList.add('active-color-ring');
-    }
-</script>
 {% endblock %}

@@ -5,29 +5,7 @@
 {% block content %}
 <div class="container mx-auto px-4 py-20">
 
-    <!-- رسائل النظام -->
-    {% if messages %}
-    <div id="message-container" class="mb-4 transition-opacity duration-500">
-        {% for message in messages %}
-        <div class="p-2 rounded text-sm font-medium
-            {% if message.tags == 'success' %} bg-green-100 text-green-800
-            {% elif message.tags == 'error' %} bg-red-100 text-red-800
-            {% else %} bg-gray-100 text-gray-800 {% endif %}">
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
 
-    <script>
-        setTimeout(() => {
-            const messageContainer = document.getElementById('message-container');
-            if (messageContainer) {
-                messageContainer.style.opacity = '0';
-                setTimeout(() => messageContainer.remove(), 500);
-            }
-        }, 3000);
-    </script>
-    {% endif %}
 
     <!-- صندوق تأكيد الطلب -->
     <div data-aos="fade-up"

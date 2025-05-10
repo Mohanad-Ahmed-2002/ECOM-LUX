@@ -4,16 +4,22 @@
 {% block content %}
 <div class="space-y-10">
 
-    <!-- Page Title -->
-    <h1 class="text-2xl sm:text-3xl font-extrabold text-center text-indigo-800">
-        🛍️ Product Management
-    </h1>
+    <!-- 🛍️ عنوان + زر إضافة منتج -->
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800">
+            🛍️ Product Management
+        </h1>
+        <a href="/admin/store/product/add/"
+            class="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-medium shadow transition duration-200">
+            ➕ Add Product
+        </a>
+    </div>
 
-    <!-- Product Table -->
+    <!-- 💼 جدول المنتجات -->
     <div class="bg-white shadow-xl rounded-2xl border overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full min-w-[800px] text-sm sm:text-base text-left">
-                <thead class="bg-indigo-50 text-indigo-900 font-semibold">
+                <thead class="bg-gray-100 text-gray-800 font-semibold">
                     <tr>
                         <th class="px-4 py-3 whitespace-nowrap">Image</th>
                         <th class="px-4 py-3 whitespace-nowrap">Name</th>
@@ -26,35 +32,39 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200 text-gray-700">
                     {% for product in products %}
-                    <tr class="hover:bg-indigo-50 transition duration-150">
+                    <tr class="hover:bg-gray-50 transition duration-150">
                         <td class="px-4 py-3">
                             {% with product.images.first as img %}
                             {% if img %}
                             <img src="{{ img.image.url }}" alt="{{ product.name }}"
-                                class="w-12 h-12 rounded-md object-cover">
+                                class="w-12 h-12 rounded-md object-cover shadow-sm">
                             {% elif product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}"
-                                class="w-12 h-12 rounded-md object-cover">
+                                class="w-12 h-12 rounded-md object-cover shadow-sm">
                             {% else %}
                             <span class="text-gray-400">No image</span>
                             {% endif %}
                             {% endwith %}
                         </td>
-                        <td class="px-4 py-3 font-semibold">{{ product.name }}</td>
+                        <td class="px-4 py-3 font-semibold text-gray-800">{{ product.name }}</td>
                         <td class="px-4 py-3">{{ product.main_category }}</td>
                         <td class="px-4 py-3">{{ product.sub_category }}</td>
                         <td class="px-4 py-3">{{ product.age_group }}</td>
                         <td class="px-4 py-3">
                             {% if product.discount_price %}
-                            <span class="line-through text-gray-400 text-xs">{{ product.price }} EGP</span><br>
-                            <span class="text-green-600 font-bold">{{ product.discount_price }} EGP</span>
+                            <p class="text-xs text-gray-400 line-through">{{ product.price }} EGP</p>
+                            <p class="text-green-600 font-bold">{{ product.discount_price }} EGP</p>
                             {% else %}
-                            <span class="text-indigo-700 font-semibold">{{ product.price }} EGP</span>
+                            <p class="text-gray-800 font-semibold">{{ product.price }} EGP</p>
                             {% endif %}
                         </td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm">
+                        <td class="px-4 py-3 whitespace-nowrap text-sm flex gap-3">
+                            <a href="/admin/store/product/{{ product.id }}/change/"
+                                class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">
+                                Edit
+                            </a>
                             <form method="POST" action="{% url 'delete_product' product.id %}"
-                                onsubmit="return confirm('Delete this product?');" class="inline-block">
+                                onsubmit="return confirm('Delete this product?');">
                                 {% csrf_token %}
                                 <button type="submit"
                                     class="text-red-600 hover:text-red-800 font-semibold transition duration-200">

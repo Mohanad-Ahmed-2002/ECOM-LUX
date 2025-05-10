@@ -4,40 +4,43 @@
 {% block content %}
 <div class="space-y-10">
 
-    <!-- Title -->
+    <!-- 🧭 عنوان جذاب -->
     <h1
-        class="text-3xl sm:text-4xl font-extrabold text-center text-transparent bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text">
+        class="text-3xl sm:text-4xl font-extrabold text-center  text-blue-700 drop-shadow-md">
         🧭 Dashboard Overview
     </h1>
 
-    <!-- Stats Cards -->
+    <!-- 📊 إحصائيات -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-        <div class="bg-white shadow-lg rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
-            <p class="text-gray-500 text-sm">Orders</p>
-            <p class="text-3xl font-bold text-blue-600">{{ orders_count }}</p>
+        <div class="bg-white shadow-md rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
+            <p class="text-gray-500 text-sm mb-1">Orders</p>
+            <p class="text-3xl font-bold text-gray-800">{{ orders_count }}</p>
         </div>
-        <div class="bg-white shadow-lg rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
-            <p class="text-gray-500 text-sm">Pending</p>
+        <div class="bg-white shadow-md rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
+            <p class="text-gray-500 text-sm mb-1">Pending</p>
             <p class="text-3xl font-bold text-yellow-500">{{ pending_orders }}</p>
         </div>
-        <div class="bg-white shadow-lg rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
-            <p class="text-gray-500 text-sm">Products</p>
+        <div class="bg-white shadow-md rounded-2xl p-5 text-center hover:scale-105 transition duration-300">
+            <p class="text-gray-500 text-sm mb-1">Products</p>
             <p class="text-3xl font-bold text-green-600">{{ products_count }}</p>
         </div>
-
     </div>
 
-    <!-- Quick Links -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm font-semibold text-center">
+    <!-- 🚀 روابط سريعة -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-sm font-semibold text-center">
         <a href="{% url 'dashboard_orders' %}"
-            class="bg-blue-100 hover:bg-blue-200 text-blue-900 py-5 rounded-xl shadow-md hover:scale-105 transition duration-300">
-            📦 Orders
+            class="flex flex-col items-center bg-white hover:bg-gray-100 text-gray-700 py-6 rounded-xl shadow-md hover:scale-105 transition duration-300">
+            <div class="bg-blue-100 text-blue-800 w-10 h-10 rounded-full flex items-center justify-center mb-2 text-lg">
+                📦</div>
+            Orders
         </a>
         <a href="{% url 'dashboard_products' %}"
-            class="bg-green-100 hover:bg-green-200 text-green-900 py-5 rounded-xl shadow-md hover:scale-105 transition duration-300">
-            🛍️ Products
+            class="flex flex-col items-center bg-white hover:bg-gray-100 text-gray-700 py-6 rounded-xl shadow-md hover:scale-105 transition duration-300">
+            <div
+                class="bg-green-100 text-green-800 w-10 h-10 rounded-full flex items-center justify-center mb-2 text-lg">
+                🛍️</div>
+            Products
         </a>
-
     </div>
 
 </div>

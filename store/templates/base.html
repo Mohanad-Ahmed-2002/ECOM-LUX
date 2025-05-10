@@ -19,25 +19,8 @@
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <!-- Custom Styles - CONSIDER MOVING TO A SEPARATE CSS FILE (e.g., static/css/style.css) -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
-        .glow-hover:hover {
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
-        }
-
-        /* Custom styles for mobile menu */
-        .mobile-submenu-toggle i {
-            transition: transform 0.3s ease;
-        }
-
-        .mobile-submenu-toggle.active i {
-            transform: rotate(180deg);
-        }
-    </style>
 
 </head>
 
@@ -299,7 +282,18 @@
         </div>
     </header>
 
-
+    {% if messages %}
+    <div id="message-container" class="mb-4 transition-opacity duration-500">
+        {% for message in messages %}
+        <div class="p-2 rounded text-sm font-medium
+                            {% if message.tags == 'success' %} bg-green-100 text-green-800
+                            {% elif message.tags == 'error' %} bg-red-100 text-red-800
+                            {% else %} bg-gray-100 text-gray-800 {% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     {% block content %}{% endblock %}
 
@@ -316,184 +310,7 @@
 
     <!-- External JavaScript Libraries - CONSIDER LOADING ASYNC or DEFER -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <!-- Custom Scripts - CONSIDER MOVING TO A SEPARATE JS FILE (e.g., static/js/script.js) -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Initialize AOS
-            AOS.init({ once: true });
-
-            // Auto-hide success messages
-            const successMessage = document.getElementById('success-message');
-            if (successMessage) {
-                setTimeout(() => {
-                    successMessage.style.transition = "opacity 0.5s ease";
-                    successMessage.style.opacity = "0";
-                    setTimeout(() => successMessage.remove(), 500);
-                }, 4000); // Hide after 4 seconds
-            }
-
-            // --- Desktop Shop Menu Toggle ---
-            const desktopShopToggleBtn = document.getElementById('desktop-shop-toggle-btn');
-            const desktopShopMenu = document.getElementById('desktop-shop-menu');
-
-            if (desktopShopToggleBtn && desktopShopMenu) {
-                desktopShopToggleBtn.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent click from closing immediately
-                    desktopShopMenu.classList.toggle('opacity-0');
-                    desktopShopMenu.classList.toggle('scale-95');
-                    desktopShopMenu.classList.toggle('invisible');
-                });
-
-                // Close when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!desktopShopToggleBtn.contains(e.target) && !desktopShopMenu.contains(e.target)) {
-                        desktopShopMenu.classList.add('opacity-0', 'scale-95', 'invisible');
-                    }
-                });
-            }
-
-            // --- Desktop Submenu Toggles ---
-            const desktopSubmenuToggles = document.querySelectorAll('.desktop-submenu-toggle');
-            desktopSubmenuToggles.forEach(button => {
-                button.addEventListener('click', function (e) {
-                    e.preventDefault(); // Prevent default link behavior if any
-                    e.stopPropagation(); // Prevent closing the main shop menu
-
-                    const targetId = this.dataset.target; // Get target ID from data-target attribute
-                    const submenuContent = document.getElementById(targetId);
-
-                    if (submenuContent) {
-                        // Close other submenus at the same level
-                        const parentSubmenu = this.closest('.desktop-submenu-content');
-                        let siblings;
-                        if (parentSubmenu) {
-                            siblings = parentSubmenu.querySelectorAll(':scope > div > .desktop-submenu-content');
-                        } else {
-                            // Top level desktop submenus within the main shop menu
-                            siblings = desktopShopMenu.querySelectorAll(':scope > div > .desktop-submenu-content');
-                        }
-
-                        siblings.forEach(el => {
-                            if (el !== submenuContent && !el.classList.contains('hidden')) {
-                                el.classList.add('hidden');
-                                const siblingToggleButton = el.previousElementSibling;
-                                if (siblingToggleButton && siblingToggleButton.classList.contains('desktop-submenu-toggle')) {
-                                    // No arrow rotation for desktop toggles in this style
-                                }
-                            }
-                        });
-
-                        // Toggle the clicked submenu
-                        submenuContent.classList.toggle('hidden');
-                        // No arrow rotation for desktop toggles in this style
-                    }
-                });
-            });
-
-
-            // --- Mobile Menu Toggle ---
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileCloseBtn = document.getElementById('mobile-close-btn');
-            const mobileBackdrop = document.getElementById('mobile-backdrop');
-            const mobileSubmenuToggles = document.querySelectorAll('.mobile-submenu-toggle');
-
-            // Function to open the mobile menu
-            function openMobileMenu() {
-                mobileMenu.classList.remove('translate-x-full');
-                mobileBackdrop.classList.remove('hidden');
-            }
-
-            // Function to close the mobile menu
-            function closeMobileMenu() {
-                mobileMenu.classList.add('translate-x-full');
-                mobileBackdrop.classList.add('hidden');
-                // Close all submenus when the main menu is closed
-                closeAllMobileSubmenus();
-            }
-
-            // Function to close all currently open mobile submenus
-            function closeAllMobileSubmenus() {
-                const openSubmenus = mobileMenu.querySelectorAll('.mobile-submenu-content:not(.hidden)');
-                openSubmenus.forEach(submenu => {
-                    submenu.classList.add('hidden');
-                    // Reset arrow rotation
-                    const toggleButton = submenu.previousElementSibling;
-                    if (toggleButton && toggleButton.classList.contains('mobile-submenu-toggle')) {
-                        toggleButton.classList.remove('active');
-                    }
-                });
-            }
-
-            // Event listeners for opening and closing the main mobile menu
-            if (mobileMenuBtn && mobileMenu && mobileCloseBtn && mobileBackdrop) {
-                mobileMenuBtn.addEventListener('click', openMobileMenu);
-                mobileCloseBtn.addEventListener('click', closeMobileMenu);
-                mobileBackdrop.addEventListener('click', closeMobileMenu);
-            }
-
-
-            // Event listeners for toggling mobile submenus
-            mobileSubmenuToggles.forEach(button => {
-                button.addEventListener('click', function () {
-                    const targetId = this.dataset.target; // Get target ID from data-target attribute
-                    const submenuContent = document.getElementById(targetId);
-
-                    if (submenuContent) {
-                        const isOpen = !submenuContent.classList.contains('hidden');
-                        const parentSubmenuContent = this.closest('.mobile-submenu-content'); // Find the parent submenu if any
-
-                        // Close other submenus at the same level
-                        let siblings;
-                        if (parentSubmenuContent) {
-                            // Siblings are direct children of the parent submenu content
-                            siblings = parentSubmenuContent.querySelectorAll(':scope > div > .mobile-submenu-content');
-                        } else {
-                            // Top-level submenus within the main mobile menu content area
-                            siblings = mobileMenu.querySelectorAll('#mobile-shop-menu-content > div > .mobile-submenu-content');
-                        }
-
-                        siblings.forEach(el => {
-                            if (el !== submenuContent && !el.classList.contains('hidden')) {
-                                el.classList.add('hidden');
-                                // Reset arrow rotation for the closed sibling
-                                const siblingToggleButton = el.previousElementSibling;
-                                if (siblingToggleButton && siblingToggleButton.classList.contains('mobile-submenu-toggle')) {
-                                    siblingToggleButton.classList.remove('active');
-                                }
-                            }
-                        });
-
-                        // Toggle the clicked submenu
-                        submenuContent.classList.toggle('hidden');
-                        this.classList.toggle('active', !isOpen); // Toggle the 'active' class for arrow rotation
-
-                        // Close any nested submenus if the current one is being closed
-                        if (isOpen) {
-                            const nestedSubmenus = submenuContent.querySelectorAll('.mobile-submenu-content:not(.hidden)');
-                            nestedSubmenus.forEach(nestedSubmenu => {
-                                nestedSubmenu.classList.add('hidden');
-                                // Reset arrow rotation for nested toggles
-                                const nestedToggleButton = nestedSubmenu.previousElementSibling;
-                                if (nestedToggleButton && nestedToggleButton.classList.contains('mobile-submenu-toggle')) {
-                                    nestedToggleButton.classList.remove('active');
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-
-
-            // Close mobile menu when a link inside is clicked
-            const mobileMenuLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
-            });
-        });
-    </script>
-
+    <script src="{% static 'js/main.js' %}" defer></script>
 
 
 </body>
