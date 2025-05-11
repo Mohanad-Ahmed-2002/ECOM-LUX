@@ -85,44 +85,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Countdown (home.html)
-    const countdownEl = document.getElementById("countdown");
-    if (countdownEl) {
-        const countdownDate = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
-        const updateCountdown = () => {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
 
-            if (distance < 0) {
-                countdownEl.innerHTML = "🔥 Hurry! Sale Ends Soon!";
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        };
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    }
 
     // Image thumbnail switcher (used in shop/product/hot_sale pages)
     window.changeMainImage = function (productId, element) {
-        const newUrl = element.getAttribute("data-image-url");
-        const mainImage = document.getElementById("main-image-" + productId);
-        if (mainImage) {
-            mainImage.src = newUrl;
-        }
-
-        // Optional: highlight selected thumbnail
-        const thumbnails = document.querySelectorAll(`#thumbnails img`);
-        thumbnails.forEach(img => img.classList.remove('ring-2', 'ring-blue-500'));
-        element.classList.add('ring-2', 'ring-blue-500');
+        const newImageUrl = element.getAttribute('data-image-url');
+            const mainImage = document.getElementById('main-image-' + productId);
+            if (mainImage) {
+                mainImage.src = newImageUrl;
+            }
+            const selectedColorInput = document.getElementById('selected-color-' + productId);
+            if (selectedColorInput) {
+                selectedColorInput.value = newImageUrl;
+            }
     };
+    
 
     // Checkout shipping fee + total calculation
     const govSelect = document.getElementById('government');

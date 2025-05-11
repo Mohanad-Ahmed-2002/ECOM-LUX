@@ -24,10 +24,6 @@
                     loading="lazy">
             </a>
 
-            <!-- ✅ الحقل المخفي لتخزين الصورة المختارة -->
-            <input type="hidden" id="selected-color-{{ product.id }}" value="{{ product.image.url }}">
-
-
             <div class="p-4 flex flex-col justify-between min-h-[180px]">
                 <h2 class="text-sm sm:text-base font-bold text-gray-900 truncate mb-1">
                     {{ product.name }}
@@ -60,7 +56,7 @@
                 <div class="mt-4 flex items-center justify-between">
                     <form method="POST" action="{% url 'add_to_cart' product.id %}" >
                         {% csrf_token %}
-                        <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="{{ product.image.url }}">
+                        <input type="hidden" name="selected_color" id="selected-color-{{ product.id }}" value="">
                         <button type="submit"
                             class="border border-indigo-500 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent px-4 py-2 rounded-full text-sm font-semibold transition duration-300 active:scale-95 hover:shadow-lg">
                             Add to Cart
