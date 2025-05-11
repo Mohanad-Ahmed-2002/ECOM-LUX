@@ -9,11 +9,28 @@
 
     <!-- External CSS Libraries -->
     <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    </noscript>
+
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </noscript>
+
     <!-- Google Fonts - Consider optimizing font loading -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    </noscript>
+
     <!-- AOS - Consider loading async -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Animate.css -->
@@ -34,8 +51,14 @@
             <!-- Logo -->
             <a href="{% url 'home' %}" class="flex items-center">
                 {# TODO: Use {% static %} tag for the logo image #}
-                <img src="{% static 'logo.png' %}" alt="LUXEFLEX Logo"
-                    class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl filter drop-shadow-2xl brightness-110 contrast-125 transition-all duration-300 hover:brightness-125 hover:scale-105">
+                <picture>
+                    <source srcset="{% static 'logo.webp' %}" type="image/webp">
+                    <source srcset="{% static 'logo.png' %}" type="image/png">
+                    <img src="{% static 'logo.png' %}" alt="LUXEFLEX Logo" width="200" height="60"
+                        class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl filter drop-shadow-2xl brightness-110 contrast-125 transition-all duration-300 hover:brightness-125 hover:scale-105">
+                </picture>
+                
+                
             </a>
 
             <!-- Icons + Mobile Button -->
