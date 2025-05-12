@@ -19,9 +19,9 @@
             class="bg-white/40 backdrop-blur-md rounded-3xl shadow-md hover:shadow-xl overflow-hidden transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 group">
 
             <a href="{% url 'product_detail' product.id %}">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
-                    class="w-full h-[250px] object-contain rounded-t-3xl transition duration-300 ease-in-out group-hover:scale-105"
-                    loading="lazy">
+                <img loading="lazy" id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
+                    class="w-full h-52 sm:h-60 object-cover transition duration-300 ease-in-out hover:scale-105" width="300"
+                    height="300">
             </a>
 
             <div class="p-4 flex flex-col justify-between min-h-[180px]">
