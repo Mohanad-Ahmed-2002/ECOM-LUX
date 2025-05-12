@@ -35,7 +35,7 @@
     <div class="relative z-10 flex flex-col justify-center items-center text-center h-full px-4 sm:px-6 space-y-6">
         
         <h1
-            class="text-blue-400 text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest drop-shadow-lg animate-title-fade">
+            class="text-blue-400 text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest drop-shadow-lg ">
             LUXE <span class="text-blue-400 animate-pulse">FLEX</span>
         </h1>
 
@@ -68,7 +68,7 @@
         <!-- HOT SALE -->
         <a href="{% url 'hot_sale' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img src="{% static 'SALE.jpg' %}" alt="Hot Sale"
+            <img loading="lazy" src="{% static 'SALE.jpg' %}" alt="Hot Sale"
                 class="w-full h-[300px] object-cover transform group-hover:scale-110 transition duration-700 ease-out">
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
@@ -83,7 +83,7 @@
         <!-- SUNGLASSES -->
         <a href="{% url 'products_by_main_category' 'sunglasses' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img src="{% static 'women.jpg' %}" alt="Sunglasses"
+            <img loading="lazy" src="{% static 'women.jpg' %}" alt="Sunglasses"
                 class="w-full h-[300px] object-cover transform group-hover:scale-110 transition duration-700 ease-out">
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
@@ -98,7 +98,7 @@
         <!-- OPTICAL -->
         <a href="{% url 'products_by_main_category' 'optical' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img src="{% static 'man.jpg' %}" alt="Optical"
+            <img loading="lazy" src="{% static 'man.jpg' %}" alt="Optical"
                 class="w-full h-[300px] object-cover transform group-hover:scale-110 transition duration-700 ease-out">
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
@@ -117,15 +117,15 @@
     <h2 class="text-2xl font-bold mb-6">FOLLOW US:</h2>
     <div class="flex justify-center space-x-8">
         <a href="https://www.facebook.com/luxeflexstore/"
-            class="bg-black rounded-full p-4 text-white hover:scale-110 transition animate-pulse-slow">
+            class="bg-black rounded-full p-4 text-white hover:scale-110 transition ">
             <i class="fab fa-facebook-f text-xl"></i>
         </a>
         <a href="https://www.tiktok.com/@luxeflex2020"
-            class="bg-black rounded-full p-4 text-white hover:scale-110 transition animate-pulse-slow">
+            class="bg-black rounded-full p-4 text-white hover:scale-110 transition ">
             <i class="fab fa-tiktok text-xl"></i>
         </a>
         <a href="https://www.instagram.com/luxeflex2020/?hl=en"
-            class="bg-black rounded-full p-4 text-white hover:scale-110 transition animate-pulse-slow">
+            class="bg-black rounded-full p-4 text-white hover:scale-110 transition ">
             <i class="fab fa-instagram text-xl"></i>
         </a>
     </div>

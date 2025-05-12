@@ -25,17 +25,15 @@
     <!-- Google Fonts - Consider optimizing font loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"
-        media="print" onload="this.media='all'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    </noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
 
     <!-- AOS - Consider loading async -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
+    <link rel="preload" href="{% static 'css/main.css' %}" as="style">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
 
@@ -52,10 +50,9 @@
             <a href="{% url 'home' %}" class="flex items-center">
                 {# TODO: Use {% static %} tag for the logo image #}
                 <picture>
-                    <source srcset="{% static 'logo.webp' %}" type="image/webp">
-                    <source srcset="{% static 'logo.png' %}" type="image/png">
+                    <link rel="preload" as="image" href="{% static 'logo.webp' %}" type="image/webp">
                     <img src="{% static 'logo.png' %}" alt="LUXEFLEX Logo" width="200" height="60"
-                        class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl filter drop-shadow-2xl brightness-110 contrast-125 transition-all duration-300 hover:brightness-125 hover:scale-105">
+                        class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl filter drop-shadow-2xl brightness-110 contrast-125 transition-all duration-300 hover:brightness-125 hover:scale-105">      
                 </picture>
                 
                 
@@ -318,6 +315,9 @@
     </div>
     {% endif %}
 
+    <div class="content">
+    {% block background %}
+    {% endblock %}
     {% block content %}{% endblock %}
 
     <!-- Footer -->
