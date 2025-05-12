@@ -65,7 +65,7 @@
 
         <a href="{% url 'hot_sale' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img loading="lazy" src="{% static 'SALE.jpg' %}" alt="Hot Sale Collection" width="600" height="600"
+            <img loading="eager" fetchpriority="high" src="{% static 'SALE.jpg' %}" alt="Hot Sale Collection" width="600" height="600"
                 class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
@@ -79,7 +79,7 @@
 
         <a href="{% url 'products_by_main_category' 'sunglasses' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img loading="lazy" src="{% static 'women.jpg' %}" alt="Sunglasses Collection" width="700" height="600"
+            <img loading="eager" fetchpriority="high" src="{% static 'women.jpg' %}" alt="Sunglasses Collection" width="700" height="600"
                 class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
@@ -93,7 +93,7 @@
 
         <a href="{% url 'products_by_main_category' 'optical' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img loading="lazy" src="{% static 'man.jpg' %}" alt="Optical Collection" width="600" height="600"
+            <img loading="eager" fetchpriority="high" src="{% static 'man.jpg' %}" alt="Optical Collection" width="600" height="600"
                 class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
