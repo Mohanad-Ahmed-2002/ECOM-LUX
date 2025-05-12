@@ -65,8 +65,14 @@
 
         <a href="{% url 'hot_sale' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img loading="eager" fetchpriority="high" src="{% static 'SALE.jpg' %}" alt="Hot Sale Collection" width="600" height="600"
-                class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+            
+            <picture>
+                <source srcset="{% static 'SALE.webp' %}" type="image/webp">
+                <img src="{% static 'SALE.jpg' %}" alt="Hot Sale Collection" width="600" height="600"
+                    class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+            </picture>
+            
+
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
                 class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
@@ -79,8 +85,13 @@
 
         <a href="{% url 'products_by_main_category' 'sunglasses' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img loading="eager" fetchpriority="high" src="{% static 'women.jpg' %}" alt="Sunglasses Collection" width="700" height="600"
-                class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+            
+            <picture>
+                <source srcset="{% static 'women.webp' %}" type="image/webp">
+                <img src="{% static 'women.jpg' %}" alt="Sunglasses Collection" width="700" height="600"
+                    class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+            </picture>
+            
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
                 class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
@@ -93,8 +104,13 @@
 
         <a href="{% url 'products_by_main_category' 'optical' %}"
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
-            <img loading="eager" fetchpriority="high" src="{% static 'man.jpg' %}" alt="Optical Collection" width="600" height="600"
-                class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+
+            <picture>
+                <source srcset="{% static 'man.webp' %}" type="image/webp">
+                <img src="{% static 'man.jpg' %}" alt="Optical Collection" width="600" height="600"
+                    class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+            </picture>
+            
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
             <div
                 class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">

@@ -50,10 +50,11 @@
             <a href="{% url 'home' %}" class="flex items-center">
                 {# TODO: Use {% static %} tag for the logo image #}
                 <picture>
-                    <link rel="preload" as="image" href="{% static 'logo.webp' %}" type="image/webp">
+                    <source srcset="{% static 'logo.webp' %}" type="image/webp">
                     <img src="{% static 'logo.png' %}" alt="LUXEFLEX Logo" width="200" height="60"
-                        class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl filter drop-shadow-2xl brightness-110 contrast-125 transition-all duration-300 hover:brightness-125 hover:scale-105">      
+                        class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl">
                 </picture>
+                
                 
                 
             </a>
