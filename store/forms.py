@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Government, CustomerOrder, Product
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 class OrderForm(forms.ModelForm):
@@ -24,8 +25,11 @@ class ProductForm(forms.ModelForm):
                 'sub_category', 'image', 'age_group', 'description', 'is_hot_sale']
 
     def clean_image(self):
-        image = self.cleaned_data['image']
+        image = self.cleaned_data.get('image')
         max_size = 4 * 1024 * 1024  # 4MB
-        if image.size > max_size:
-            raise ValidationError("Image size should not exceed 4MB.")
+
+        # فقط تحقق من الحجم إذا كانت الصورة مرفوعة الآن (ملف جديد)
+        if image and isinstance(image, InMemoryUploadedFile):
+            if image.size > max_size:
+                raise ValidationError("حجم الصورة لا يجب أن يتجاوز 4 ميجا.")
         return image
