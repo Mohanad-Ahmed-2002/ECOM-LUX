@@ -9,13 +9,14 @@ from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.db.models import Prefetch
 
+from .filters import filter_products
+
 from .models import (
     Product, CartItem, CustomerOrder, Government, OrderItem,
     PromoCode, WishlistItem, ProductImage
 )
 from .forms import OrderForm
-from .services import order_service, cart_service, product_service
-
+from .services import order_service, cart_service 
 
 # ============================== صفحات عامة ==============================
 
@@ -29,12 +30,20 @@ def about(request):
 
 
 # ============================== المنتجات ==============================
+
 def products_by_main_category(request, main_category):
     main_category = main_category.upper()
 
-    products = Product.objects.filter(
-        main_category=main_category
-    ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
+    price_filter = request.GET.get('price_filter')
+    sort_by = request.GET.get('sort_by')
+
+    products = filter_products(
+        price_filter=price_filter,
+        category_filter=None,
+        sort_by=sort_by
+    ).filter(main_category=main_category)
+
+    products = products.only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
 
@@ -45,16 +54,24 @@ def products_by_main_category(request, main_category):
     return render(request, 'myapp/shop_list.html', {
         'page_obj': page_obj,
         'main_category': main_category,
+        'price_filter': price_filter,
+        'sort_by': sort_by,
     })
 
 def products_by_main_and_sub_category(request, main_category, sub_category):
     main_category = main_category.upper()
     sub_category = sub_category.upper()
 
-    products = Product.objects.filter(
-        main_category=main_category,
-        sub_category=sub_category
-    ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
+    price_filter = request.GET.get('price_filter')
+    sort_by = request.GET.get('sort_by')
+
+    products = filter_products(
+        price_filter=price_filter,
+        category_filter=sub_category,
+        sort_by=sort_by
+    ).filter(main_category=main_category)
+
+    products = products.only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
 
@@ -66,6 +83,8 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
         'page_obj': page_obj,
         'main_category': main_category,
         'sub_category': sub_category,
+        'price_filter': price_filter,
+        'sort_by': sort_by,
     })
 
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
@@ -73,11 +92,16 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
     sub_category = sub_category.upper()
     age_group = age_group.capitalize()
 
-    products = Product.objects.filter(
-        main_category=main_category,
-        sub_category=sub_category,
-        age_group=age_group
-    ).order_by('-id').only("id", "name", "price", "discount_price", "image").prefetch_related(
+    price_filter = request.GET.get('price_filter')
+    sort_by = request.GET.get('sort_by')
+
+    products = filter_products(
+        price_filter=price_filter,
+        category_filter=sub_category,
+        sort_by=sort_by
+    ).filter(main_category=main_category, age_group=age_group)
+
+    products = products.only("id", "name", "price", "discount_price", "image").prefetch_related(
         Prefetch('extra_images', queryset=ProductImage.objects.only('image', 'color_name'))
     )
 
@@ -89,7 +113,9 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         'page_obj': page_obj,
         'main_category': main_category,
         'sub_category': sub_category,
-        'age_group': age_group
+        'age_group': age_group,
+        'price_filter': price_filter,
+        'sort_by': sort_by,
     })
 
 def product_detail(request, product_id):

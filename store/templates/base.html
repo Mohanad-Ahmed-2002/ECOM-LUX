@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <title>{% block title %}My Store{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="LUXEFLEX - Luxury Eyewear for All Ages and Styles. Discover sunglasses, opticals, and more.">
 
     <!-- External CSS Libraries -->
     <!-- Tailwind CSS -->
@@ -23,7 +25,7 @@
     </noscript>
 
     <!-- Google Fonts - Consider optimizing font loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
@@ -51,9 +53,10 @@
                 {# TODO: Use {% static %} tag for the logo image #}
                 <picture>
                     <source srcset="{% static 'logo.webp' %}" type="image/webp">
-                    <img src="{% static 'logo.png' %}" alt="LUXEFLEX Logo" width="200" height="60"
+                    <img src="{% static 'logo.png' %}" alt="LUXEFLEX Logo" width="200" height="60" loading="eager" decoding="async"
                         class="h-8 sm:h-10 md:h-12 lg:h-12 w-auto max-w-[200px] object-contain rounded-2xl">
                 </picture>
+                
                 
                 
                 
@@ -331,7 +334,7 @@
     </footer>
 
     <!-- External JavaScript Libraries - CONSIDER LOADING ASYNC or DEFER -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script defer onload="AOS.init();" src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{% static 'js/main.js' %}" defer></script>
 
 

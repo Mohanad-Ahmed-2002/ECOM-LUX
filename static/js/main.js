@@ -53,25 +53,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Mobile menu toggle
+    // ✅ Mobile menu toggle - optimized version
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileBackdrop = document.getElementById('mobile-backdrop');
     const mobileCloseBtn = document.getElementById('mobile-close-btn');
-    if (mobileMenu && mobileMenuBtn && mobileBackdrop && mobileCloseBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('translate-x-full');
-            mobileBackdrop.classList.remove('hidden');
-        });
-        mobileCloseBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-            mobileBackdrop.classList.add('hidden');
-        });
-        mobileBackdrop.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-            mobileBackdrop.classList.add('hidden');
-        });
+
+    function openMobileMenu() {
+        mobileMenu.classList.remove('translate-x-full');
+        mobileBackdrop.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
     }
+
+    function closeMobileMenu() {
+        mobileMenu.classList.add('translate-x-full');
+        mobileBackdrop.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    mobileMenuBtn.addEventListener('click', openMobileMenu);
+    mobileCloseBtn.addEventListener('click', closeMobileMenu);
+    mobileBackdrop.addEventListener('click', closeMobileMenu);
 
     // Mobile submenu toggle
     document.querySelectorAll('.mobile-submenu-toggle').forEach(button => {
@@ -85,21 +87,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+     // Retain filter values in shop filter form (sort_by, price_filter)
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortBy = urlParams.get('sort_by');
+    const priceFilter = urlParams.get('price_filter');
+
+    if (sortBy) {
+        const sortSelect = document.querySelector('select[name="sort_by"]');
+        if (sortSelect) sortSelect.value = sortBy;
+    }
+    if (priceFilter) {
+        const priceSelect = document.querySelector('select[name="price_filter"]');
+        if (priceSelect) priceSelect.value = priceFilter;
+    }
 
 
     // Image thumbnail switcher (used in shop/product/hot_sale pages)
     window.changeMainImage = function (productId, element) {
         const newImageUrl = element.getAttribute('data-image-url');
-            const mainImage = document.getElementById('main-image-' + productId);
-            if (mainImage) {
-                mainImage.src = newImageUrl;
-            }
-            const selectedColorInput = document.getElementById('selected-color-' + productId);
-            if (selectedColorInput) {
-                selectedColorInput.value = newImageUrl;
-            }
+        const mainImage = document.getElementById('main-image-' + productId);
+        if (mainImage) {
+            mainImage.src = newImageUrl;
+        }
+        const selectedColorInput = document.getElementById('selected-color-' + productId);
+        if (selectedColorInput) {
+            selectedColorInput.value = newImageUrl;
+        }
     };
-    
 
     // Checkout shipping fee + total calculation
     const govSelect = document.getElementById('government');
@@ -113,6 +127,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
             document.getElementById('shipping').innerText = 'EGP ' + shippingFee.toFixed(2);
             document.getElementById('total').innerText = 'EGP ' + total.toFixed(2);
+        });
+    }
+
+    // Promo Code Validation
+    let debounceTimeout;
+    const promoInput = document.getElementById('promo_code');
+    if (promoInput) {
+        promoInput.addEventListener('input', function () {
+            clearTimeout(debounceTimeout);
+            const promoCode = this.value;
+            const subtotal = parseFloat(document.getElementById('subtotal')?.innerText.replace("EGP", "").trim()) || 0;
+
+            debounceTimeout = setTimeout(() => {
+                document.getElementById('promo-msg')?.remove();
+
+                if (promoCode.length > 1) {
+                    fetch(`/validate-promo/?code=${promoCode}&subtotal=${subtotal}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            const discountElem = document.getElementById('discount');
+                            if (data.valid) {
+                                discountElem.innerHTML = `✅ Discount: <span class="font-bold">-EGP ${data.discount.toFixed(2)}</span>`;
+                                discountElem.dataset.amount = data.discount;
+                                discountElem.classList.remove('hidden');
+                                updateTotals();
+                            } else {
+                                discountElem.classList.add('hidden');
+                                const msg = document.createElement('p');
+                                msg.id = 'promo-msg';
+                                msg.className = 'text-sm text-red-600 font-semibold mt-1';
+                                msg.innerText = data.message || 'Invalid promo code';
+                                document.getElementById('promo_code').after(msg);
+                            }
+                        });
+                } else {
+                    document.getElementById('discount').classList.add('hidden');
+                    document.getElementById('promo-msg')?.remove();
+                    updateTotals();
+                }
+            }, 500);
         });
     }
 });

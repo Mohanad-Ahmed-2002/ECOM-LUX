@@ -112,8 +112,8 @@
                 <p>Shipping: <span id="shipping" class="float-right">EGP {{ shipping_fee }}</span></p>
                 <p id="discount" class="text-green-700 font-bold hidden"></p>
                 <hr>
-                <p class="text-lg font-bold">Total: <span id="total" class="float-right text-blue-700">EGP {{
-                        grand_total }}</span></p>
+                <p class="text-lg font-bold">Total: <span id="total" class="float-right text-blue-700">{{ grand_total }}</span></p>
+
             </div>
 
             <div class="col-span-full flex justify-end">
@@ -127,52 +127,5 @@
     </div>
 </section>
 
-<script>
-    function updateTotals() {
-        const govSelect = document.getElementById('government');
-        const selected = govSelect.options[govSelect.selectedIndex];
-        let shippingFee = parseFloat(selected.getAttribute('data-shipping-fee')) || 0;
-        let subtotal = parseFloat("{{ subtotal }}") || 0;
-        let discount = parseFloat(document.getElementById('discount')?.dataset.amount || 0);
-        let total = subtotal - discount + shippingFee;
-
-        document.getElementById('shipping').innerText = 'EGP ' + shippingFee.toFixed(2);
-        document.getElementById('total').innerText = 'EGP ' + total.toFixed(2);
-    }
-
-    document.getElementById('promo_code').addEventListener('input', function () {
-        const promoCode = this.value;
-        const subtotal = parseFloat("{{ subtotal }}");
-
-        if (promoCode.length > 1) {
-            fetch(`/validate-promo/?code=${promoCode}&subtotal=${subtotal}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('promo-msg')?.remove();
-                    const discountElem = document.getElementById('discount');
-
-                    if (data.valid) {
-                        discountElem.innerHTML = `Discount: <span class="font-bold">-EGP ${data.discount.toFixed(2)}</span>`;
-                        discountElem.dataset.amount = data.discount;
-                        discountElem.classList.remove('hidden');
-                        updateTotals();
-                    } else {
-                        discountElem.classList.add('hidden');
-                        const msg = document.createElement('p');
-                        msg.id = 'promo-msg';
-                        msg.className = 'text-sm text-red-600 font-semibold mt-1';
-                        msg.innerText = data.message || 'Invalid promo code';
-                        document.getElementById('promo_code').after(msg);
-                    }
-                });
-        } else {
-            document.getElementById('discount').classList.add('hidden');
-            document.getElementById('promo-msg')?.remove();
-            updateTotals();
-        }
-    });
-
-    window.onload = updateTotals;
-</script>
 
 {% endblock %}

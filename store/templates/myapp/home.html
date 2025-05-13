@@ -21,12 +21,17 @@
 
 <!-- Hero Section -->
 <section class="relative w-full py-20  overflow-hidden">
-    <video class="absolute inset-0 w-full h-full object-cover brightness-50 kenburns-effect" autoplay loop muted
-        playsinline>
+    <video class="absolute inset-0 w-full h-full object-cover brightness-50 kenburns-effect hidden sm:block" autoplay loop
+        muted playsinline poster="{% static 'fallback.jpg' %}">
         <source src="https://res.cloudinary.com/dguqdne24/video/upload/v1746384487/Untitled_Design_ekicqq.mp4"
             type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    
+    <!-- صورة ثابتة للموبايل -->
+    <img src="{% static 'shop_bg.jpg' %}" alt="Hero Image"
+        class="absolute inset-0 w-full h-full object-cover brightness-50 block sm:hidden">
+
 
     <div class="absolute inset-0 bg-gradient-to-b from-black via-[#0a0f2c] to-black opacity-70"></div>
 
@@ -64,6 +69,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
 
         <a href="{% url 'hot_sale' %}"
+            
             class="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-2xl transition duration-500">
             
             <picture>
@@ -89,7 +95,7 @@
             <picture>
                 <source srcset="{% static 'women.webp' %}" type="image/webp">
                 <img src="{% static 'women.jpg' %}" alt="Sunglasses Collection" width="700" height="600"
-                    class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 ease-out">
+                    class="w-full h-full object-cover transform group-hover:scale-105 transition duration-300 ease-in-out">
             </picture>
             
             <div class="absolute inset-0 bg-black/50 group-hover:bg-black/70 transition duration-500"></div>
@@ -143,11 +149,12 @@
 </div>
 
 <!-- WhatsApp Button -->
-<a href="https://wa.me/201021818169" target="_blank"
+<a href="https://wa.me/201021818169" target="_blank" rel="noopener noreferrer"
     class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 sm:p-5 text-xl sm:text-2xl z-50 shadow-lg transition-transform duration-300 active:scale-90"
-    aria-label="Chat on WhatsApp" data-aos="zoom-in" data-aos-delay="200">
+    aria-label="Contact us on WhatsApp" title="Chat with us on WhatsApp" data-aos="zoom-in" data-aos-delay="200">
     <i class="fab fa-whatsapp"></i>
 </a>
+
 
 
 
