@@ -41,6 +41,13 @@ Shop
         <div data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00"
             class="bg-white/30 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 hover:rotate-1 hover:scale-105 transition-all duration-300">
 
+            {% if product.discount_price %}
+            <span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full z-10">
+                Sale
+            </span>
+            {% endif %}
+
+            
             <a href="{% url 'product_detail' product.id %}">
                 <img loading="lazy" id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
                     class="w-full h-52 sm:h-60 object-cover transition duration-300 ease-in-out hover:scale-105" width="300"

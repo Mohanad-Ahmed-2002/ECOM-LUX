@@ -10,9 +10,12 @@
 
         <!-- الصور -->
         <div>
+
+
+
             <img id="main-image-{{ product.id }}" src="{{ product.image.url }}" alt="{{ product.name }}"
                 class="w-full max-h-[500px] object-contain rounded-2xl shadow-xl transition duration-300 hover:scale-105">
-
+            
             <div id="thumbnails" class="flex flex-wrap gap-2 mt-4">
                 <img loading="lazy" src="{{ product.image.url }}" alt="Default"
                     class="w-20 h-20 object-cover border-2 border-blue-600 rounded-xl cursor-pointer hover:scale-105 transition"
