@@ -49,7 +49,7 @@ Shop
 
             
             <a href="{% url 'product_detail' product.id %}">
-                <img loading="lazy" id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=400&h=400&c_fill&q_auto:eco&f_auto"
+                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=400&h=400&c_fill&q_auto:eco&f_auto"
                     alt="{{ product.name }}" width="300" height="300"
                     class="w-full h-52 sm:h-60 object-cover transition duration-300 ease-in-out hover:scale-105" />
             </a>
