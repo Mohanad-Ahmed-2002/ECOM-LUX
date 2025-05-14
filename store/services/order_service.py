@@ -34,7 +34,7 @@ def apply_promo_code(promo_code_str,subtotal,request=None):
     if promo_code_str:
         try:
             promo=PromoCode.objects.get(code__iexact=promo_code_str)
-            if promo.is_valid():
+            if promo.is_valid:
                 discount_amount=(subtotal*promo.discount_percentage)/100
                 if request:
                     messages.success(request,f"Promo code applied! You saved LE {discount_amount:.2f}")
@@ -44,6 +44,10 @@ def apply_promo_code(promo_code_str,subtotal,request=None):
         except PromoCode.DoesNotExist:
             if request:
                 messages.error(request, "Promo code not found.")
+        except Exception:
+            # أي خطأ غير متوقع لازم نرجع صفر
+            return Decimal(0)
+        
     return discount_amount
 
 def create_order(order, session_key):

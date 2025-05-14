@@ -255,12 +255,15 @@ def checkout(request):
     })
 
 def validate_promo_code(request):
-    code = request.GET.get('code', '').strip()
-    subtotal = Decimal(request.GET.get('subtotal', '0'))
-    discount = order_service.apply_promo_code(code, subtotal)
-    if discount > 0:
-        return JsonResponse({'valid': True, 'discount': float(discount)})
-    return JsonResponse({'valid': False, 'message': 'Promo code is not valid or expired'})
+    code = request.POST.get('promo_code', '').strip()
+    subtotal = Decimal(request.POST.get('subtotal', '0'))
+
+    discount = order_service.apply_promo_code(code, subtotal, request)
+
+    return JsonResponse({
+        'valid': discount > 0,
+        'discount': float(discount)
+    })
 
 def order_success(request, order_id):
     order = get_object_or_404(CustomerOrder, id=order_id)
