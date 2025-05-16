@@ -10,7 +10,7 @@ Shop
 <div class="container mx-auto px-3 py-6 sm:py-8">
 
     <h1
-        class="text-xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent animate__animated animate__fadeInDown">
+        class="text-2xl sm:text-3xl font-bold text-center mb-6 bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent">
         {% if main_category %}
         {{ main_category|title }}
         {% if age_group %} - {{ age_group|title }}{% endif %}
@@ -22,7 +22,7 @@ Shop
     <form method="get" class="mb-6 flex flex-wrap gap-4 justify-center">
     
         <!-- Sort By -->
-        <select name="sort_by" class="border rounded px-3 py-1 text-sm">
+        <select name="sort_by" class="border rounded px-3 py-1 text-sm w-full sm:w-auto">
             <option value="">Sort By</option>
             <option value="price_asc">Price: Low to High</option>
             <option value="price_desc">Price: High to Low</option>
@@ -38,8 +38,7 @@ Shop
     {% if page_obj %}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-8">
         {% for product in page_obj %}
-        <div data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00"
-            class="bg-white/30 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 hover:rotate-1 hover:scale-105 transition-all duration-300">
+        <div class="bg-white/30 backdrop-blur-md rounded-2xl shadow-md hover:shadow-lg overflow-hidden transform hover:-translate-y-1 hover:rotate-1 hover:scale-105 transition-all duration-300">
 
             {% if product.discount_price %}
             <span class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full z-10">
@@ -49,9 +48,10 @@ Shop
 
             
             <a href="{% url 'product_detail' product.id %}">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=400&h=400&c_fill&q_auto:eco&f_auto"
+                <img  id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=400&h=400&c_fill&q_auto:eco&f_auto"
                     alt="{{ product.name }}" width="300" height="300"
                     class="w-full h-52 sm:h-60 object-cover transition duration-300 ease-in-out hover:scale-105" />
+
             </a>
 
             <div class="p-4 flex flex-col justify-between">

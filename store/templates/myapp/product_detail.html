@@ -10,21 +10,27 @@
 
         <!-- الصور -->
         <div>
-
-            
+            <!-- الصورة الكبيرة الرئيسية -->
+            <img loading="lazy" id="main-image-{{ product.id }}"
+                src="{{ product.image.url }}?w=600&h=600&c_fit&q_auto:eco&f_auto" alt="{{ product.name }}"
+                class="w-full max-h-[500px] object-contain rounded-2xl shadow-xl transition duration-300 hover:scale-105" />
+        
+            <!-- thumbnails -->
             <div id="thumbnails" class="flex flex-wrap gap-2 mt-4">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=600&h=600&c_fit&q_auto:eco&f_auto"
-                    alt="{{ product.name }}"
-                    class="w-full max-h-[500px] object-contain rounded-2xl shadow-xl transition duration-300 hover:scale-105" />
-
+                <!-- صورة المنتج الأساسية داخل thumbnails -->
+                <img loading="lazy" src="{{ product.image.url }}?w=100&h=100&c_fill&q_auto:low&f_auto" alt="Main Image"
+                    class="w-20 h-20 object-cover border rounded-xl cursor-pointer hover:scale-105 transition"
+                    data-image-url="{{ product.image.url }}" onclick="changeMainImage('{{ product.id }}', this)">
+        
+                <!-- صور الألوان الإضافية -->
                 {% for img in extra_images %}
                 <img loading="lazy" src="{{ img.image.url }}?w=100&h=100&c_fill&q_auto:low&f_auto" alt="{{ img.color_name }}"
                     class="w-20 h-20 object-cover border rounded-xl cursor-pointer hover:scale-105 transition"
                     data-image-url="{{ img.image.url }}" onclick="changeMainImage('{{ product.id }}', this)">
                 {% endfor %}
-
             </div>
         </div>
+        
 
         <!-- التفاصيل -->
         <div>

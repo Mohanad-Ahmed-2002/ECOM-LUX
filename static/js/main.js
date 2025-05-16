@@ -1,11 +1,6 @@
 // ------------------ AOS Animation Init ------------------
 document.addEventListener("DOMContentLoaded", function () {
-    if (typeof AOS !== 'undefined') {
-        AOS.init({
-            once: true,
-            duration: 1200,
-        });
-    }
+
 
     // Hero subtitle animation (home.html)
     const heroSubtitle = document.querySelector(".hero-subtitle");
