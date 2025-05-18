@@ -319,7 +319,6 @@ def update_order_status(request, order_id):
 def delete_order(request, order_id):
     order = get_object_or_404(CustomerOrder, id=order_id)
     order.delete()
-    messages.success(request, "تم حذف الطلب بنجاح.")
     return redirect('dashboard_orders')
 
 @staff_member_required
