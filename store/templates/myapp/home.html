@@ -6,15 +6,15 @@
 {% block content %}
 
 <!-- BANNER Section -->
-<div class="overflow-hidden whitespace-nowrap bg-gray-100 py-2 text-center text-sm font-semibold">
+<div class="overflow-hidden whitespace-nowrap bg-gradient-to-r from-blue-900 to-black text-white py-2 text-center text-sm font-semibold">
     <div class="inline-block animate-marquee space-x-8" aria-hidden="true" role="presentation">
         <span>✨ Summer Collection Now Live ☀️</span>
         <span>✨ Elevate Your Look with Our New Collection</span>
-        <span>✨ Use Code JEANSCLUB to Get 10% Off Your First Purchase🎁</span>
+        <span>✨ Use Code <strong>JEANSCLUB</strong> to Get 10% Off Your First Purchase🎁</span>
         <span>✨ NEW ARRIVALS EVERY WEEK</span>
         <span>✨ Summer Collection Now Live ☀️</span>
         <span>✨ Elevate Your Look with Our New Collection</span>
-        <span>✨ Use Code JEANSCLUB to Get 10% Off Your First Purchase🎁</span>
+        <span>✨ Use Code <strong>JEANSCLUB</strong> to Get 10% Off Your First Purchase🎁</span>
         <span>✨ NEW ARRIVALS EVERY WEEK</span>
     </div>
 </div>
@@ -35,16 +35,12 @@
 
     <div class="relative z-10 flex flex-col justify-center items-center text-center h-full px-4 sm:px-6 space-y-6">
         
-        <h1 class="text-blue-400 text-2xl sm:text-4xl md:text-5xl font-bold tracking-widest drop-shadow-lg">
+        <h1 class="text-blue-400 text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight drop-shadow-lg">
             LUXE <span class="text-blue-400 sm:animate-pulse">FLEX</span>
         </h1>
         
 
 
-        <p class="hero-subtitle text-white text-xl sm:text-2xl md:text-3xl font-light italic tracking-widest" data-aos="fade-up"
-            data-aos-delay="300">
-            Where Elegance Meets Vision
-        </p>
 
 
         <a href="{% url 'products_by_main_category' 'jeansclub' %}"
@@ -127,6 +123,40 @@
                 </span>
             </div>
         </a>
+
+    </div>
+</section>
+
+<!-- Brand Essence Section -->
+<section class="bg-gradient-to-br from-white to-blue-50 py-20 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+        <!-- Left Content -->
+        <div class="flex flex-col items-center lg:items-start text-center lg:text-left space-y-6" data-aos="fade-right">
+            <h2
+                class="text-2xl sm:text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-black via-blue-900 to-blue-900 bg-clip-text text-transparent">
+                More Than Eyewear
+            </h2>
+
+            <div
+                class="inline-flex items-center flex-wrap justify-center lg:justify-start gap-3 bg-blue-100 text-blue-800 px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold shadow">
+                <span>Elegance</span>
+                <span>•</span>
+                <span>Trust</span>
+                <span>•</span>
+                <span>Vision</span>
+            </div>
+        </div>
+
+        <!-- Right Video -->
+        <div class="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border border-blue-100"
+            data-aos="fade-left">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                <source src="https://res.cloudinary.com/dguqdne24/video/upload/v1747538926/background_vo2rur.mp4"
+                    type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
 
     </div>
 </section>
