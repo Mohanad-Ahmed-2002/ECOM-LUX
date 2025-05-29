@@ -1,11 +1,12 @@
 from django.contrib import admin
 from .models import Product, Government, PromoCode, ProductImage
-from .forms import ProductForm  # استوردنا ProductForm
+from .forms import ProductForm, ProductImageForm  # استوردنا ProductForm
 
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 3
+    form = ProductImageForm 
     fields = ('image', 'color_name',)
 
 

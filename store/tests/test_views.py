@@ -316,3 +316,5 @@ def test_delete_order_view(client):
     # تحقق من الحذف
     assert response.status_code == 302  # Redirect بعد الحذف
     assert not CustomerOrder.objects.filter(id=order.id).exists()
+
+

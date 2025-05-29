@@ -1,8 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Government, CustomerOrder, Product
+from .models import Government, CustomerOrder, Product,ProductImage
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
+from PIL import Image
+from io import BytesIO
+import sys
 
 class OrderForm(forms.ModelForm):
     government = forms.ModelChoiceField(
@@ -24,12 +26,58 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'price', 'discount_price', 'main_category',
                 'sub_category', 'image', 'age_group', 'description', 'is_hot_sale']
 
+
+
     def clean_image(self):
         image = self.cleaned_data.get('image')
         max_size = 4 * 1024 * 1024  # 4MB
 
-        # فقط تحقق من الحجم إذا كانت الصورة مرفوعة الآن (ملف جديد)
         if image and isinstance(image, InMemoryUploadedFile):
             if image.size > max_size:
                 raise ValidationError("حجم الصورة لا يجب أن يتجاوز 4 ميجا.")
+
+            # ضغط الصورة وتصغيرها
+            img = Image.open(image)
+            output = BytesIO()
+            img = img.convert('RGB')
+
+            if img.height > 1000 or img.width > 1000:
+                img.thumbnail((1000, 1000))  # تصغير الأبعاد
+
+            img.save(output, format='JPEG', quality=70)  # ضغط الجودة
+            output.seek(0)
+
+            image = InMemoryUploadedFile(
+                output, 'ImageField', image.name, 'image/jpeg', sys.getsizeof(output), None
+            )
+
+        return image
+
+class ProductImageForm(forms.ModelForm):
+    class Meta:
+        model = ProductImage
+        fields = ['image', 'color_name']
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        max_size = 4 * 1024 * 1024  # 4MB
+
+        if image and isinstance(image, InMemoryUploadedFile):
+            if image.size > max_size:
+                raise ValidationError("حجم الصورة لا يجب أن يتجاوز 4 ميجا.")
+
+            img = Image.open(image)
+            output = BytesIO()
+            img = img.convert('RGB')
+
+            if img.height > 1000 or img.width > 1000:
+                img.thumbnail((1000, 1000))
+
+            img.save(output, format='JPEG', quality=70)
+            output.seek(0)
+
+            image = InMemoryUploadedFile(
+                output, 'ImageField', image.name, 'image/jpeg', sys.getsizeof(output), None
+            )
+
         return image
