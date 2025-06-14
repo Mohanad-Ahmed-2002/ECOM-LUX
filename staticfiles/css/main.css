@@ -312,8 +312,17 @@ body.home-page #mobile-menu i {
 /* 💡 الستايل الأساسي لكل الصفحات */
 
 
-#mobile-menu {
-    animation: slideIn 0.4s ease-out;
+/* ✅ تخصيص خاص للهوم: تاخد العرض والطول بالكامل */
+
+
+/* ✅ تخصيص خاص للهوم: تاخد العرض والطول بالكامل */
+body.home-page #mobile-menu {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    background-color: white !important;
+    color: black !important;
+    z-index: 60;
 }
 
 @keyframes slideIn {

@@ -313,6 +313,9 @@ body.home-page #mobile-menu i {
 
 
 /* ✅ تخصيص خاص للهوم: تاخد العرض والطول بالكامل */
+
+
+/* ✅ تخصيص خاص للهوم: تاخد العرض والطول بالكامل */
 body.home-page #mobile-menu {
     width: 80vw !important;
     height: 100vh !important;
@@ -320,10 +323,6 @@ body.home-page #mobile-menu {
     background-color: white !important;
     color: black !important;
     z-index: 60;
-}
-
-#mobile-menu {
-    animation: slideIn 0.4s ease-out;
 }
 
 @keyframes slideIn {
