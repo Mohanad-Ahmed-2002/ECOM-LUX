@@ -2,8 +2,11 @@
 {% load static %}
 
 {% block title %}{{ product.name }} - LUXEFLEX{% endblock %}
+{% block body_class %}default-page{% endblock %}
 
 {% block content %}
+{% include 'header.html' %}
+
 <div class="max-w-6xl mx-auto px-4 py-12">
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -39,10 +42,10 @@
             {% if product.discount_price %}
             <div class="text-lg mb-4 space-x-2">
                 <span class="text-gray-400 line-through">{{ product.price }} EGP</span>
-                <span class="text-blue-800 font-bold text-2xl">{{ product.discount_price }} EGP</span>
+                <span class="text-black font-bold text-2xl">{{ product.discount_price }} EGP</span>
             </div>
             {% else %}
-            <p class="text-blue-800 font-bold text-2xl mb-4">{{ product.price }} EGP</p>
+            <p class="text-black font-bold text-2xl mb-4">{{ product.price }} EGP</p>
             {% endif %}
 
             <p class="text-gray-700 mb-6 whitespace-pre-line leading-relaxed">{{ product.description }}</p>

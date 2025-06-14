@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}Cart - LUXEFLEX{% endblock %}
+{% block body_class %}default-page{% endblock %}
 
 {% block content %}
+{% include 'header.html' %}
+
 
     
 <section class="container mx-auto px-4 sm:px-6 py-10">
 
     <!-- ✅ Page Title -->
     <h1
-        class="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text text-transparent text-center mb-8">
+        class="text-2xl sm:text-4xl font-extrabold  text-black text-center mb-8">
         🛒 Your Shopping Cart
     </h1>
     
@@ -56,8 +59,14 @@
                                 class="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow">+</a>
                         </div>
                     </td>
-                    <td class="py-4 px-4 text-center text-gray-800 font-semibold">EGP {{ item.product.price }}</td>
-                    <td class="py-4 px-4 text-center text-blue-700 font-bold">EGP {{ item.get_total_price }}</td>
+                    <td class=" py-4 px-4 text-center text-black font-semibold text-sm">
+                        {% if item.product.discount_price %}
+                        {{ item.product.discount_price }} EGP
+                        {% else %}
+                        {{ item.product.price }} EGP
+                        {% endif %}
+                    </td>
+                    <td class="py-4 px-4 text-center text-black font-bold">EGP {{ item.get_total_price }}</td>
                     <td class="py-4 px-4 text-center">
                         <form method="post" action="{% url 'remove_from_cart' item.id %}">
                             {% csrf_token %}

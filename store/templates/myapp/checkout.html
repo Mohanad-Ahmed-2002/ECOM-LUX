@@ -2,14 +2,17 @@
 {% load widget_tweaks %}
 
 {% block title %}Checkout - LUXEFLEX{% endblock %}
+{% block body_class %}default-page{% endblock %}
 
 {% block content %}
+{% include 'header.html' %}
+
 
 
     
 <section class="container mx-auto px-4 py-10 sm:py-12">
     <h1
-        class="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-700 to-cyan-400 bg-clip-text text-transparent text-center mb-10 animate__animated animate__fadeInDown">
+        class="text-3xl sm:text-5xl font-extrabold text-black text-center mb-10 animate__animated animate__fadeInDown">
         Checkout
     </h1>
 
@@ -103,6 +106,17 @@
                         Cash on Delivery
                     </label>
                 </div>
+
+                <!-- التحذير الخاص بـ الدفع عند الاستلام -->
+                <div id="cod-warning" dir="rtl"
+                    class="hidden mt-4 text-sm sm:text-base text-gray bg-red-50 border border-red-300 rounded-lg p-4 text-right leading-loose">
+                    ⚠️ يرجى العلم أنه في حالة اختيار الدفع عند الاستلام، يتم إرسال مبلغ
+                    <span class="font-bold">200 جنيه</span> على
+                    <span class="font-bold">Instapay</span> أو
+                    <span class="font-bold">Vodafone Cash</span> كتأكيد للطلب.
+                </div>
+
+
             </div>
 
             <!-- Totals -->
@@ -126,6 +140,29 @@
         </form>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentRadios = document.querySelectorAll('input[name="payment_method"]');
+        const warningDiv = document.getElementById('cod-warning');
+
+        paymentRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (this.value.toLowerCase() === 'cash') {
+                    warningDiv.classList.remove('hidden');
+                } else {
+                    warningDiv.classList.add('hidden');
+                }
+            });
+        });
+
+        // في حالة كان الدفع عند الاستلام هو الافتراضي عند تحميل الصفحة
+        const checked = document.querySelector('input[name="payment_method"]:checked');
+        if (checked && checked.value.toLowerCase() === 'cash') {
+            warningDiv.classList.remove('hidden');
+        }
+    });
+</script>
 
 
 {% endblock %}

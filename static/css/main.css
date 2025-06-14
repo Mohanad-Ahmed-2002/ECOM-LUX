@@ -2,6 +2,82 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+/* الهيدر في صفحة الهوم */
+body.home-page #header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    backdrop-filter: blur(5px);
+    color: white;
+}
+
+body.home-page #header a,
+body.home-page #header i,
+body.home-page #header button {
+    color: white !important;
+}
+
+/* الهيدر في باقي الصفحات */
+body.default-page #header,
+body:not(.home-page) #header {
+    background-color: white;
+    position: relative;
+    color: black;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* الروابط في الصفحات العادية (غير الهوم) */
+body:not(.home-page) #header a,
+body:not(.home-page) #header button,
+body:not(.home-page) #header i {
+    color: black !important;
+}
+
+body.default-page #header a,
+body.default-page #header i,
+body.default-page #header button,
+body:not(.home-page) #header a,
+body:not(.home-page) #header i,
+body:not(.home-page) #header button {
+    color: black !important;
+}
+
+/* Drop-down menu adjustments */
+
+body.home-page #desktop-shop-menu,
+body.home-page .desktop-submenu-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    backdrop-filter: blur(8px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.home-page #desktop-shop-menu a {
+    color: white;
+}
+
+body.home-page #desktop-shop-menu a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Default style for non-home pages (white dropdowns) */
+body:not(.home-page) #desktop-shop-menu,
+body:not(.home-page) .desktop-submenu-content {
+    background-color: white;
+    color: black;
+    border-color: #eee;
+}
+
+body:not(.home-page) #desktop-shop-menu a {
+    color: black;
+}
+
+body:not(.home-page) #desktop-shop-menu a:hover {
+    background-color: #f1f5f9;
+    /* Tailwind gray-100 */
+}
+
 .glow-hover:hover {
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
 }
@@ -47,6 +123,25 @@ body {
 }
 
 
+@keyframes fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-up {
+    animation: fade-up 0.8s ease-out forwards;
+}
+
+.animation-delay-200 {
+    animation-delay: 0.2s;
+}
 
 @keyframes kenburns {
     0% {
@@ -179,3 +274,18 @@ body {
     box-shadow: 0 0 0 2px #411be9;
 }
 
+
+
+/* روابط الناف في صفحة الهوم */
+body.home-page #header nav,
+body.home-page #header nav a,
+body.home-page #header nav i {
+    color: white;
+}
+
+/* روابط الناف في باقي الصفحات */
+body:not(.home-page) #header nav,
+body:not(.home-page) #header nav a,
+body:not(.home-page) #header nav i {
+    color: black;
+}
