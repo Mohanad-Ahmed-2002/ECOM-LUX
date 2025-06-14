@@ -7,10 +7,15 @@ body.home-page #header {
     position: absolute;
     top: 0;
     left: 0;
-    /* background-color: rgba(255, 255, 255, 0.05); */
+    z-index: 50;
+    /* أضف هذا السطر */
+    /* background-color: rgba(0, 0, 0, 0.4); */
+    /* اجعل الخلفية أكثر وضوحًا */
     backdrop-filter: blur(5px);
     color: white;
 }
+
+
 
 body.home-page #header a,
 body.home-page #header i,
@@ -288,4 +293,45 @@ body:not(.home-page) #header nav,
 body:not(.home-page) #header nav a,
 body:not(.home-page) #header nav i {
     color: black;
+}
+
+/* إصلاح الموبايل منيو في صفحة الهوم */
+body.home-page #mobile-menu {
+    background-color: white !important;
+    color: black !important;
+}
+
+body.home-page #mobile-menu a,
+body.home-page #mobile-menu button,
+body.home-page #mobile-menu i {
+    color: black !important;
+}
+
+/* تخصيص الموبايل منيو فقط لصفحة الهوم */
+/* ✅ تخصيص للمينيو في صفحة الهوم فقط */
+/* 💡 الستايل الأساسي لكل الصفحات */
+
+
+/* ✅ تخصيص خاص للهوم: تاخد العرض والطول بالكامل */
+body.home-page #mobile-menu {
+    width: 80vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    background-color: white !important;
+    color: black !important;
+    z-index: 60;
+}
+
+#mobile-menu {
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
 }
