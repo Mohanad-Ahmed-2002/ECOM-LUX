@@ -5,6 +5,8 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
 from io import BytesIO
 import sys
+from .models import Product, BRAND_CHOICES
+from store.constants import BRAND_CHOICES
 
 class OrderForm(forms.ModelForm):
     government = forms.ModelChoiceField(
@@ -19,13 +21,12 @@ class OrderForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
-    image = forms.ImageField()  # استخدم ImageField بدلاً من CloudinaryField
-
     class Meta:
         model = Product
-        fields = ['name', 'price', 'discount_price', 'main_category',
-                'sub_category', 'image', 'age_group', 'description', 'is_hot_sale']
-
+        fields = '__all__'
+        widgets = {
+            'brand': forms.Select(choices=BRAND_CHOICES)  # استخدم القيم الأصلية
+        }
 
 
     def clean_image(self):

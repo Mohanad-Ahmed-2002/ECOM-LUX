@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from cloudinary.models import CloudinaryField
+from store.constants import BRAND_CHOICES
 
 
 
@@ -46,6 +47,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    brand = models.CharField(max_length=50, choices=BRAND_CHOICES, blank=True, null=True)
     main_category = models.CharField(max_length=20, choices=MAIN_CATEGORY_CHOICES)
     sub_category = models.CharField(max_length=20, choices=SUB_CATEGORY_CHOICES, blank=True, null=True)
     image = CloudinaryField('image', folder='LUXFLEX/')
@@ -59,6 +61,16 @@ class Product(models.Model):
 
     def get_price(self):
         return self.discount_price if self.discount_price else self.price
+
+    def save(self, *args, **kwargs):
+        if self.brand:
+            valid_brands = dict(BRAND_CHOICES)
+            reversed_brands = {k.lower().strip(): k for k in valid_brands.keys()}
+            brand_normalized = self.brand.lower().strip()
+            if brand_normalized in reversed_brands:
+                self.brand = reversed_brands[brand_normalized]
+        super().save(*args, **kwargs)
+
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')

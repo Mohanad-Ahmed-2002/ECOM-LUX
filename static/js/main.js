@@ -66,9 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.classList.remove('overflow-hidden');
     }
 
-    mobileMenuBtn.addEventListener('click', openMobileMenu);
-    mobileCloseBtn.addEventListener('click', closeMobileMenu);
-    mobileBackdrop.addEventListener('click', closeMobileMenu);
+    if (mobileMenuBtn && mobileCloseBtn && mobileBackdrop) {
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileCloseBtn.addEventListener('click', closeMobileMenu);
+        mobileBackdrop.addEventListener('click', closeMobileMenu);
+    }
+    
 
     // Mobile submenu toggle
     document.querySelectorAll('.mobile-submenu-toggle').forEach(button => {
@@ -104,11 +107,16 @@ document.addEventListener("DOMContentLoaded", function () {
         if (mainImage) {
             mainImage.src = newImageUrl;
         }
-        const selectedColorInput = document.getElementById('selected-color-' + productId);
-        if (selectedColorInput) {
-            selectedColorInput.value = newImageUrl;
-        }
+        // خلي كل الفورمات تاخد نفس اللون
+        const colorInputs = [
+            document.getElementById('selected-color-' + productId),
+            document.getElementById('selected-color-buy-' + productId)
+        ];
+        colorInputs.forEach(function(input) {
+            if (input) input.value = newImageUrl;
+        });
     };
+    
 
     // Checkout shipping fee + total calculation
     const govSelect = document.getElementById('government');

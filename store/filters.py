@@ -1,13 +1,15 @@
 from .models import Product
 
-def filter_products(price_filter=None, category_filter=None, sort_by=None):
+def filter_products(price_filter=None, category_filter=None, sort_by=None, brand_filter=None):
     products = Product.objects.all()
 
-    # فلتر حسب التصنيف
     if category_filter:
         products = products.filter(sub_category__iexact=category_filter)
 
-    # فلتر حسب السعر
+    if brand_filter:
+        products = products.filter(brand=brand_filter)
+
+
     if price_filter:
         if '-' in price_filter:
             parts = price_filter.split('-')
@@ -19,7 +21,6 @@ def filter_products(price_filter=None, category_filter=None, sort_by=None):
             else:
                 products = products.filter(price__gte=min_price)
 
-    # ترتيب النتائج
     if sort_by == 'price_asc':
         products = products.order_by('price')
     elif sort_by == 'price_desc':

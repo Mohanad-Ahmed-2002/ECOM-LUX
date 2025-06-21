@@ -17,6 +17,7 @@ from .models import (
 )
 from .forms import OrderForm
 from .services import order_service, cart_service 
+from store.constants import BRAND_CHOICES
 
 # ============================== صفحات عامة ==============================
 
@@ -36,11 +37,15 @@ def products_by_main_category(request, main_category):
 
     price_filter = request.GET.get('price_filter')
     sort_by = request.GET.get('sort_by')
+    brand_filter = request.GET.get('brand')  # ✅ جديد
+
 
     products = filter_products(
         price_filter=price_filter,
         category_filter=None,
-        sort_by=sort_by
+        sort_by=sort_by,
+        brand_filter=brand_filter  # ✅ جديد
+
     ).filter(main_category=main_category)
 
     products = products.only("id", "name", "price", "discount_price", "image").prefetch_related(
@@ -56,6 +61,9 @@ def products_by_main_category(request, main_category):
         'main_category': main_category,
         'price_filter': price_filter,
         'sort_by': sort_by,
+        'brand_filter': brand_filter,  # ✅ عشان نرجعه للـ template
+        'brand_list': BRAND_CHOICES,  # ✅ هنا الإضافة
+
     })
 
 def products_by_main_and_sub_category(request, main_category, sub_category):
@@ -64,11 +72,15 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
 
     price_filter = request.GET.get('price_filter')
     sort_by = request.GET.get('sort_by')
+    brand_filter = request.GET.get('brand')  # ✅ جديد
+
 
     products = filter_products(
         price_filter=price_filter,
         category_filter=sub_category,
-        sort_by=sort_by
+        sort_by=sort_by,
+        brand_filter=brand_filter  # ✅ جديد
+
     ).filter(main_category=main_category)
 
     products = products.only("id", "name", "price", "discount_price", "image").prefetch_related(
@@ -85,6 +97,9 @@ def products_by_main_and_sub_category(request, main_category, sub_category):
         'sub_category': sub_category,
         'price_filter': price_filter,
         'sort_by': sort_by,
+        'brand_filter': brand_filter,  # ✅ عشان نرجعه للـ template
+        'brand_list': BRAND_CHOICES,  # ✅ هنا الإضافة
+
     })
 
 def products_by_main_sub_and_age(request, main_category, sub_category, age_group):
@@ -94,11 +109,15 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
 
     price_filter = request.GET.get('price_filter')
     sort_by = request.GET.get('sort_by')
+    brand_filter = request.GET.get('brand')  # ✅ جديد
+
 
     products = filter_products(
         price_filter=price_filter,
         category_filter=sub_category,
-        sort_by=sort_by
+        sort_by=sort_by,
+        brand_filter=brand_filter  # ✅ جديد
+
     ).filter(main_category=main_category, age_group=age_group)
 
     products = products.only("id", "name", "price", "discount_price", "image").prefetch_related(
@@ -116,6 +135,9 @@ def products_by_main_sub_and_age(request, main_category, sub_category, age_group
         'age_group': age_group,
         'price_filter': price_filter,
         'sort_by': sort_by,
+        'brand_filter': brand_filter,  # ✅ عشان نرجعه للـ template
+        'brand_list': BRAND_CHOICES,  # ✅ هنا الإضافة
+
     })
 
 def product_detail(request, product_id):
@@ -130,6 +152,18 @@ def product_detail(request, product_id):
         'extra_images': extra_images,
         'related_products': related_products,
     })
+
+
+def buy_it_now(request, product_id):
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        selected_color = request.POST.get('selected_color', '')
+        cart_service.add_product_to_cart(product_id, request, selected_color=selected_color, quantity=quantity)
+        return redirect('checkout')
+    else:
+        return redirect('product_detail', product_id=product_id)
+
+
 
 def hot_sale_view(request):
     hot_products = Product.objects.filter(is_hot_sale=True)
@@ -149,7 +183,8 @@ def add_to_cart(request, product_id):
     if request.method == 'POST':
         try:
             selected_color = request.POST.get('selected_color')
-            product = cart_service.add_product_to_cart(product_id, request)
+            quantity = int(request.POST.get('quantity', 1))  # 👈 لازم تضيف السطر ده
+            product = cart_service.add_product_to_cart(product_id, request,selected_color=selected_color, quantity=quantity)
 
             if selected_color:
                 print(f"Selected Color URL: {selected_color}")
@@ -159,7 +194,6 @@ def add_to_cart(request, product_id):
             print(f"Error adding to cart: {e}")
             messages.error(request, "There was a problem adding the product to the cart.")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
 
 @require_POST
 def remove_from_cart(request, item_id):
@@ -253,6 +287,7 @@ def checkout(request):
         'discount_amount': discount_amount if discount_amount > 0 else None,
         'promo_code_str': promo_code_str,
     })
+
 
 def validate_promo_code(request):
     code = request.POST.get('promo_code', '').strip()
