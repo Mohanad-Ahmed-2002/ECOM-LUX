@@ -9,9 +9,13 @@ from .models import Product, BRAND_CHOICES
 from store.constants import BRAND_CHOICES
 import paramiko
 from django.conf import settings
+import base64
 
 def upload_image_to_vps(image_file, filename):
-    private_key_str = settings.PRIVATE_KEY
+    
+
+    # فك تشفير المفتاح من base64 إلى نص عادي
+    private_key_str = base64.b64decode(settings.PRIVATE_KEY_BASE64).decode()
     pkey = paramiko.RSAKey.from_private_key(io.StringIO(private_key_str))
 
     ssh = paramiko.SSHClient()
@@ -24,6 +28,7 @@ def upload_image_to_vps(image_file, filename):
 
     sftp.close()
     ssh.close()
+
 
 
 class OrderForm(forms.ModelForm):

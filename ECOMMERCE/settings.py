@@ -14,14 +14,16 @@ from pathlib import Path
 from decouple import config
 import os
 import environ
+import base64
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+# فك تشفير المفتاح من base64
+PRIVATE_KEY = base64.b64decode(env('PRIVATE_KEY_BASE64')).decode()
 
-PRIVATE_KEY = env('PRIVATE_KEY')
 
 
 # Quick-start development settings - unsuitable for production
