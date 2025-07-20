@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()  # هيقرأ من .env تلقائيًا
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

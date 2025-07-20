@@ -8,9 +8,10 @@ import sys,os,io
 from .models import Product, BRAND_CHOICES
 from store.constants import BRAND_CHOICES
 import paramiko
+from django.conf import settings
 
 def upload_image_to_vps(image_file, filename):
-    private_key_str = os.environ['PRIVATE_KEY']  # من Render Environment
+    private_key_str = settings.env('PRIVATE_KEY')
     pkey = paramiko.RSAKey.from_private_key(io.StringIO(private_key_str))
 
     ssh = paramiko.SSHClient()
@@ -23,6 +24,7 @@ def upload_image_to_vps(image_file, filename):
 
     sftp.close()
     ssh.close()
+
 
 class OrderForm(forms.ModelForm):
     government = forms.ModelChoiceField(
