@@ -4,22 +4,26 @@ from .models import Government, CustomerOrder, Product,ProductImage
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
 from io import BytesIO
-import sys
+import sys,os
 from .models import Product, BRAND_CHOICES
 from store.constants import BRAND_CHOICES
 import paramiko
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 def upload_image_to_vps(image_file, filename):
+    key_path = os.path.join(BASE_DIR, 'secrets', 'id_luxflex_key')
+
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect("134.209.243.59", username="root", key_filename="C:/Users/mohan/.ssh/id_luxflex_key")
+    ssh.connect("134.209.243.59", username="root", key_filename=key_path)
 
     sftp = ssh.open_sftp()
     remote_path = f"/var/www/media/products/{filename}"
     sftp.putfo(image_file, remote_path)
+
     sftp.close()
     ssh.close()
-
 
 class OrderForm(forms.ModelForm):
     government = forms.ModelChoiceField(

@@ -7,3 +7,5 @@ env/
 *.sqlite3
 .DS_Store
 *.log
+/secrets/*
+!secrets/.gitkeep
