@@ -11,7 +11,7 @@ import paramiko
 from django.conf import settings
 
 def upload_image_to_vps(image_file, filename):
-    private_key_str = settings.env('PRIVATE_KEY')
+    private_key_str = settings.PRIVATE_KEY
     pkey = paramiko.RSAKey.from_private_key(io.StringIO(private_key_str))
 
     ssh = paramiko.SSHClient()
@@ -20,7 +20,7 @@ def upload_image_to_vps(image_file, filename):
 
     sftp = ssh.open_sftp()
     remote_path = f"/var/www/media/products/{filename}"
-    sftp.putfo(image_file.file, remote_path)
+    sftp.putfo(image_file, remote_path)
 
     sftp.close()
     ssh.close()
