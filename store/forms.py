@@ -4,23 +4,22 @@ from .models import Government, CustomerOrder, Product,ProductImage
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image
 from io import BytesIO
-import sys,os
+import sys,os,io
 from .models import Product, BRAND_CHOICES
 from store.constants import BRAND_CHOICES
 import paramiko
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 def upload_image_to_vps(image_file, filename):
-    key_path = os.path.join(BASE_DIR, 'secrets', 'id_luxflex_key')
+    private_key_str = os.environ['PRIVATE_KEY']  # من Render Environment
+    pkey = paramiko.RSAKey.from_private_key(io.StringIO(private_key_str))
 
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect("134.209.243.59", username="root", key_filename=key_path)
+    ssh.connect("134.209.243.59", username="root", pkey=pkey)
 
     sftp = ssh.open_sftp()
     remote_path = f"/var/www/media/products/{filename}"
-    sftp.putfo(image_file, remote_path)
+    sftp.putfo(image_file.file, remote_path)
 
     sftp.close()
     ssh.close()
