@@ -13,15 +13,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config
 import os
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-cloudinary.config(
-    cloud_name=config('CLOUD_NAME'),
-    api_key=config('API_KEY'),
-    api_secret=config('API_SECRET')
-)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['luxflex2020.com', 'www.luxflex2020.com', 'luxflex.onrender.com']
+ALLOWED_HOSTS = ['luxflex2020.com', 'www.luxflex2020.com', 'luxflex.onrender.com','*']
 
 
 
@@ -51,10 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
-    'cloudinary',
-    'cloudinary_storage',
     'widget_tweaks',
-    
     
 ]
 
@@ -156,17 +144,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # إضافة مسار لتخزين الملفات المجمعة بعد التحزيم (collectstatic)
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'https://media.luxflex2020.com/media/'
+MEDIA_ROOT = '/var/www/media'
 
-# Cloudinary Settings
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('API_KEY'),
-    'API_SECRET': config('API_SECRET'),
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -67,7 +67,7 @@ Shop
             {% endif %}
 
             <a href="{% url 'product_detail' product.id %}">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=300&h=300&c_fill&q_auto:eco&f_auto"
+                <img id="main-image-{{ product.id }}" src="https://media.luxflex2020.com/media/products/{{ product.image }}"
                     loading="lazy" alt="{{ product.name }}" width="300" height="300"
                     class="w-full h-52 sm:h-60 object-cover transition duration-300 hover:scale-105" />
             </a>
@@ -87,12 +87,12 @@ Shop
                 {% if product.extra_images.all %}
                 <div class="flex space-x-1 mt-2">
                     <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer"
-                        data-image-url="{{ product.image.url }}" onclick="changeMainImage('{{ product.id }}', this)"
-                        style="background-image: url('{{ product.image.url }}'); background-size: cover;"></div>
+                        data-image-url="https://media.luxflex2020.com/media/products/{{ product.image }}" onclick="changeMainImage('{{ product.id }}', this)"
+                        style="background-image: url('https://media.luxflex2020.com/media/products/{{ product.image }}'); background-size: cover;"></div>
                     {% for image in product.extra_images.all %}
                     <div class="w-5 h-5 rounded-full border border-gray-300 cursor-pointer"
-                        data-image-url="{{ image.image.url }}" onclick="changeMainImage('{{ product.id }}', this)"
-                        style="background-image: url('{{ image.image.url }}'); background-size: cover;"></div>
+                        data-image-url="https://media.luxflex2020.com/media/products/{{ image.image }}" onclick="changeMainImage('{{ product.id }}', this)"
+                        style="background-image: url('https://media.luxflex2020.com/media/products/{{ image.image }}'); background-size: cover;"></div>
                     {% endfor %}
                 </div>
                 {% endif %}

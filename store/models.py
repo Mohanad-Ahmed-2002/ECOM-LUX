@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from cloudinary.models import CloudinaryField
 from store.constants import BRAND_CHOICES
+from django.conf import settings
 
 
 
@@ -50,7 +50,7 @@ class Product(models.Model):
     brand = models.CharField(max_length=50, choices=BRAND_CHOICES, blank=True, null=True)
     main_category = models.CharField(max_length=20, choices=MAIN_CATEGORY_CHOICES)
     sub_category = models.CharField(max_length=20, choices=SUB_CATEGORY_CHOICES, blank=True, null=True)
-    image = CloudinaryField('image', folder='LUXFLEX/')
+    image = models.CharField(max_length=255)
     age_group = models.CharField(max_length=10, choices=AGE_GROUP_CHOICES, default='Men')
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -70,15 +70,21 @@ class Product(models.Model):
             if brand_normalized in reversed_brands:
                 self.brand = reversed_brands[brand_normalized]
         super().save(*args, **kwargs)
+    
+    def image_url(self):
+        return f"{settings.MEDIA_URL}{self.image}"
 
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='extra_images')
-    image = CloudinaryField('image', folder='LUXFLEX/')
+    image = models.CharField(max_length=255)
     color_name = models.CharField(max_length=50)
 
     def __str__(self):
         return f"{self.product_id} - {self.color_name}"
+
+    def image_url(self):
+        return f"{settings.MEDIA_URL}{self.image}"
 
 class CartItem(models.Model):
     session_key = models.CharField(max_length=40, null=True, blank=True)

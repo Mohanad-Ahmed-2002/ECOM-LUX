@@ -7,6 +7,19 @@ from io import BytesIO
 import sys
 from .models import Product, BRAND_CHOICES
 from store.constants import BRAND_CHOICES
+import paramiko
+
+def upload_image_to_vps(image_file, filename):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect("134.209.243.59", username="root", key_filename="C:/Users/mohan/.ssh/id_luxflex_key")
+
+    sftp = ssh.open_sftp()
+    remote_path = f"/var/www/media/products/{filename}"
+    sftp.putfo(image_file, remote_path)
+    sftp.close()
+    ssh.close()
+
 
 class OrderForm(forms.ModelForm):
     government = forms.ModelChoiceField(
@@ -21,6 +34,9 @@ class OrderForm(forms.ModelForm):
 
 
 class ProductForm(forms.ModelForm):
+    
+    image = forms.ImageField(required=False)
+
     class Meta:
         model = Product
         fields = '__all__'
@@ -32,6 +48,7 @@ class ProductForm(forms.ModelForm):
     def clean_image(self):
         image = self.cleaned_data.get('image')
         max_size = 4 * 1024 * 1024  # 4MB
+
 
         if image and isinstance(image, InMemoryUploadedFile):
             if image.size > max_size:
@@ -52,9 +69,17 @@ class ProductForm(forms.ModelForm):
                 output, 'ImageField', image.name, 'image/jpeg', sys.getsizeof(output), None
             )
 
-        return image
+            upload_image_to_vps(image.file, image.name)
+
+            return image.name
+
+        return None
 
 class ProductImageForm(forms.ModelForm):
+
+    image = forms.ImageField(required=False)
+
+
     class Meta:
         model = ProductImage
         fields = ['image', 'color_name']
@@ -81,4 +106,9 @@ class ProductImageForm(forms.ModelForm):
                 output, 'ImageField', image.name, 'image/jpeg', sys.getsizeof(output), None
             )
 
-        return image
+            upload_image_to_vps(image.file, image.name)
+
+            return image.name
+
+
+        return None

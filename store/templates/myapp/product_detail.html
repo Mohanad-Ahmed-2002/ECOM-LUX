@@ -12,18 +12,19 @@
         <!-- الصور -->
         <div>
             <div class="bg-[#f9f9f9] rounded-2xl shadow-xl flex items-center justify-center p-4">
-                <img id="main-image-{{ product.id }}" src="{{ product.image.url }}?w=600&h=600&c_fit&q_auto:eco&f_auto"
+                <img id="main-image-{{ product.id }}" src="https://media.luxflex2020.com/media/products/{{ product.image }}"
                     alt="{{ product.name }}"
                     class="w-full max-h-[430px] object-contain rounded-xl transition hover:scale-105 duration-300" />
             </div>
             <div class="flex gap-2 mt-4 flex-wrap">
-                <img src="{{ product.image.url }}?w=100&h=100&c_fill&q_auto:low&f_auto" alt="Main Image"
+                <img src="https://media.luxflex2020.com/media/products/{{ product.image }}" alt="Main Image"
                     class="w-16 h-16 object-cover border-2 border-black rounded-xl cursor-pointer hover:scale-110 transition"
-                    data-image-url="{{ product.image.url }}" onclick="changeMainImage('{{ product.id }}', this)">
+                    data-image-url="https://media.luxflex2020.com/media/products/{{ product.image }}" onclick="changeMainImage('{{ product.id }}', this)">
+                
                 {% for img in extra_images %}
-                <img src="{{ img.image.url }}?w=100&h=100&c_fill&q_auto:low&f_auto" alt="{{ img.color_name }}"
+                <img src="https://media.luxflex2020.com/media/products/{{ img.image }}" alt="{{ img.color_name }}"
                     class="w-16 h-16 object-cover border-2 border-black rounded-xl cursor-pointer hover:scale-110 transition"
-                    data-image-url="{{ img.image.url }}" onclick="changeMainImage('{{ product.id }}', this)">
+                    data-image-url="https://media.luxflex2020.com/media/products/{{ img.image }}" onclick="changeMainImage('{{ product.id }}', this)">
                 {% endfor %}
             </div>
         </div>
@@ -87,7 +88,7 @@
         {% for item in related_products %}
         <a href="{% url 'product_detail' item.id %}"
             class="group block bg-white border border-black/10 rounded-xl shadow hover:shadow-lg overflow-hidden transition">
-            <img src="{{ item.image.url }}" loading="lazy"
+            <img src="https://media.luxflex2020.com/media/products/{{ item.image }}" loading="lazy"
                 class="w-full h-40 object-contain group-hover:scale-105 transition duration-300 bg-[#f8f8f8]">
             <div class="p-3">
                 <h3 class="text-sm font-bold text-black truncate">{{ item.name }}</h3>
