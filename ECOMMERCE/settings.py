@@ -34,8 +34,8 @@ PRIVATE_KEY = base64.b64decode(PRIVATE_KEY_BASE64).decode()
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['luxflex2020.com', 'www.luxflex2020.com', 'luxflex.onrender.com','*']
+DEBUG = False
+ALLOWED_HOSTS = ['luxflex2020.com', 'www.luxflex2020.com', 'luxflex.onrender.com']
 
 
 
